@@ -23,11 +23,11 @@ package org.nanoframework.core.spi.exception;
 public class SPIException extends RuntimeException {
     private static final long serialVersionUID = 2314941568526812529L;
 
-    public SPIException(final String message) {
+    public SPIException(String message) {
         super(message);
     }
 
-    public SPIException(final String message, final Throwable cause) {
+    public SPIException(String message, Throwable cause) {
         super(message, cause);
     }
 }

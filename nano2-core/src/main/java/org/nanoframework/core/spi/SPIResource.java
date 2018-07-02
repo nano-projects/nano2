@@ -23,10 +23,13 @@ import java.util.Map;
 
 import org.nanoframework.beans.BaseEntity;
 
+import lombok.Getter;
+
 /**
  * @author yanghe
  * @since 1.4.8
  */
+@Getter
 public class SPIResource extends BaseEntity {
     /** 空资源. */
     public static final SPIResource EMPTY = SPIResource.create(Collections.emptyList(), Collections.emptyMap());
@@ -37,20 +40,12 @@ public class SPIResource extends BaseEntity {
 
     private final Map<String, List<InputStream>> streams;
 
-    private SPIResource(final List<File> files, final Map<String, List<InputStream>> streams) {
-        this.files = files;
-        this.streams = streams;
+    private SPIResource(List<File> files, Map<String, List<InputStream>> streams) {
+        this.files = Collections.unmodifiableList(files);
+        this.streams = Collections.unmodifiableMap(streams);
     }
 
-    public static SPIResource create(final List<File> files, final Map<String, List<InputStream>> streams) {
+    public static SPIResource create(List<File> files, Map<String, List<InputStream>> streams) {
         return new SPIResource(files, streams);
-    }
-
-    public List<File> getFiles() {
-        return Collections.unmodifiableList(files);
-    }
-
-    public Map<String, List<InputStream>> getStreams() {
-        return Collections.unmodifiableMap(streams);
     }
 }

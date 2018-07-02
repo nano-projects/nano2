@@ -33,7 +33,7 @@ public class SPIProvider implements Provider<Object> {
 
     private boolean echo;
 
-    public SPIProvider(final SPIMapper spi) {
+    public SPIProvider(SPIMapper spi) {
         this.spi = spi;
     }
 

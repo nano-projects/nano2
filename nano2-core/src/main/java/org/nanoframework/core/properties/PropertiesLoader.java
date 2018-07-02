@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
+import org.nanoframework.core.config.InitParameter;
 import org.nanoframework.core.properties.exception.LoaderException;
 import org.nanoframework.logging.Logger;
 import org.nanoframework.logging.LoggerFactory;
@@ -45,12 +46,7 @@ public final class PropertiesLoader {
      */
     public static final Map<String, Properties> PROPERTIES = Maps.newHashMap();
 
-    /**
-     * 属性配置列表根.
-     */
-    public static final String CONTEXT = "context";
-
-    private static Logger LOGGER = LoggerFactory.getLogger(PropertiesLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesLoader.class);
 
     private static final String REGEX = ";";
 
@@ -137,7 +133,7 @@ public final class PropertiesLoader {
         PROPERTIES.put(contextPath, prop);
 
         if (loadContext) {
-            var context = prop.getProperty(CONTEXT);
+            var context = prop.getProperty(InitParameter.CONTEXT);
             if (StringUtils.isNotEmpty(context)) {
                 var ctxs = context.split(REGEX);
                 if (ctxs.length > 0) {

@@ -48,7 +48,6 @@ import com.google.inject.name.Names;
  * @author yanghe
  * @since 2.0.0
  */
-@SuppressWarnings("exports")
 public class PluginLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(PluginLoader.class);
 

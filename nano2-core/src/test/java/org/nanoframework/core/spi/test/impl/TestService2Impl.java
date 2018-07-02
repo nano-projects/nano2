@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.plugins;
+package org.nanoframework.core.spi.test.impl;
 
-import javax.servlet.ServletConfig;
-
-import org.nanoframework.core.spi.annotation.Lazy;
+import org.nanoframework.core.spi.test.SpiService;
 
 /**
+ *
  * @author yanghe
- * @since 1.1
+ * @since 1.4.8
  */
-@Lazy
-public interface Plugin {
-    boolean load() throws Throwable;
+public class TestService2Impl implements SpiService {
+    
+    @Override
+    public String echo() {
+        return "Echo TestService 2";
+    }
 
-    void config(ServletConfig config) throws Throwable;
 }

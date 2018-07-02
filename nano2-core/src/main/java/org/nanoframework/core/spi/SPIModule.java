@@ -16,7 +16,6 @@
 package org.nanoframework.core.spi;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
@@ -36,22 +35,22 @@ import com.google.inject.name.Names;
  * @since 1.4.8
  */
 public class SPIModule implements Module {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SPIModule.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(SPIModule.class);
 
-    @SuppressWarnings({"unchecked", "exports" })
+    @SuppressWarnings({"unchecked"})
     @Override
-    public void configure(final Binder binder) {
-        final Map<Class<?>, List<SPIMapper>> spiMappers = SPILoader.spis();
+    public void configure(Binder binder) {
+        var spiMappers = SPILoader.spis();
         if (!CollectionUtils.isEmpty(spiMappers)) {
-            final Injector injector = Globals.get(Injector.class);
+            var injector = Globals.get(Injector.class);
             spiMappers.forEach((spiCls, spis) -> {
                 if (!spiCls.isAnnotationPresent(Lazy.class)) {
                     spis.forEach(spi -> {
-                        final String spiClsName = spi.getSpiClsName();
-                        final String name = spi.getName();
-                        final String instanceClsName = spi.getInstanceClsName();
+                        var spiClsName = spi.getSpiClsName();
+                        var name = spi.getName();
+                        var instanceClsName = spi.getInstanceClsName();
                         if (!spi.getLazy()) {
-                            final Object instance = injector.getInstance(spi.getInstance());
+                            var instance = injector.getInstance(spi.getInstance());
                             binder.bind(spi.getSpi()).annotatedWith(Names.named(name)).toInstance(instance);
                             LOGGER.debug("绑定即时SPI, 接口定义: {}, 绑定名称: {}, 实现类: {}", spiClsName, name, instanceClsName);
                         } else {
@@ -62,9 +61,9 @@ public class SPIModule implements Module {
                     });
                 } else {
                     spis.forEach(spi -> {
-                        final String spiClsName = spi.getSpiClsName();
-                        final String name = spi.getName();
-                        final String instanceClsName = spi.getInstanceClsName();
+                        var spiClsName = spi.getSpiClsName();
+                        var name = spi.getName();
+                        var instanceClsName = spi.getInstanceClsName();
                         binder.bind(spi.getSpi()).annotatedWith(Names.named(spi.getName()))
                                 .toProvider(new SPIProvider(spi));
                         LOGGER.debug("绑定延时SPI, 接口定义: {}, 绑定名称: {}, 实现类: {}", spiClsName, name, instanceClsName);
@@ -79,9 +78,8 @@ public class SPIModule implements Module {
         return null;
     }
 
-    @SuppressWarnings("exports")
     @Override
-    public void config(final ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) throws Throwable {
 
     }
 

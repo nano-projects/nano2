@@ -29,6 +29,5 @@ import org.nanoframework.core.spi.annotation.Lazy;
 public interface Module extends com.google.inject.Module {
     List<Module> load() throws Throwable;
 
-    @SuppressWarnings("exports")
     void config(ServletConfig config) throws Throwable;
 }

@@ -21,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.spi.ExtendedLogger;
 import org.nanoframework.logging.mxbean.AbstractAnalysisLogger;
 
+import lombok.NonNull;
+
 /**
  * @author yanghe
  * @since 2.0.0
@@ -33,8 +35,7 @@ public class Log4j2Impl extends AbstractAnalysisLogger implements org.nanoframew
     /**
      * @param logger 日志实现
      */
-    @SuppressWarnings("exports")
-    public Log4j2Impl(Logger logger) {
+    public Log4j2Impl(@NonNull Logger logger) {
         this.logger = (ExtendedLogger) logger;
         setLoggerName(logger.getName());
     }
@@ -42,7 +43,7 @@ public class Log4j2Impl extends AbstractAnalysisLogger implements org.nanoframew
     /**
      * @param loggerName 日志名称
      */
-    public Log4j2Impl(String loggerName) {
+    public Log4j2Impl(@NonNull String loggerName) {
         logger = (ExtendedLogger) LogManager.getLogger(loggerName);
         setLoggerName(loggerName);
     }

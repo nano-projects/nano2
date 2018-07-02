@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.spi.LocationAwareLogger;
 
+import lombok.NonNull;
+
 /**
  * @author yanghe
  * @since 2.0.0
@@ -41,8 +43,7 @@ public class SLF4JImpl extends AbstractAnalysisLogger implements org.nanoframewo
     /**
      * @param logger 日志实现
      */
-    @SuppressWarnings("exports")
-    public SLF4JImpl(LocationAwareLogger logger) {
+    public SLF4JImpl(@NonNull LocationAwareLogger logger) {
         this.logger = logger;
         setLoggerName(logger.getName());
     }
@@ -50,7 +51,7 @@ public class SLF4JImpl extends AbstractAnalysisLogger implements org.nanoframewo
     /**
      * @param loggerName 日志名称
      */
-    public SLF4JImpl(String loggerName) {
+    public SLF4JImpl(@NonNull String loggerName) {
         this.logger = (LocationAwareLogger) LoggerFactory.getLogger(loggerName);
         setLoggerName(loggerName);
     }

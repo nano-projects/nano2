@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.nanoframework.core.spi.test.impl;
+
+import org.nanoframework.core.spi.test.SpiLazyService;
+
 /**
+ *
  * @author yanghe
- * @since 2.0.0
+ * @since 1.4.8
  */
-module org.nanoframework.toolkit {
-    exports org.nanoframework.toolkit.lang;
+public class TestLazyServiceImpl implements SpiLazyService {
+    
+    @Override
+    public String echo() {
+        return "Echo Lazy TestService";
+    }
 
-    exports org.nanoframework.toolkit.message.support;
-
-    exports org.nanoframework.toolkit.io.exception;
-
-    exports org.nanoframework.toolkit.time;
-
-    exports org.nanoframework.toolkit.io.support;
-
-    exports org.nanoframework.toolkit.message;
-
-    exports org.nanoframework.toolkit.io;
-
-    requires com.google.common;
 }

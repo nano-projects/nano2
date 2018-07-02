@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.nanoframework.core.spi.test;
+
 /**
+ *
  * @author yanghe
- * @since 2.0.0
+ * @since 1.4.8
  */
-module org.nanoframework.beans {
-    exports org.nanoframework.beans.format;
+public interface NotSpiService {
 
-    exports org.nanoframework.beans.exception;
-
-    exports org.nanoframework.beans.format.exception;
-
-    exports org.nanoframework.beans;
-
-    requires com.google.common;
-
-    requires fastjson;
-
-    requires java.sql;
-
-    requires org.nanoframework.logging;
-
-    requires org.nanoframework.toolkit;
+    String echo();
 }

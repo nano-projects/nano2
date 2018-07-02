@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 
 import org.nanoframework.logging.mxbean.AbstractAnalysisLogger;
 
+import lombok.NonNull;
+
 /**
  * @author yanghe
  * @since 2.0.0
@@ -30,7 +32,7 @@ public class Jdk14LoggingImpl extends AbstractAnalysisLogger implements org.nano
     /**
      * @param loggerName 日志名称
      */
-    public Jdk14LoggingImpl(String loggerName) {
+    public Jdk14LoggingImpl(@NonNull String loggerName) {
         logger = Logger.getLogger(loggerName);
         setLoggerName(loggerName);
     }

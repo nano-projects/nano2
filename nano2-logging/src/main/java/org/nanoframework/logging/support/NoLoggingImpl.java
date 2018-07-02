@@ -22,6 +22,8 @@ import org.nanoframework.toolkit.message.ParameterizedMessageFactory;
 import org.nanoframework.toolkit.time.DateFormat;
 import org.nanoframework.toolkit.time.Pattern;
 
+import lombok.NonNull;
+
 /**
  * @author yanghe
  * @since 1.0
@@ -55,7 +57,7 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
 
     private MessageFactory messageFactory = ParameterizedMessageFactory.INSTANCE;
 
-    public NoLoggingImpl(String loggerName) {
+    public NoLoggingImpl(@NonNull String loggerName) {
         setLoggerName(loggerName);
     }
 

@@ -20,6 +20,7 @@ import org.nanoframework.core.spi.annotation.Lazy;
 import org.nanoframework.core.spi.annotation.Order;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * @author yanghe
@@ -46,7 +47,7 @@ public class SPIMapper extends BaseEntity {
 
     private final Integer order;
 
-    private SPIMapper(Class spi, String name, Class instance) {
+    private SPIMapper(@NonNull Class spi, @NonNull String name, @NonNull Class instance) {
         this.spi = spi;
         this.spiClsName = spi.getName();
         this.name = name;

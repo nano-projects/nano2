@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2018 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.nanoframework.core.spi.test;
+
 /**
+ *
  * @author yanghe
- * @since 2.0.0
+ * @since 1.4.8
  */
-open module org.nanoframework.logging {
-    exports org.nanoframework.logging;
+public interface SpiNotImplService {
 
-    exports org.nanoframework.logging.support;
-
-    exports org.nanoframework.logging.exception;
-
-    exports org.nanoframework.logging.mxbean;
-
-    requires com.google.common;
-
-    requires java.logging;
-
-    requires org.apache.logging.log4j;
-
-    requires org.nanoframework.toolkit;
-
-    requires org.slf4j;
+    String echo();
 }

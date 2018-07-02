@@ -65,7 +65,7 @@ public final class StringUtils {
      * @return 如果字符串为null或者trim后的长度为0，则返回false
      */
     public static boolean isNotBlank(String text) {
-        return !isNotBlank(text);
+        return !isBlank(text);
     }
 
     /**
