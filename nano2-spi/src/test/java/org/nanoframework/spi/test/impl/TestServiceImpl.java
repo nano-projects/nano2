@@ -18,12 +18,11 @@ package org.nanoframework.spi.test.impl;
 import org.nanoframework.spi.test.SpiService;
 
 /**
- *
  * @author yanghe
  * @since 1.4.8
  */
 public class TestServiceImpl implements SpiService {
-    
+
     @Override
     public String echo() {
         return "Echo TestService";

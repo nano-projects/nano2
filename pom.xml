@@ -69,6 +69,7 @@
         <module>nano2-spi</module>
         <module>nano2-logging</module>
         <module>nano2-core</module>
+        <module>nano2-aop</module>
     </modules>
 
     <scm>
@@ -182,6 +183,11 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-aop</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

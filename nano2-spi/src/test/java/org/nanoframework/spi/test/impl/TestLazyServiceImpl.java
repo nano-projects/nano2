@@ -18,12 +18,11 @@ package org.nanoframework.spi.test.impl;
 import org.nanoframework.spi.test.SpiLazyService;
 
 /**
- *
  * @author yanghe
  * @since 1.4.8
  */
 public class TestLazyServiceImpl implements SpiLazyService {
-    
+
     @Override
     public String echo() {
         return "Echo Lazy TestService";
