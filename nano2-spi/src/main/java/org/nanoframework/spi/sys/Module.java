@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.beans;
+package org.nanoframework.spi.sys;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.List;
+
+import javax.servlet.ServletConfig;
+
+import org.nanoframework.spi.annotation.Lazy;
 
 /**
- * 全局变量，针对一些全局的属性做统一管理.
  * @author yanghe
- * @since 1.0
+ * @since 1.1
  */
-public final class Globals {
-    private static final ConcurrentMap<Class<?>, Object> GLOBALS = new ConcurrentHashMap<>();
+@Lazy
+public interface Module extends com.google.inject.Module {
+    List<Module> load() throws Throwable;
 
-    private Globals() {
-
-    }
-
-    public static void set(final Class<?> clz, final Object global) {
-        GLOBALS.put(clz, global);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static final <T> T get(final Class<T> clz) {
-        return (T) GLOBALS.get(clz);
-    }
-
+    void config(ServletConfig config) throws Throwable;
 }

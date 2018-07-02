@@ -1,0 +1,3 @@
+testService=org.nanoframework.spi.test.impl.TestServiceImpl
+org.nanoframework.spi.test.impl.TestService2Impl
+testService2

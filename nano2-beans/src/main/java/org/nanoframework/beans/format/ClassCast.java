@@ -23,7 +23,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.nanoframework.logging.LoggerFactory;
 import org.nanoframework.toolkit.lang.ObjectUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
 import org.nanoframework.toolkit.time.DateFormat;
@@ -39,28 +38,47 @@ import com.alibaba.fastjson.TypeReference;
  */
 public final class ClassCast {
     private static final String INTEGER_OBJ = "java.lang.Integer";
+
     private static final String L_INTEGER_OBJ = "[Ljava.lang.Integer;";
+
     private static final String INT = "int";
+
     private static final String LONG_OBJ = "java.lang.Long";
+
     private static final String L_LONG_OBJ = "[Ljava.lang.Long;";
+
     private static final String LONG = "long";
+
     private static final String DOUBLE_OBJ = "java.lang.Double";
+
     private static final String L_DOUBLE_OBJ = "[Ljava.lang.Double;";
+
     private static final String DOUBLE = "double";
+
     private static final String FLOAT_OBJ = "java.lang.Float";
+
     private static final String L_FLOAT_OBJ = "[Ljava.lang.Float;";
+
     private static final String FLOAT = "float";
+
     private static final String STRING = "java.lang.String";
+
     private static final String DATE_UTIL = "java.util.Date";
+
     private static final String DATE_SQL = "java.sql.Date";
+
     private static final String TIMESTAMP = "java.sql.Timestamp";
+
     private static final String BOOLEAN_OBJ = "java.lang.Boolean";
+
     private static final String BOOLEAN = "boolean";
+
     private static final String L_BOOLEAN_OBJ = "[Ljava.lang.Boolean;";
 
     private static final List<String> BOOLEAN_TRUE_VALUES = List.of("1", "YES", "Y", "TRUE");
+
     private static final List<String> BOOLEAN_FALSE_VALUES = List.of("0", "NO", "N", "FALSE");
-    
+
     private ClassCast() {
 
     }
@@ -296,11 +314,7 @@ public final class ClassCast {
                             return value;
                         }
 
-                        try {
-                            return JSON.parseObject((String) value, cls);
-                        } catch (final Throwable e) {
-                            LoggerFactory.getLogger(ClassCast.class).error("ClassCast value error: " + value, e);
-                        }
+                        return JSON.parseObject((String) value, cls);
                     }
 
                     return value;
@@ -311,7 +325,6 @@ public final class ClassCast {
     }
 
     /**
-     * 
      * @param date 时间格式字符串
      * @return 时间对象
      * @throws ParseException 时间转换异常

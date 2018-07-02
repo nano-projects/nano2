@@ -54,7 +54,6 @@
         <servlet-api.version>4.0.1</servlet-api.version>
         <lombok.version>1.18.0</lombok.version>
         <mapstruct-processor.version>1.2.0.Final</mapstruct-processor.version>
-        <guava.version>25.1-jre</guava.version>
         <guice.version>4.2.0</guice.version>
         <fastjson.version>1.2.47</fastjson.version>
     </properties>
@@ -67,6 +66,7 @@
     <modules>
         <module>nano2-toolkit</module>
         <module>nano2-beans</module>
+        <module>nano2-spi</module>
         <module>nano2-logging</module>
         <module>nano2-core</module>
     </modules>
@@ -149,11 +149,6 @@
                 <version>${lombok.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
@@ -177,6 +172,11 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-beans</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -372,6 +372,7 @@
                         <exclude>**/*.otf</exclude>
                         <exclude>**/*.js.map</exclude>
                         <exclude>**/*.pid</exclude>
+                        <exclude>**/META-INF/nano/spi/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

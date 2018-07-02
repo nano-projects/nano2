@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.beans;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+package org.nanoframework.toolkit.properties.exception;
 
 /**
- * 全局变量，针对一些全局的属性做统一管理.
+ * 加载异常处理类.
  * @author yanghe
- * @since 1.0
  */
-public final class Globals {
-    private static final ConcurrentMap<Class<?>, Object> GLOBALS = new ConcurrentHashMap<>();
+public class LoaderException extends RuntimeException {
+    private static final long serialVersionUID = -5250668209016171838L;
 
-    private Globals() {
-
+    /**
+     * @param message the message
+     */
+    public LoaderException(String message) {
+        super(message);
     }
 
-    public static void set(final Class<?> clz, final Object global) {
-        GLOBALS.put(clz, global);
+    /**
+     * @param message the message
+     * @param cause the cause
+     */
+    public LoaderException(String message, Throwable cause) {
+        super(message, cause);
     }
-
-    @SuppressWarnings("unchecked")
-    public static final <T> T get(final Class<T> clz) {
-        return (T) GLOBALS.get(clz);
-    }
-
 }

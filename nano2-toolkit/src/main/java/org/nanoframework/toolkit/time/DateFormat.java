@@ -18,16 +18,15 @@ package org.nanoframework.toolkit.time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import com.google.common.collect.Maps;
 
 /**
  * @author yanghe
  * @since 1.0
  */
 public final class DateFormat {
-    private static final ConcurrentMap<String, ThreadLocal<SimpleDateFormat>> FORMAT_MAP = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, ThreadLocal<SimpleDateFormat>> FORMAT_MAP = new ConcurrentHashMap<>();
 
     private DateFormat() {
 

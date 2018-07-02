@@ -35,7 +35,6 @@ import org.nanoframework.toolkit.lang.CollectionUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 
 /**
  * 基础实体类，实体类功能扩展辅助类.
@@ -250,7 +249,7 @@ public abstract class BaseEntity implements Cloneable, Serializable {
      * @return 实体类方法列表
      */
     public static Map<String, Method> paramMethods(Class<?> cls) {
-        return allMethods(Lists.newArrayList(), cls).stream().filter(method -> Modifier.isFinal(method.getModifiers()))
+        return allMethods(new ArrayList<>(), cls).stream().filter(method -> Modifier.isFinal(method.getModifiers()))
                 .filter(method -> Modifier.isStatic(method.getModifiers()))
                 .collect(Collectors.toMap(Method::getName, method -> method));
     }
@@ -284,7 +283,7 @@ public abstract class BaseEntity implements Cloneable, Serializable {
      * @return 实体类方法列表
      */
     public static Map<String, Field> paramFields(Class<?> cls) {
-        return allFields(Lists.newArrayList(), cls).stream().filter(field -> Modifier.isFinal(field.getModifiers()))
+        return allFields(new ArrayList<>(), cls).stream().filter(field -> Modifier.isFinal(field.getModifiers()))
                 .filter(field -> Modifier.isStatic(field.getModifiers())).filter(BaseEntity::filterField)
                 .collect(Collectors.toMap(Field::getName, field -> field));
     }

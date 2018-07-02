@@ -28,15 +28,17 @@ import javax.servlet.http.HttpServlet;
 
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.config.InitParameter;
-import org.nanoframework.core.plugins.exception.PluginLoaderException;
-import org.nanoframework.core.properties.PropertiesLoader;
-import org.nanoframework.core.spi.SPILoader;
-import org.nanoframework.core.spi.SPIModule;
-import org.nanoframework.core.spi.annotation.Level;
 import org.nanoframework.logging.Logger;
 import org.nanoframework.logging.LoggerFactory;
+import org.nanoframework.spi.SPIModule;
+import org.nanoframework.spi.annotation.Level;
+import org.nanoframework.spi.support.SPILoader;
+import org.nanoframework.spi.sys.Module;
+import org.nanoframework.spi.sys.Plugin;
+import org.nanoframework.toolkit.exception.PluginLoaderException;
 import org.nanoframework.toolkit.lang.CollectionUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
+import org.nanoframework.toolkit.properties.PropertiesLoader;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Guice;

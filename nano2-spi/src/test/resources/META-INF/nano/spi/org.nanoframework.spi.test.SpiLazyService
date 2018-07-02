@@ -1,0 +1,2 @@
+testLazyService=org.nanoframework.spi.test.impl.TestLazyServiceImpl
+testLazyService2=org.nanoframework.spi.test.impl.TestLazyService2Impl
