@@ -74,14 +74,12 @@ public class PluginLoader {
             initRootInjector();
             initModules();
             initPlugins();
-            initComponent();
-
         } catch (Throwable e) {
             throw new PluginLoaderException(e.getMessage(), e);
         }
     }
 
-    private void initProperties() {
+    protected void initProperties() {
         var time = System.currentTimeMillis();
         try {
             var context = config.getInitParameter(InitParameter.CONTEXT);
@@ -97,13 +95,13 @@ public class PluginLoader {
         LOGGER.info("加载主配置完成, 耗时: {}ms", System.currentTimeMillis() - time);
     }
 
-    private void initRootInjector() {
+    protected void initRootInjector() {
         var injector = Guice.createInjector();
         Globals.set(Injector.class, injector);
         Globals.set(Injector.class, injector.createChildInjector(new SPIModule()));
     }
 
-    private void initModules() throws Throwable {
+    protected void initModules() throws Throwable {
         var moduleNames = SPILoader.spiNames(Module.class);
         if (!CollectionUtils.isEmpty(moduleNames)) {
             var injector = Globals.get(Injector.class);
@@ -122,7 +120,7 @@ public class PluginLoader {
         }
     }
 
-    private void addModules(Map<Integer, List<Module>> modules, Integer level, Module module) {
+    protected void addModules(Map<Integer, List<Module>> modules, Integer level, Module module) {
         if (modules.containsKey(level)) {
             modules.get(level).add(module);
         } else {
@@ -130,7 +128,7 @@ public class PluginLoader {
         }
     }
 
-    private void loadModules(Map<Integer, List<Module>> loadingModules) throws Throwable {
+    protected void loadModules(Map<Integer, List<Module>> loadingModules) throws Throwable {
         var levels = loadingModules.keySet().stream().collect(Collectors.toList());
         Collections.sort(levels);
         for (var level : levels) {
@@ -154,7 +152,7 @@ public class PluginLoader {
         }
     }
 
-    private void initPlugins() throws Throwable {
+    protected void initPlugins() throws Throwable {
         var pluginNames = SPILoader.spiNames(Plugin.class);
         if (!CollectionUtils.isEmpty(pluginNames)) {
             var injector = Globals.get(Injector.class);
@@ -166,12 +164,5 @@ public class PluginLoader {
                 }
             }
         }
-    }
-
-    private void initComponent() throws Throwable {
-        var time = System.currentTimeMillis();
-        LOGGER.info("Starting inject component");
-        // Components.load();
-        LOGGER.info("Inject Component complete, times: {}ms", System.currentTimeMillis() - time);
     }
 }
