@@ -178,7 +178,7 @@ public class SPILoader {
         }
 
         if (file.exists()) {
-            var spiFiles = file.listFiles(f -> f.isDirectory() ? false : true);
+            var spiFiles = file.listFiles(f -> !f.isDirectory());
             if (ArrayUtils.isNotEmpty(spiFiles)) {
                 Arrays.stream(spiFiles).forEach(files::add);
             }

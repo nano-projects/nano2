@@ -21,9 +21,9 @@ import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
 import org.nanoframework.spi.annotation.Lazy;
+import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.support.SPILoader;
 import org.nanoframework.spi.support.SPIProvider;
-import org.nanoframework.spi.sys.Module;
 import org.nanoframework.toolkit.lang.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

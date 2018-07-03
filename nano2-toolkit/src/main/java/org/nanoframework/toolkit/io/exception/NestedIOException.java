@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,11 @@ package org.nanoframework.toolkit.io.exception;
 import java.io.IOException;
 
 /**
- * Subclass of IOException that properly handles a root cause,
- * exposing the root cause just like NestedChecked/RuntimeException does.
- *
- * <p>The similarity between this class and the NestedChecked/RuntimeException
- * class is unavoidable, as this class needs to derive from IOException
- * and cannot derive from NestedCheckedException.
- *
+ * Subclass of IOException that properly handles a root cause, exposing the root cause just like
+ * NestedChecked/RuntimeException does.
+ * <p>
+ * The similarity between this class and the NestedChecked/RuntimeException class is unavoidable, as this class needs to
+ * derive from IOException and cannot derive from NestedCheckedException.
  * @author Juergen Hoeller
  * @since 2.0
  * @see #getMessage
@@ -42,8 +40,7 @@ public class NestedIOException extends IOException {
     }
 
     /**
-     * Construct a <code>NestedIOException</code> with the specified detail message
-     * and nested exception.
+     * Construct a <code>NestedIOException</code> with the specified detail message and nested exception.
      * @param msg the detail message
      * @param cause the nested exception
      */
@@ -53,11 +50,28 @@ public class NestedIOException extends IOException {
     }
 
     /**
-     * Return the detail message, including the message from the nested exception
-     * if there is one.
+     * Return the detail message, including the message from the nested exception if there is one.
      */
     public String getMessage() {
-        return NestedExceptionUtils.buildMessage(super.getMessage(), getCause());
+        return buildMessage(super.getMessage(), getCause());
     }
 
+    /**
+     * Build a message for the given base message and root cause.
+     * @param message the base message
+     * @param cause the root cause
+     * @return the full exception message
+     */
+    private String buildMessage(String message, Throwable cause) {
+        if (cause != null) {
+            var buf = new StringBuilder();
+            if (message != null) {
+                buf.append(message).append("; ");
+            }
+
+            return buf.append("nested exception is ").append(cause).toString();
+        } else {
+            return message;
+        }
+    }
 }

@@ -27,9 +27,12 @@ import java.util.Properties;
 
 import org.nanoframework.toolkit.consts.Charsets;
 import org.nanoframework.toolkit.io.support.ClassPathResource;
+import org.nanoframework.toolkit.lang.ArrayUtils;
 import org.nanoframework.toolkit.lang.ResourceUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
 import org.nanoframework.toolkit.properties.exception.LoaderException;
+
+import lombok.NonNull;
 
 /**
  * 属性文件操作公有类，负责对属性文件进行读写操作.
@@ -57,21 +60,15 @@ public final class PropertiesLoader {
      */
     public static Properties load(String path) {
         try {
-            InputStream input = null;
-            try {
-                input = new ClassPathResource(path).getInputStream();
-            } catch (final IOException e) {
+            try (var input = new ClassPathResource(path).getInputStream()) {
+                if (input != null) {
+                    return PropertiesLoader.load(input);
+                }
+            } catch (IOException e) {
                 // ignore
             }
 
-            final Properties properties;
-            if (input != null) {
-                properties = PropertiesLoader.load(input);
-            } else {
-                properties = PropertiesLoader.load(ResourceUtils.getFile(path));
-            }
-
-            return properties;
+            return PropertiesLoader.load(ResourceUtils.getFile(path));
         } catch (IOException e) {
             throw new LoaderException("加载属性文件异常: " + e.getMessage(), e);
         }
@@ -82,11 +79,7 @@ public final class PropertiesLoader {
      * @param input 文件输入流
      * @return 返回加载后的Properties
      */
-    public static Properties load(InputStream input) {
-        if (input == null) {
-            throw new LoaderException("输入流为空");
-        }
-
+    public static Properties load(@NonNull InputStream input) {
         try (var reader = new InputStreamReader(input, Charsets.UTF_8)) {
             var prop = new Properties();
             prop.load(reader);
@@ -103,45 +96,41 @@ public final class PropertiesLoader {
      * @throws LoaderException Loader异常
      * @throws IOException IO异常
      */
-    private static Properties load(File file) throws LoaderException, IOException {
-        if (file == null) {
-            throw new LoaderException("文件对象为空");
-        }
-
+    private static Properties load(@NonNull File file) {
         var prop = new Properties();
         try (var reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
             prop.load(reader);
+            return prop;
+        } catch (IOException e) {
+            throw new LoaderException("加载属性文件异常: " + e.getMessage());
         }
-
-        return prop;
     }
 
     /**
      * 加载属性文件.
-     * @param contextPath 文件相对路径
-     * @param loadContext 是否加载context
-     * @throws LoaderException 加载异常
-     * @throws IOException IO异常
+     * @param path 文件相对路径
      */
-    public static void load(String contextPath, boolean loadContext) throws LoaderException, IOException {
-        var prop = load(contextPath);
+    public static void loadContext(String path) {
+        @NonNull
+        var prop = load(path);
         prop.forEach((key, value) -> System.setProperty((String) key, (String) value));
-        PROPERTIES.put(contextPath, prop);
+        PROPERTIES.put(path, prop);
+        loadContext0(prop);
+    }
 
-        if (loadContext) {
-            var context = prop.getProperty(CONTEXT);
-            if (StringUtils.isNotEmpty(context)) {
-                var ctxs = context.split(REGEX);
-                if (ctxs.length > 0) {
-                    Arrays.stream(ctxs).filter(StringUtils::isNotBlank).forEach(ctx -> {
-                        var properties = load(ctx);
-                        if (properties != null) {
-                            PROPERTIES.put(ctx, properties);
-                        } else {
-                            throw new LoaderException(ctx + ": 无法加载此属性文件!");
-                        }
-                    });
-                }
+    private static void loadContext0(Properties prop) {
+        var context = prop.getProperty(CONTEXT);
+        if (StringUtils.isNotEmpty(context)) {
+            var ctxs = context.split(REGEX);
+            if (ArrayUtils.isNotEmpty(ctxs)) {
+                Arrays.stream(ctxs).filter(StringUtils::isNotBlank).forEach(ctx -> {
+                    var properties = load(ctx);
+                    if (properties != null) {
+                        PROPERTIES.put(ctx, properties);
+                    } else {
+                        throw new LoaderException(ctx + ": 无法加载此属性文件!");
+                    }
+                });
             }
         }
     }

@@ -13,35 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.toolkit.lang;
+package org.nanoframework.toolkit.consts;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.nio.charset.Charset;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public final class ArrayUtils {
+class CharsetsTest {
 
-    private ArrayUtils() {
+    @Test
+    void test() {
+        Charset utf8 = Charsets.getSupportedCharset("UTF-8");
+        assertEquals(Charsets.UTF_8, utf8);
 
+        Charset def = Charsets.getSupportedCharset("abc");
+        assertEquals(Charset.defaultCharset(), def);
     }
 
-    /**
-     * 判断数组是否为空.
-     * @param el 数组
-     * @param <E> 数组对象类型
-     * @return 如果数组为null或者长度为0，则返回true
-     */
-    public static <E> boolean isEmpty(E[] el) {
-        return el == null || el.length == 0;
-    }
-
-    /**
-     * 判断数组是否为空.
-     * @param el 数组
-     * @param <E> 数组对象类型
-     * @return 如果数组为null或者长度为0，则返回false
-     */
-    public static <E> boolean isNotEmpty(E[] el) {
-        return !isEmpty(el);
-    }
 }

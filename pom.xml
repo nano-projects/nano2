@@ -69,7 +69,7 @@
         <module>nano2-spi</module>
         <module>nano2-logging</module>
         <module>nano2-core</module>
-        <module>nano2-aop</module>
+        <module>nano2-modules</module>
     </modules>
 
     <scm>

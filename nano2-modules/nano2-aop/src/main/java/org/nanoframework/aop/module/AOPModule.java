@@ -32,7 +32,7 @@ import org.nanoframework.aop.interceptor.BeforeAndAfterMoreInterceptor;
 import org.nanoframework.aop.interceptor.BeforeInterceptor;
 import org.nanoframework.aop.interceptor.BeforeMoreInterceptor;
 import org.nanoframework.spi.annotation.Order;
-import org.nanoframework.spi.sys.Module;
+import org.nanoframework.spi.def.Module;
 
 import com.google.inject.Binder;
 import com.google.inject.matcher.Matchers;

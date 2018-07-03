@@ -35,7 +35,7 @@ public final class CollectionUtils {
      * @return 如果集合为null或者empty，则返回true
      */
     public static <E> boolean isEmpty(Collection<E> collection) {
-        return collection == null || collection.isEmpty() ? true : false;
+        return collection == null || collection.isEmpty();
     }
 
     /**
@@ -56,7 +56,7 @@ public final class CollectionUtils {
      * @return 如果集合为null或者empty，则返回true
      */
     public static <K, V> boolean isEmpty(Map<K, V> map) {
-        return map == null || map.isEmpty() ? true : false;
+        return map == null || map.isEmpty();
     }
 
     /**

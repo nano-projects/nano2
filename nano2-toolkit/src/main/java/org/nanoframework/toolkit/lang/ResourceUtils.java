@@ -23,6 +23,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import lombok.NonNull;
+
 /**
  * Utility methods for resolving resource locations to files in the file system. Mainly for internal use within the
  * framework.
@@ -109,8 +111,8 @@ public abstract class ResourceUtils {
             var path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
             var url = ClassUtils.getDefaultClassLoader().getResource(path);
             if (url == null) {
-                String description = "class path resource [" + path + ']';
-                throw new FileNotFoundException(description + " cannot be resolved to URL because it does not exist");
+                throw new FileNotFoundException(String
+                        .format("class path resource [%s] cannot be resolved to URL because it does not exist", path));
             }
 
             return url;
@@ -277,11 +279,7 @@ public abstract class ResourceUtils {
      * @return the URI instance
      * @throws URISyntaxException if the location wasn't a valid URI
      */
-    public static URI toURI(String location) throws URISyntaxException {
-        if (StringUtils.isBlank(location)) {
-            throw new IllegalArgumentException("无效的URL");
-        }
-
+    public static URI toURI(@NonNull String location) throws URISyntaxException {
         return new URI(location.replace(" ", "%20"));
     }
 

@@ -37,12 +37,12 @@ public final class ObjectUtils {
      * @throws IllegalArgumentException if the parameter is not an array
      */
     public static Object[] toObjectArray(Object source) {
-        if (source instanceof Object[]) {
-            return (Object[]) source;
-        }
-
         if (source == null) {
             return new Object[0];
+        }
+
+        if (source instanceof Object[]) {
+            return (Object[]) source;
         }
 
         if (!source.getClass().isArray()) {

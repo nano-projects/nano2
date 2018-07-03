@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.spi.sys;
+package org.nanoframework.toolkit.lang;
 
-import java.util.List;
+import static org.nanoframework.toolkit.lang.ArrayUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import javax.servlet.ServletConfig;
-
-import org.nanoframework.spi.annotation.Lazy;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author yanghe
- * @since 1.1
+ * @since 2.0.0
  */
-@Lazy
-public interface Module extends com.google.inject.Module {
-    List<Module> load() throws Throwable;
+class ArrayUtilsTest {
 
-    void config(ServletConfig config) throws Throwable;
+    @Test
+    void isEmptyTest() {
+        assertTrue(isEmpty(null));
+        assertTrue(isEmpty(new Object[0]));
+        assertFalse(isEmpty(new Object[] {1 }));
+
+        assertFalse(isNotEmpty(null));
+        assertFalse(isNotEmpty(new Object[0]));
+        assertTrue(isNotEmpty(new Object[] {1 }));
+    }
+
 }

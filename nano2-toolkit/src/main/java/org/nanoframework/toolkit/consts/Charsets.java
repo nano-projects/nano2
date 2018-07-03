@@ -17,6 +17,9 @@ package org.nanoframework.toolkit.consts;
 
 import java.nio.charset.Charset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author yanghe
  * @since 1.2
@@ -62,6 +65,8 @@ public final class Charsets {
      */
     public static final Charset GB2312 = Charset.forName("GB2312");
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Charsets.class);
+
     /**
      * Returns a Charset, if possible the Charset for the specified {@code charsetName}, otherwise (if the specified
      * {@code charsetName} is {@code null} or not supported) this method returns the platform default Charset.
@@ -88,8 +93,7 @@ public final class Charsets {
         if (charset == null) {
             charset = defaultCharset;
             if (charsetName != null) {
-                throw new IllegalArgumentException(
-                        "Charset " + charsetName + " is not supported for layout, using " + charset.displayName());
+                LOGGER.warn("Charset {} is not supported for layout, using {}", charsetName, charset.displayName());
             }
         }
 

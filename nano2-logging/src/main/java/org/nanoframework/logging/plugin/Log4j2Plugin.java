@@ -21,8 +21,8 @@ import java.net.URL;
 
 import javax.servlet.ServletConfig;
 
-import org.nanoframework.spi.sys.Plugin;
-import org.nanoframework.toolkit.exception.PluginLoaderException;
+import org.nanoframework.spi.def.Plugin;
+import org.nanoframework.spi.def.exception.PluginLoaderException;
 import org.nanoframework.toolkit.lang.ResourceUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
 

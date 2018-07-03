@@ -15,33 +15,20 @@
  */
 package org.nanoframework.toolkit.lang;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.nanoframework.toolkit.lang.ClassUtils.getDefaultClassLoader;
+
+import org.junit.jupiter.api.Test;
+
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public final class ArrayUtils {
+class ClassUtilsTest {
 
-    private ArrayUtils() {
-
+    @Test
+    void getDefaultClassLoaderTest() {
+        assertNotNull(getDefaultClassLoader());
     }
 
-    /**
-     * 判断数组是否为空.
-     * @param el 数组
-     * @param <E> 数组对象类型
-     * @return 如果数组为null或者长度为0，则返回true
-     */
-    public static <E> boolean isEmpty(E[] el) {
-        return el == null || el.length == 0;
-    }
-
-    /**
-     * 判断数组是否为空.
-     * @param el 数组
-     * @param <E> 数组对象类型
-     * @return 如果数组为null或者长度为0，则返回false
-     */
-    public static <E> boolean isNotEmpty(E[] el) {
-        return !isEmpty(el);
-    }
 }

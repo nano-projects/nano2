@@ -38,7 +38,7 @@ public final class StringUtils {
      * @return 如果字符串为null或者长度为0，则返回true
      */
     public static boolean isEmpty(String text) {
-        return text == null || text.length() == 0 ? true : false;
+        return text == null || text.length() == 0;
     }
 
     /**
@@ -56,7 +56,7 @@ public final class StringUtils {
      * @return 如果字符串为null或者trim后的长度为0，则返回true
      */
     public static boolean isBlank(String text) {
-        return text == null || text.trim().length() == 0 ? true : false;
+        return text == null || text.trim().length() == 0;
     }
 
     /**
@@ -69,6 +69,22 @@ public final class StringUtils {
     }
 
     /**
+     * 判断2个字符串equals
+     * @param str1 字符串1
+     * @param str2 字符串2
+     * @return 如果字符串1 equals 字符串2
+     */
+    public static boolean equals(String str1, String str2) {
+        if (str1 == null && str2 == null) {
+            return true;
+        } else if (str1 == null || str2 == null) {
+            return false;
+        }
+
+        return str1.equals(str2);
+    }
+
+    /**
      * 判断字符串{text}是否以{prefix}开头
      * @param text 原文本
      * @param prefix 对比文本
@@ -76,6 +92,10 @@ public final class StringUtils {
      */
     public static boolean startsWith(String text, String prefix) {
         if (text == null || prefix == null) {
+            return false;
+        }
+
+        if (text.length() < prefix.length()) {
             return false;
         }
 
@@ -108,7 +128,7 @@ public final class StringUtils {
      * @return a {@code String} with the replacements
      */
     public static String replace(String inString, String oldPattern, String newPattern) {
-        if (!isEmpty(inString) || !isEmpty(oldPattern) || newPattern == null) {
+        if (isEmpty(inString) || isEmpty(oldPattern) || newPattern == null) {
             return inString;
         }
 
@@ -185,7 +205,7 @@ public final class StringUtils {
      * @return the resulting {@code String}
      */
     public static String deleteAny(String inString, String charsToDelete) {
-        if (!isEmpty(inString) || !isEmpty(charsToDelete)) {
+        if (isEmpty(inString) || isEmpty(charsToDelete)) {
             return inString;
         }
 

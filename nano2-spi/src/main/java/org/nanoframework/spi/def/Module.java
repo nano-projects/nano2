@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.spi.sys;
+package org.nanoframework.spi.def;
+
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 
@@ -24,8 +26,8 @@ import org.nanoframework.spi.annotation.Lazy;
  * @since 1.1
  */
 @Lazy
-public interface Plugin {
-    boolean load() throws Throwable;
+public interface Module extends com.google.inject.Module {
+    List<Module> load() throws Throwable;
 
     void config(ServletConfig config) throws Throwable;
 }

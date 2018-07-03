@@ -86,11 +86,7 @@ class SPITest {
     void spiTest() {
         var injector = Guice.createInjector();
         Globals.set(Injector.class, injector);
-        try {
-            injector.createChildInjector(new SPIModule(), binder -> binder.requestInjection(this));
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        injector.createChildInjector(new SPIModule(), binder -> binder.requestInjection(this));
 
         assertNotNull(testService);
         assertTrue(testService.getClass() == TestServiceImpl.class);
