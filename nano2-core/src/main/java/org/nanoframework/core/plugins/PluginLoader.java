@@ -84,9 +84,9 @@ public class PluginLoader {
         try {
             var context = config.getInitParameter(InitParameter.CONTEXT);
             if (StringUtils.isNotBlank(context)) {
-                PropertiesLoader.load(context, true);
+                PropertiesLoader.loadContext(context);
             } else {
-                PropertiesLoader.load(InitParameter.DEFAULT_CONTEXT, true);
+                PropertiesLoader.loadContext(InitParameter.DEFAULT_CONTEXT);
             }
         } catch (Throwable e) {
             throw new PluginLoaderException(e.getMessage(), e);
