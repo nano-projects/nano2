@@ -18,8 +18,11 @@ package org.nanoframework.toolkit.time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import lombok.NonNull;
 
 /**
  * @author yanghe
@@ -37,7 +40,7 @@ public final class DateFormat {
      * @param pattern 时间格式
      * @return 时间转换对象
      */
-    public static SimpleDateFormat get(String pattern) {
+    public static SimpleDateFormat get(@NonNull String pattern) {
         SimpleDateFormat format;
         var formatLocal = FORMAT_MAP.get(pattern);
         if (formatLocal == null) {
@@ -61,8 +64,30 @@ public final class DateFormat {
      * @param pattern 时间格式枚举
      * @return 时间转换对象
      */
-    public static SimpleDateFormat get(Pattern pattern) {
+    public static SimpleDateFormat get(@NonNull Pattern pattern) {
         return get(pattern.get());
+    }
+
+    /**
+     * 设置DateFormat的时区.
+     * @param pattern 时间格式
+     * @param zone 时区
+     * @return 时间转换对象
+     */
+    public static SimpleDateFormat setTimeZone(@NonNull String pattern, @NonNull TimeZone zone) {
+        var format = get(pattern);
+        format.setTimeZone(zone);
+        return format;
+    }
+
+    /**
+     * 设置DateFormat的时区.
+     * @param pattern 时间格式枚举
+     * @param zone 时区
+     * @return 时间转换对象
+     */
+    public static SimpleDateFormat setTimeZone(@NonNull Pattern pattern, @NonNull TimeZone zone) {
+        return setTimeZone(pattern.get(), zone);
     }
 
     /**
