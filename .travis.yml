@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk10
+
+before_script:
+  - export MAVEN_OPTS="-Xmx2048m"
+
+script:
+  - ./build.sh
+
+notifications:
+  email: false
