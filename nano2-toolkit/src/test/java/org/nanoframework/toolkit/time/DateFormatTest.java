@@ -83,14 +83,14 @@ class DateFormatTest {
     @Test
     void parseTest() throws ParseException {
         var time = 1514736000000L;
-        var date = DateFormat.parse("2018-01-01", Pattern.DATE);
+        var date = DateFormat.parse("2018-01-01 00:00:00", Pattern.DATE);
         assertEquals(date.getTime(), time);
     }
 
     @Test
     void parseWithStringPatternTest() throws ParseException {
         var time = 1514736000000L;
-        var date = DateFormat.parse("2018-01-01", "yyyy-MM-dd");
+        var date = DateFormat.parse("2018-01-01 00:00:00", "yyyy-MM-dd");
         assertEquals(date.getTime(), time);
     }
 
