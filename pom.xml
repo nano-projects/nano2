@@ -54,8 +54,9 @@
         <servlet-api.version>4.0.1</servlet-api.version>
         <lombok.version>1.18.0</lombok.version>
         <mapstruct-processor.version>1.2.0.Final</mapstruct-processor.version>
-        <guice.version>4.2.0</guice.version>
+        <guice.version>4.1.0</guice.version>
         <fastjson.version>1.2.47</fastjson.version>
+        <apollo-client.version>0.10.2</apollo-client.version>
     </properties>
 
     <issueManagement>
@@ -159,6 +160,11 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo-client.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.nanoframework</groupId>
@@ -188,6 +194,16 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-aop</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

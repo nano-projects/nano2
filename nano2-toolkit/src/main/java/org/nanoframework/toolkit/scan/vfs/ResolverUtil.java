@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.scan.vfs;
+package org.nanoframework.toolkit.scan.vfs;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Tim Fennell

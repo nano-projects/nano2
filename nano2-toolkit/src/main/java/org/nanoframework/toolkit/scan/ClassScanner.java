@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.scan;
+package org.nanoframework.toolkit.scan;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.nanoframework.core.scan.vfs.ResolverUtil;
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
 import org.nanoframework.toolkit.lang.StringUtils;
-
-import com.google.common.collect.Sets;
+import org.nanoframework.toolkit.scan.vfs.ResolverUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.NonNull;
 
@@ -67,7 +66,7 @@ public class ClassScanner {
         }
 
         if (classes == null) {
-            classes = Sets.newHashSet();
+            classes = new HashSet<>();
         }
 
         classes.addAll(getClasses(packageName));

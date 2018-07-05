@@ -130,8 +130,7 @@ public final class ClassCast {
                     return DateFormat.parse(value, Pattern.DATETIME);
 
                 case TIMESTAMP:
-                    final long time = DateFormat.parse(value, Pattern.TIMESTAMP).getTime();
-                    return new Timestamp(time);
+                    return new Timestamp(DateFormat.parse(value, Pattern.TIMESTAMP).getTime());
 
                 default:
                     return JSON.parseObject(value, Class.forName(typeName));
@@ -170,9 +169,9 @@ public final class ClassCast {
                         return new BigDecimal(String.valueOf(value)).intValue();
                     }
                 case L_INTEGER_OBJ:
-                    Object[] values = ObjectUtils.toObjectArray(value);
-                    final Integer[] ints = new Integer[values.length];
-                    for (int idx = 0; idx < ints.length; idx++) {
+                    var values = ObjectUtils.toObjectArray(value);
+                    var ints = new Integer[values.length];
+                    for (var idx = 0; idx < ints.length; idx++) {
                         if (values[idx] == null || "".equals(values[idx])) {
                             ints[idx] = null;
                         } else {
@@ -191,8 +190,8 @@ public final class ClassCast {
                     }
                 case L_LONG_OBJ:
                     values = ObjectUtils.toObjectArray(value);
-                    final Long[] longs = new Long[values.length];
-                    for (int idx = 0; idx < longs.length; idx++) {
+                    var longs = new Long[values.length];
+                    for (var idx = 0; idx < longs.length; idx++) {
                         if (values[idx] == null || "".equals(values[idx])) {
                             longs[idx] = null;
                         } else {
@@ -211,7 +210,7 @@ public final class ClassCast {
                     }
                 case L_DOUBLE_OBJ:
                     values = ObjectUtils.toObjectArray(value);
-                    final Double[] doubles = new Double[values.length];
+                    var doubles = new Double[values.length];
                     for (int idx = 0; idx < doubles.length; idx++) {
                         if (values[idx] == null || "".equals(values[idx])) {
                             doubles[idx] = null;
@@ -231,8 +230,8 @@ public final class ClassCast {
                     }
                 case L_FLOAT_OBJ:
                     values = ObjectUtils.toObjectArray(value);
-                    final Float[] floats = new Float[values.length];
-                    for (int idx = 0; idx < floats.length; idx++) {
+                    var floats = new Float[values.length];
+                    for (var idx = 0; idx < floats.length; idx++) {
                         if (values[idx] == null || "".equals(values[idx])) {
                             floats[idx] = null;
                         } else {
@@ -249,8 +248,8 @@ public final class ClassCast {
                     }
                 case L_BOOLEAN_OBJ:
                     values = ObjectUtils.toObjectArray(value);
-                    final Boolean[] booleans = new Boolean[values.length];
-                    for (int idx = 0; idx < booleans.length; idx++) {
+                    var booleans = new Boolean[values.length];
+                    for (var idx = 0; idx < booleans.length; idx++) {
                         if (values[idx] == null || "".equals(values[idx])) {
                             booleans[idx] = null;
                         } else {
@@ -287,17 +286,17 @@ public final class ClassCast {
                     }
 
                     if (value instanceof String[]) {
-                        final Class<?> cls = Class.forName(newType);
-                        final TypeReference<Object> type = new TypeReference<Object>() {
+                        var cls = Class.forName(newType);
+                        var type = new TypeReference<Object>() {
                             public Type getType() {
                                 return cls;
                             };
                         };
 
-                        final String[] array = (String[]) value;
-                        final Object[] objs = (Object[]) Array.newInstance(cls, array.length);
+                        var array = (String[]) value;
+                        var objs = (Object[]) Array.newInstance(cls, array.length);
                         int idx = 0;
-                        for (String val : array) {
+                        for (var val : array) {
                             if (String.class == cls) {
                                 objs[idx] = (String) val;
                             } else {
@@ -309,7 +308,7 @@ public final class ClassCast {
 
                         return objs;
                     } else if (value instanceof String) {
-                        final Class<?> cls = Class.forName(typeName);
+                        var cls = Class.forName(typeName);
                         if (cls == String.class) {
                             return value;
                         }

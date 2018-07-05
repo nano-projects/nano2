@@ -15,9 +15,7 @@
  */
 package org.nanoframework.logging.plugin;
 
-import java.io.File;
 import java.net.URI;
-import java.net.URL;
 
 import javax.servlet.ServletConfig;
 
@@ -32,6 +30,7 @@ import org.nanoframework.toolkit.lang.StringUtils;
  */
 public class Log4j2Plugin implements Plugin {
     private static final String DEFAULT_LOG4J2_PARAMETER_NAME = "log4j2";
+
     private String log4j2;
 
     @Override
@@ -43,18 +42,18 @@ public class Log4j2Plugin implements Plugin {
         return false;
     }
 
-    private boolean load(final String name) throws Throwable {
-        final URL url = this.getClass().getResource(name);
+    private boolean load(String name) throws Throwable {
+        var url = this.getClass().getResource(name);
         if (url != null && load0(url.toURI())) {
             return true;
         }
 
-        final File file = ResourceUtils.getFile(name);
+        var file = ResourceUtils.getFile(name);
         if (file != null && load0(file.toURI())) {
             return true;
         }
 
-        final URI uri = ResourceUtils.getURL(name).toURI();
+        var uri = ResourceUtils.getURL(name).toURI();
         if (uri != null && load0(uri)) {
             return true;
         }
@@ -62,15 +61,15 @@ public class Log4j2Plugin implements Plugin {
         return false;
     }
 
-    protected boolean load0(final URI resource) {
+    protected boolean load0(URI resource) {
         if (resource != null) {
             try {
-                final Class<?> logManager = Class.forName("org.apache.logging.log4j.LogManager");
-                final Object context = logManager.getMethod("getContext", boolean.class).invoke(logManager, Boolean.FALSE);
-                final Class<?> loggerContext = Class.forName("org.apache.logging.log4j.core.LoggerContext");
+                var logManager = Class.forName("org.apache.logging.log4j.LogManager");
+                var context = logManager.getMethod("getContext", boolean.class).invoke(logManager, Boolean.FALSE);
+                var loggerContext = Class.forName("org.apache.logging.log4j.core.LoggerContext");
                 loggerContext.getMethod("setConfigLocation", URI.class).invoke(context, resource);
                 return true;
-            } catch (final Throwable e) {
+            } catch (Throwable e) {
                 if (!(e instanceof ClassNotFoundException)) {
                     throw new PluginLoaderException(e.getMessage(), e);
                 }
@@ -83,7 +82,7 @@ public class Log4j2Plugin implements Plugin {
     }
 
     @Override
-    public void config(final ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) throws Throwable {
         log4j2 = config.getInitParameter(DEFAULT_LOG4J2_PARAMETER_NAME);
     }
 

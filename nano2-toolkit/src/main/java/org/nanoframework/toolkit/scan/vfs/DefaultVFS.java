@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.scan.vfs;
+package org.nanoframework.toolkit.scan.vfs;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,10 +31,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
-
-import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A default implementation of {@link VFS} that works for most application servers.
@@ -56,7 +54,7 @@ public class DefaultVFS extends VFS {
     public List<String> list(URL url, String path) throws IOException {
         InputStream is = null;
         try {
-            List<String> resources = Lists.newArrayList();
+            var resources = (List<String>) new ArrayList<String>();
 
             // First, try to find the URL of a JAR file containing the requested resource. If a JAR
             // file is found, then we'll list child resources by reading the JAR.
@@ -66,7 +64,7 @@ public class DefaultVFS extends VFS {
                 LOGGER.debug("Listing " + url);
                 resources = listResources(new JarInputStream(is), path);
             } else {
-                List<String> children = Lists.newArrayList();
+                var children = (List<String>) new ArrayList<String>();
                 try {
                     if (isJar(url)) {
                         // Some versions of JBoss VFS might give a JAR stream even if the resource
@@ -114,7 +112,7 @@ public class DefaultVFS extends VFS {
                         LOGGER.debug("Listing directory " + file.getAbsolutePath());
                         if (file.isDirectory()) {
                             LOGGER.debug("Listing " + url);
-                            children = Arrays.asList(file.list());
+                            children = List.of(file.list());
                         }
                     } else {
                         // No idea where the exception came from so rethrow it
@@ -165,7 +163,7 @@ public class DefaultVFS extends VFS {
         }
 
         // Iterate over the entries and collect those that begin with the requested path
-        List<String> resources = new ArrayList<String>();
+        var resources = new ArrayList<String>();
         for (JarEntry entry; (entry = jar.getNextJarEntry()) != null;) {
             if (!entry.isDirectory()) {
                 // Add leading slash if it's missing

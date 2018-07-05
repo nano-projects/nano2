@@ -36,15 +36,13 @@
 
     <modules>
         <module>nano2-aop</module>
+        <module>nano2-api</module>
+        <module>nano2-config</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-aop</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

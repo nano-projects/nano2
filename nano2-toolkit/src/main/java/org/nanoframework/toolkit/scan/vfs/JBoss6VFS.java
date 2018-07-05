@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.scan.vfs;
+package org.nanoframework.toolkit.scan.vfs;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link VFS} implementation that works with the VFS API provided by JBoss 6.

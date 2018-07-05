@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.scan.vfs;
+package org.nanoframework.toolkit.scan.vfs;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,8 +24,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides a very simple API for accessing resources within an application server.
