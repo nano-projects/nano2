@@ -15,6 +15,7 @@
  */
 package org.nanoframework.api.module;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,21 +55,21 @@ public class APIModule implements Module {
                 return;
             }
 
-            Class[] itfs = cls.getInterfaces();
+            var itfs = cls.getInterfaces();
             if (ArrayUtils.isEmpty(itfs)) {
                 LOGGER.warn("Ignore no interface implement API of {}", cls.getName());
                 return;
             }
 
-            for (Class itf : itfs) {
-                List<Class> implList = bindMap.get(itf);
+            Arrays.stream(itfs).forEach(itf -> {
+                var implList = bindMap.get(itf);
                 if (implList == null) {
                     implList = Lists.newArrayList();
                     bindMap.put(itf, implList);
                 }
 
                 implList.add(cls);
-            }
+            });
         });
 
         bind(binder, bindMap);
@@ -87,12 +88,12 @@ public class APIModule implements Module {
 
                 LOGGER.debug("Binding {} to {}", itf.getName(), cls.getName());
             } else {
-                bindApiWithName(binder, itf, impls);
+                bindWithName(binder, itf, impls);
             }
         });
     }
 
-    protected void bindApiWithName(Binder binder, Class itf, List<Class> impls) {
+    protected void bindWithName(Binder binder, Class itf, List<Class> impls) {
         impls.forEach(cls -> {
             var apiName = ((API) cls.getAnnotation(API.class)).value();
             String name;
