@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.api.annotation;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+package org.nanoframework.server.exception;
 
 /**
  * @author yanghe
- * @since 1.4.2
+ * @since 2.0.0
  */
-@Retention(RUNTIME)
-@Target(TYPE)
-@Documented
-public @interface API {
-    String value() default "";
+public class ServerException extends RuntimeException {
+    private static final long serialVersionUID = 7394251380464789083L;
+
+    public ServerException() {
+
+    }
+
+    public ServerException(String message) {
+        super(message);
+    }
+
+    public ServerException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

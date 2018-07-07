@@ -25,9 +25,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.nanoframework.beans.exception.EntityException;
 import org.nanoframework.beans.format.ClassCast;
@@ -249,9 +249,11 @@ public abstract class BaseEntity implements Cloneable, Serializable {
      * @return 实体类方法列表
      */
     public static Map<String, Method> paramMethods(Class<?> cls) {
-        return allMethods(new ArrayList<>(), cls).stream().filter(method -> Modifier.isFinal(method.getModifiers()))
-                .filter(method -> Modifier.isStatic(method.getModifiers()))
-                .collect(Collectors.toMap(Method::getName, method -> method));
+        var map = new LinkedHashMap<String, Method>();
+        allMethods(new ArrayList<>(), cls).stream().filter(method -> !Modifier.isFinal(method.getModifiers()))
+                .filter(method -> !Modifier.isStatic(method.getModifiers()))
+                .forEach(method -> map.put(method.getName(), method));
+        return map;
     }
 
     /**
@@ -283,9 +285,11 @@ public abstract class BaseEntity implements Cloneable, Serializable {
      * @return 实体类方法列表
      */
     public static Map<String, Field> paramFields(Class<?> cls) {
-        return allFields(new ArrayList<>(), cls).stream().filter(field -> Modifier.isFinal(field.getModifiers()))
-                .filter(field -> Modifier.isStatic(field.getModifiers())).filter(BaseEntity::filterField)
-                .collect(Collectors.toMap(Field::getName, field -> field));
+        var map = new LinkedHashMap<String, Field>();
+        allFields(new ArrayList<>(), cls).stream().filter(field -> !Modifier.isFinal(field.getModifiers()))
+                .filter(field -> !Modifier.isStatic(field.getModifiers())).filter(BaseEntity::filterField)
+                .forEach(field -> map.put(field.getName(), field));
+        return map;
     }
 
     /**
@@ -312,7 +316,7 @@ public abstract class BaseEntity implements Cloneable, Serializable {
     }
 
     protected static boolean filterField(Field field) {
-        return FILTER_FIELD_NAMES.contains(field.getName());
+        return !FILTER_FIELD_NAMES.contains(field.getName());
     }
 
     public Collection<Method> methods() {

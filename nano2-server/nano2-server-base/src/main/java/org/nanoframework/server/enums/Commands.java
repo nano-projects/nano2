@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.api.annotation;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+package org.nanoframework.server.enums;
 
 /**
+ * 
  * @author yanghe
- * @since 1.4.2
+ * @since 1.3.14
  */
-@Retention(RUNTIME)
-@Target(TYPE)
-@Documented
-public @interface API {
-    String value() default "";
+public enum Commands {
+    START, STOP, VERSION, HELP
 }

@@ -58,11 +58,13 @@ public final class PropertiesLoader {
      * @param path 属性文件路径
      * @return Properties
      */
-    public static Properties load(String path) {
+    public static Properties load(@NonNull String path) {
         try {
             try (var input = new ClassPathResource(path).getInputStream()) {
                 if (input != null) {
-                    return PropertiesLoader.load(input);
+                    var prop = PropertiesLoader.load(input);
+                    PROPERTIES.put(path, prop);
+                    return prop;
                 }
             } catch (IOException e) {
                 // ignore
@@ -110,15 +112,13 @@ public final class PropertiesLoader {
      * 加载属性文件.
      * @param path 文件相对路径
      */
-    public static void loadContext(String path) {
-        @NonNull
+    public static void loadContext(@NonNull String path) {
         var prop = load(path);
         prop.forEach((key, value) -> System.setProperty((String) key, (String) value));
-        PROPERTIES.put(path, prop);
         loadContext0(prop);
     }
 
-    private static void loadContext0(Properties prop) {
+    private static void loadContext0(@NonNull Properties prop) {
         var context = prop.getProperty(CONTEXT);
         if (StringUtils.isNotEmpty(context)) {
             var ctxs = context.split(REGEX);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.api.annotation;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package org.nanoframework.core.annotation;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
  * @author yanghe
- * @since 1.4.2
+ * @since 2.0.0
  */
-@Retention(RUNTIME)
-@Target(TYPE)
+@Target({ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface API {
-    String value() default "";
+public @interface Scanner {
+
 }
