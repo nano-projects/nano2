@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.nanoframework.beans.format.ClassCast;
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
 import org.nanoframework.modules.config.ConfigMapper;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.toolkit.lang.CollectionUtils;
 
 import com.ctrip.framework.apollo.ConfigChangeListener;

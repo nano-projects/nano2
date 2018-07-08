@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServlet;
 
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.config.InitParameter;
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.spi.SPIModule;
 import org.nanoframework.spi.annotation.Level;
 import org.nanoframework.spi.def.Module;

@@ -27,8 +27,8 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.server.enums.Commands;
 import org.nanoframework.server.enums.Mode;
 import org.nanoframework.server.exception.ServerException;

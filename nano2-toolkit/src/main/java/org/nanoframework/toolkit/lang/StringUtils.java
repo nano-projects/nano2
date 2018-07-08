@@ -17,6 +17,7 @@ package org.nanoframework.toolkit.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.StringTokenizer;
 
 /**
  * @author yanghe
@@ -66,6 +67,33 @@ public final class StringUtils {
      */
     public static boolean isNotBlank(String text) {
         return !isBlank(text);
+    }
+
+    public static boolean hasLength(CharSequence str) {
+        return (str != null && str.length() > 0);
+    }
+
+    public static boolean hasLength(String str) {
+        return hasLength((CharSequence) str);
+    }
+
+    public static boolean hasText(CharSequence str) {
+        if (!hasLength(str)) {
+            return false;
+        }
+
+        var len = str.length();
+        for (var i = 0; i < len; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean hasText(String str) {
+        return hasText((CharSequence) str);
     }
 
     /**
@@ -145,6 +173,19 @@ public final class StringUtils {
 
         builder.append(inString.substring(pos));
         return builder.toString();
+    }
+
+    /**
+     * 字符串小写化.
+     * @param text 字符串文本
+     * @return 小写后的字符串文本
+     */
+    public static String lowerCase(String text) {
+        if (isEmpty(text)) {
+            return text;
+        }
+
+        return text.toLowerCase();
     }
 
     /**
@@ -272,5 +313,28 @@ public final class StringUtils {
         }
 
         return builder.toString();
+    }
+
+    public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens,
+            boolean ignoreEmptyTokens) {
+
+        if (str == null) {
+            return null;
+        }
+
+        var st = new StringTokenizer(str, delimiters);
+        var tokens = new ArrayList<String>();
+        while (st.hasMoreTokens()) {
+            var token = st.nextToken();
+            if (trimTokens) {
+                token = token.trim();
+            }
+
+            if (!ignoreEmptyTokens || token.length() > 0) {
+                tokens.add(token);
+            }
+        }
+
+        return toStringArray(tokens);
     }
 }

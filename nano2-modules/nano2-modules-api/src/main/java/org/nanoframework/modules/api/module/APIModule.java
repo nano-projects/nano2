@@ -22,9 +22,9 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
-import org.nanoframework.logging.Logger;
-import org.nanoframework.logging.LoggerFactory;
 import org.nanoframework.modules.api.annotation.API;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.toolkit.lang.ArrayUtils;
 import org.nanoframework.toolkit.lang.StringUtils;

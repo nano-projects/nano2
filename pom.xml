@@ -68,7 +68,6 @@
         <module>nano2-toolkit</module>
         <module>nano2-beans</module>
         <module>nano2-spi</module>
-        <module>nano2-logging</module>
         <module>nano2-core</module>
         <module>nano2-modules</module>
         <module>nano2-server</module>
@@ -169,11 +168,6 @@
             </dependency>
             <dependency>
                 <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-logging</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-beans</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -190,6 +184,11 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-modules-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-modules-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

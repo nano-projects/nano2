@@ -72,11 +72,7 @@
 
         <dependency>
             <groupId>org.nanoframework</groupId>
-            <artifactId>nano2-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.nanoframework</groupId>
-            <artifactId>nano2-modules-base</artifactId>
+            <artifactId>nano2-modules-logging</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
-import org.nanoframework.modules.httpclient.enums.HttpMethod;
+import org.nanoframework.core.rest.enums.RequestMethod;
 import org.nanoframework.modules.httpclient.exception.HttpClientException;
 import org.nanoframework.modules.httpclient.support.HttpClientImpl;
 import org.nanoframework.spi.annotation.Lazy;
@@ -36,7 +36,6 @@ import com.google.inject.ImplementedBy;
 public interface HttpClient {
     /**
      * Http 'GET' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -45,30 +44,28 @@ public interface HttpClient {
 
     /**
      * Http 'GET' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request parameter map
      * @return HttpResponse
-     * @throws URISyntaxException  if URI Syntax errors occur
+     * @throws URISyntaxException if URI Syntax errors occur
      * @throws HttpClientException Http请求异常
      */
     HttpResponse get(String url, Map<String, String> params) throws URISyntaxException, HttpClientException;
 
     /**
      * Http 'GET' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param params  request parameter map
+     * @param params request parameter map
      * @return HttpResponse
-     * @throws URISyntaxException  if URI Syntax errors occur
+     * @throws URISyntaxException if URI Syntax errors occur
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse get(String url, Map<String, String> headers, Map<String, String> params) throws URISyntaxException, HttpClientException;
+    HttpResponse get(String url, Map<String, String> headers, Map<String, String> params)
+            throws URISyntaxException, HttpClientException;
 
     /**
      * Http 'POST' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -77,8 +74,7 @@ public interface HttpClient {
 
     /**
      * Http 'POST' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -87,8 +83,7 @@ public interface HttpClient {
 
     /**
      * Http 'POST' request.
-     *
-     * @param url  request url
+     * @param url request url
      * @param json request json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -97,9 +92,8 @@ public interface HttpClient {
 
     /**
      * Http 'POST' request.
-     *
-     * @param url         request url
-     * @param stream      stream string
+     * @param url request url
+     * @param stream stream string
      * @param contentType httpclient ContentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -108,10 +102,9 @@ public interface HttpClient {
 
     /**
      * Http 'POST' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param json    json string
+     * @param json json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -119,22 +112,21 @@ public interface HttpClient {
 
     /**
      * Http 'POST' request.
-     *
-     * @param url         request url
-     * @param headers     request hreaders map
-     * @param stream      stream string
+     * @param url request url
+     * @param headers request hreaders map
+     * @param stream stream string
      * @param contentType httpclient ContentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse post(String url, Map<String, String> headers, String stream, ContentType contentType) throws HttpClientException;
+    HttpResponse post(String url, Map<String, String> headers, String stream, ContentType contentType)
+            throws HttpClientException;
 
     /**
      * Http 'POST' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request hreaders map
-     * @param params  request parameter map
+     * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -142,7 +134,6 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -151,8 +142,7 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -161,8 +151,7 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url  request url
+     * @param url request url
      * @param json request json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -171,9 +160,8 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url         the url
-     * @param stream      the stream
+     * @param url the url
+     * @param stream the stream
      * @param contentType the contentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -182,22 +170,21 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url         the url
-     * @param headers     请求头
-     * @param stream      the stream
+     * @param url the url
+     * @param headers 请求头
+     * @param stream the stream
      * @param contentType the contentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse put(String url, Map<String, String> headers, String stream, ContentType contentType) throws HttpClientException;
+    HttpResponse put(String url, Map<String, String> headers, String stream, ContentType contentType)
+            throws HttpClientException;
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param json    json string
+     * @param json json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -205,10 +192,9 @@ public interface HttpClient {
 
     /**
      * Http 'PUT' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request hreaders map
-     * @param params  request parameter map
+     * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -216,7 +202,6 @@ public interface HttpClient {
 
     /**
      * Http 'DELETE' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -225,8 +210,7 @@ public interface HttpClient {
 
     /**
      * Http 'DELETE' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request params map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -235,10 +219,9 @@ public interface HttpClient {
 
     /**
      * Http 'DELETE' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param params  the params
+     * @param params the params
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -246,7 +229,6 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException IOException Http请求异常
@@ -255,8 +237,7 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -265,8 +246,7 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url  request url
+     * @param url request url
      * @param json request json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -275,9 +255,8 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url         request url
-     * @param stream      stream string
+     * @param url request url
+     * @param stream stream string
      * @param contentType httpclient ContentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -286,10 +265,9 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param json    json string
+     * @param json json string
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -297,22 +275,21 @@ public interface HttpClient {
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url         request url
-     * @param headers     request hreaders map
-     * @param stream      stream string
+     * @param url request url
+     * @param headers request hreaders map
+     * @param stream stream string
      * @param contentType httpclient ContentType
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse patch(String url, Map<String, String> headers, String stream, ContentType contentType) throws HttpClientException;
+    HttpResponse patch(String url, Map<String, String> headers, String stream, ContentType contentType)
+            throws HttpClientException;
 
     /**
      * Http 'PATCH' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request hreaders map
-     * @param params  request parameter map
+     * @param params request parameter map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -320,7 +297,6 @@ public interface HttpClient {
 
     /**
      * Http 'HEAD' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -329,8 +305,7 @@ public interface HttpClient {
 
     /**
      * Http 'HEAD' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request params map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -339,10 +314,9 @@ public interface HttpClient {
 
     /**
      * Http 'HEAD' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param params  the params
+     * @param params the params
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
@@ -350,7 +324,6 @@ public interface HttpClient {
 
     /**
      * Http 'OPTIONS' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -359,8 +332,7 @@ public interface HttpClient {
 
     /**
      * Http 'OPTIONS' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request params map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -369,18 +341,17 @@ public interface HttpClient {
 
     /**
      * Http 'OPTIONS' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param params  the params
+     * @param params the params
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse options(String url, Map<String, String> headers, Map<String, String> params) throws HttpClientException;
+    HttpResponse options(String url, Map<String, String> headers, Map<String, String> params)
+            throws HttpClientException;
 
     /**
      * Http 'TRACE' request.
-     *
      * @param url request url
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -389,8 +360,7 @@ public interface HttpClient {
 
     /**
      * Http 'TRACE' request.
-     *
-     * @param url    request url
+     * @param url request url
      * @param params request params map
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
@@ -399,86 +369,88 @@ public interface HttpClient {
 
     /**
      * Http 'TRACE' request.
-     *
-     * @param url     request url
+     * @param url request url
      * @param headers request headers map
-     * @param params  the params
+     * @param params the params
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
     HttpResponse trace(String url, Map<String, String> headers, Map<String, String> params) throws HttpClientException;
 
     /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
+     * @param requestMethod 请求类型
+     * @param url URL
      * @return HttpResonse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(HttpMethod HttpMethod, String url) throws HttpClientException;
+    HttpResponse process(RequestMethod requestMethod, String url) throws HttpClientException;
 
     /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param params        参数列表
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param params 参数列表
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(HttpMethod HttpMethod, String url, Map<String, String> params) throws HttpClientException;
-
-    /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param json          JSON格式流式报文
-     * @return HttpResponse
-     * @throws HttpClientException Http请求异常
-     */
-    HttpResponse process(HttpMethod HttpMethod, String url, String json) throws HttpClientException;
-
-    /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param headers       请求头列表
-     * @param params        参数列表
-     * @return HttpResponse
-     * @throws HttpClientException Http请求异常
-     */
-    HttpResponse process(HttpMethod HttpMethod, String url, Map<String, String> headers, Map<String, String> params) throws HttpClientException;
-
-    /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param headers       请求头列表
-     * @param json          JSON格式流式报文
-     * @return HttpResponse
-     * @throws HttpClientException Http请求异常
-     */
-    HttpResponse process(HttpMethod HttpMethod, String url, Map<String, String> headers, String json) throws HttpClientException;
-
-    /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param stream        流式报文
-     * @param contentType   报文类型
-     * @return HttpResponse
-     * @throws HttpClientException Http请求异常
-     */
-    HttpResponse process(HttpMethod HttpMethod, String url, String stream, ContentType contentType) throws HttpClientException;
-
-    /**
-     * @param HttpMethod 请求类型
-     * @param url           URL
-     * @param headers       请求头列表
-     * @param stream        流式报文
-     * @param contentType   报文类型
-     * @return HttpResponse
-     * @throws HttpClientException Http请求异常
-     */
-    HttpResponse process(HttpMethod HttpMethod, String url, Map<String, String> headers, String stream, ContentType contentType)
+    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> params)
             throws HttpClientException;
 
     /**
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param json JSON格式流式报文
+     * @return HttpResponse
+     * @throws HttpClientException Http请求异常
+     */
+    HttpResponse process(RequestMethod requestMethod, String url, String json) throws HttpClientException;
+
+    /**
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param headers 请求头列表
+     * @param params 参数列表
+     * @return HttpResponse
+     * @throws HttpClientException Http请求异常
+     */
+    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers,
+            Map<String, String> params) throws HttpClientException;
+
+    /**
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param headers 请求头列表
+     * @param json JSON格式流式报文
+     * @return HttpResponse
+     * @throws HttpClientException Http请求异常
+     */
+    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String json)
+            throws HttpClientException;
+
+    /**
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param stream 流式报文
+     * @param contentType 报文类型
+     * @return HttpResponse
+     * @throws HttpClientException Http请求异常
+     */
+    HttpResponse process(RequestMethod requestMethod, String url, String stream, ContentType contentType)
+            throws HttpClientException;
+
+    /**
+     * @param requestMethod 请求类型
+     * @param url URL
+     * @param headers 请求头列表
+     * @param stream 流式报文
+     * @param contentType 报文类型
+     * @return HttpResponse
+     * @throws HttpClientException Http请求异常
+     */
+    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String stream,
+            ContentType contentType) throws HttpClientException;
+
+    /**
      * 处理Http请求.
-     *
      * @param request 请求
      * @return 响应
      * @throws HttpClientException Http调用异常
