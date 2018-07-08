@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.annotation;
+package org.nanoframework.toolkit.scan.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Scanner {
+public @interface Scan {
 
+    String[] value() default {};
 }

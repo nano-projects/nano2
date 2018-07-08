@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.net.URI;
 
 import org.junit.jupiter.api.Test;
+import org.nanoframework.toolkit.scan.ClassScanner;
+import org.nanoframework.toolkit.scan.annotation.Scan;
 
 import jdk.incubator.http.HttpClient;
 import jdk.incubator.http.HttpRequest;
@@ -30,11 +32,12 @@ import jdk.incubator.http.HttpResponse.BodyHandler;
  * @author yanghe
  * @since 2.0.0
  */
+@Scan
 class TomcatServerTest {
 
     @Test
     void bootTest() throws Throwable {
-        var server = TomcatServer.server();
+        var server = TomcatServer.server(TomcatServerTest.class);
         server.bootstrap("start");
         Thread.sleep(1000);
         var res = HttpClient.newHttpClient().send(HttpRequest.newBuilder(new URI("http://localhost:7000")).build(),
@@ -42,5 +45,7 @@ class TomcatServerTest {
         assertNotNull(res);
         assertEquals(res.statusCode(), 200);
         assertEquals(res.body(), "\n\nOK");
+
+        assertEquals(ClassScanner.loadedClassSize(), 7);
     }
 }

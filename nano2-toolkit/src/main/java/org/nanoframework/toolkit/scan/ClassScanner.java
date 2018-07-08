@@ -16,12 +16,17 @@
 package org.nanoframework.toolkit.scan;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.nanoframework.toolkit.lang.ArrayUtils;
+import org.nanoframework.toolkit.lang.CollectionUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
+import org.nanoframework.toolkit.scan.annotation.Scan;
 import org.nanoframework.toolkit.scan.vfs.ResolverUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +64,14 @@ public class ClassScanner {
         return Collections.emptySet();
     }
 
+    public static long loadedClassSize() {
+        if (CollectionUtils.isEmpty(classes)) {
+            return 0;
+        }
+
+        return classes.size();
+    }
+
     public static void scan(String packageName) {
         if (StringUtils.isEmpty(packageName)) {
             LOGGER.warn("没有设置packageName, 跳过扫描");
@@ -70,6 +83,30 @@ public class ClassScanner {
         }
 
         classes.addAll(getClasses(packageName));
+    }
+
+    public static void scan(Class<?> cls) {
+        if (cls.isAnnotationPresent(Scan.class)) {
+            var scan = cls.getAnnotation(Scan.class);
+            var packages = scan.value();
+            var clsPkg = cls.getPackageName();
+            if (ArrayUtils.isNotEmpty(packages)) {
+                var exsits = new AtomicBoolean();
+                Arrays.stream(packages).map(pkg -> {
+                    if (StringUtils.equals(pkg, clsPkg)) {
+                        exsits.set(true);
+                    }
+
+                    return pkg;
+                }).forEach(pkg -> scan(pkg));
+
+                if (!exsits.get()) {
+                    scan(clsPkg);
+                }
+            } else {
+                scan(clsPkg);
+            }
+        }
     }
 
     public static void clear() {

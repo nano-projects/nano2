@@ -39,6 +39,7 @@ import org.nanoframework.server.tomcat.config.ConnectorConfig;
 import org.nanoframework.server.tomcat.config.ExecutorConfig;
 import org.nanoframework.toolkit.lang.StringUtils;
 import org.nanoframework.toolkit.properties.PropertiesLoader;
+import org.nanoframework.toolkit.scan.ClassScanner;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -80,11 +81,13 @@ public class TomcatServer extends Tomcat implements Server {
         init(server.getProperty(ROOT), null);
     }
 
-    public static TomcatServer server() throws Throwable {
+    public static TomcatServer server(Class<?> cls) throws Throwable {
+        ClassScanner.scan(cls);
         return new TomcatServer();
     }
 
-    public static TomcatServer server(String path) throws Throwable {
+    public static TomcatServer server(Class<?> cls, String path) throws Throwable {
+        ClassScanner.scan(cls);
         return new TomcatServer(path);
     }
 
