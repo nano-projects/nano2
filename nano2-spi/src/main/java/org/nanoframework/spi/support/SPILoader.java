@@ -123,6 +123,10 @@ public class SPILoader {
         return Collections.unmodifiableMap(SPI_MAPPERS);
     }
 
+    public static List<SPIMapper> spis(Class<?> cls) {
+        return Collections.unmodifiableList(spis().get(cls));
+    }
+
     public static Set<String> spiNames(Class<?> spiCls) {
         if (!LOADED.get()) {
             loading();

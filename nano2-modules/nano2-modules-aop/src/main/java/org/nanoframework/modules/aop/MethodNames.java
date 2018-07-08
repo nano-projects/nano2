@@ -13,34 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.beans;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+package org.nanoframework.modules.aop;
 
 /**
- * 全局变量，针对一些全局的属性做统一管理.
  * @author yanghe
  * @since 1.0
  */
-public class Globals {
-    private static final ConcurrentMap<Class<?>, Object> GLOBALS = new ConcurrentHashMap<>();
+public enum MethodNames {
 
-    private Globals() {
+    BEFORE("before"), AFTER("after");
 
+    private final String value;
+
+    MethodNames(String value) {
+        this.value = value;
     }
 
-    public static void set(Class<?> clz, Object global) {
-        GLOBALS.put(clz, global);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T get(Class<T> clz) {
-        return (T) GLOBALS.get(clz);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T remove(Class<?> cls) {
-        return (T) GLOBALS.remove(cls);
+    public String value() {
+        return value;
     }
 }

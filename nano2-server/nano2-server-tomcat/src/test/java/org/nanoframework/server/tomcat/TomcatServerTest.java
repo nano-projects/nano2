@@ -42,8 +42,5 @@ class TomcatServerTest {
         assertNotNull(res);
         assertEquals(res.statusCode(), 200);
         assertEquals(res.body(), "\n\nOK");
-
-        server.bootstrap("stop");
-        server.globalWebXml.delete();
     }
 }

@@ -40,6 +40,7 @@
         <cs.dir>${project.basedir}</cs.dir>
 
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <maven-surefire-plubin.version>2.22.0</maven-surefire-plubin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
@@ -56,7 +57,6 @@
         <mapstruct-processor.version>1.2.0.Final</mapstruct-processor.version>
         <guice.version>4.1.0</guice.version>
         <fastjson.version>1.2.47</fastjson.version>
-        <apollo-client.version>0.10.2</apollo-client.version>
     </properties>
 
     <issueManagement>
@@ -161,11 +161,6 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>${apollo-client.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.nanoframework</groupId>
@@ -194,17 +189,27 @@
             </dependency>
             <dependency>
                 <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-aop</artifactId>
+                <artifactId>nano2-modules-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-api</artifactId>
+                <artifactId>nano2-modules-aop</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-config</artifactId>
+                <artifactId>nano2-modules-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-modules-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-modules-httpclient</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -243,6 +248,10 @@
                             <version>${mapstruct-processor.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>jdk.incubator.httpclient</arg>
+                    </compilerArgs>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -254,7 +263,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>${maven-surefire-plubin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
@@ -267,6 +276,9 @@
                         <version>${junit.version}</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <argLine>--add-modules jdk.incubator.httpclient</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
