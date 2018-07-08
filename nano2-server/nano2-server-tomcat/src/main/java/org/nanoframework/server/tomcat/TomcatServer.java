@@ -119,10 +119,9 @@ public class TomcatServer extends Tomcat implements Server {
 
         // Disable TLD scanning by default
         if (System.getProperty(Constants.SKIP_JARS_PROPERTY) == null
-                && System.getProperty(Constants.SKIP_JARS_PROPERTY) == null) {
+                && System.getProperty(Constants.SCAN_JARS_PROPERTY) == null) {
             LOGGER.debug("disabling TLD scanning");
-            StandardJarScanFilter jarScanFilter = (StandardJarScanFilter) ctx.getJarScanner().getJarScanFilter();
-            jarScanFilter.setTldSkip("*");
+            ((StandardJarScanFilter) ctx.getJarScanner().getJarScanFilter()).setTldSkip("*");
         }
     }
 
