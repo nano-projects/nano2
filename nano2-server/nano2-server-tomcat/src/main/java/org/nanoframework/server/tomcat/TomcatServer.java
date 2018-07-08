@@ -129,7 +129,7 @@ public class TomcatServer extends Tomcat implements Server {
     protected void initExecutor() {
         var type = new TypeReference<ExecutorConfig>() {};
         var conf = new ExecutorConfig(JSON.parseObject(server.getProperty(ExecutorConfig.TOMCAT_EXECUTOR), type));
-        LOGGER.debug("{}", conf.toString());
+        LOGGER.debug(conf.toString());
         getService().addExecutor(conf.init());
     }
 

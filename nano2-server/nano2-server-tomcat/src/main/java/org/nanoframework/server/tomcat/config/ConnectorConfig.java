@@ -48,7 +48,7 @@ public class ConnectorConfig extends AbstractConfig {
         conf.compressionMinSize = 2 * 1024;
         conf.noCompressionUserAgents = "gozilla, traviata";
         conf.acceptorThreadCount = 2;
-        conf.compressableMimeType = "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript";
+        conf.compressableMimeType = "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml";
         conf.uriEncoding = "UTF-8";
         conf.upgradeProtocol = new Http2Protocol();
         DEF = conf;
