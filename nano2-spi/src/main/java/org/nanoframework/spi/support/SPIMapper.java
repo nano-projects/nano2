@@ -28,7 +28,7 @@ import lombok.NonNull;
  */
 @Getter
 @SuppressWarnings({"rawtypes", "unchecked" })
-public class SPIMapper extends BaseEntity {
+public final class SPIMapper extends BaseEntity {
     private static final long serialVersionUID = -2120348787803208033L;
 
     private static final Integer DEFAULT_ORDER = 0;
@@ -62,6 +62,12 @@ public class SPIMapper extends BaseEntity {
         }
     }
 
+    /**
+     * @param spi SPI基础类/接口
+     * @param name SPI名
+     * @param instance 实现类
+     * @return SPI配置
+     */
     public static SPIMapper create(Class spi, String name, Class instance) {
         return new SPIMapper(spi, name, instance);
     }

@@ -74,6 +74,8 @@ public interface Server {
                 case HELP:
                     usage();
                     break;
+                default:
+                    break;
             }
         } else {
             usage();

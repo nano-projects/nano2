@@ -53,18 +53,30 @@ import com.google.inject.name.Names;
 public class PluginLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(PluginLoader.class);
 
+    /** */
     protected ServletConfig config;
 
+    /** */
     protected ServletContext context;
 
+    /**
+     * @param servlet HttpServlet
+     */
     public void init(HttpServlet servlet) {
         init(servlet.getServletConfig(), servlet.getServletContext());
     }
 
+    /**
+     * @param config ServletConfig
+     */
     public void init(ServletConfig config) {
         init(config, null);
     }
 
+    /**
+     * @param config ServletConfig
+     * @param context ServletContext
+     */
     public void init(ServletConfig config, ServletContext context) {
         this.config = config;
         this.context = context;
@@ -79,6 +91,9 @@ public class PluginLoader {
         }
     }
 
+    /**
+     * 初始化基本属性配置.
+     */
     protected void initProperties() {
         var time = System.currentTimeMillis();
         try {
@@ -95,12 +110,19 @@ public class PluginLoader {
         LOGGER.info("加载主配置完成, 耗时: {}ms", System.currentTimeMillis() - time);
     }
 
+    /**
+     * 初始化根依赖注入.
+     */
     protected void initRootInjector() {
         var injector = Guice.createInjector();
         Globals.set(Injector.class, injector);
         Globals.set(Injector.class, injector.createChildInjector(new SPIModule()));
     }
 
+    /**
+     * 加载模块.
+     * @throws Throwable 加载模块异常
+     */
     protected void initModules() throws Throwable {
         var moduleNames = SPILoader.spiNames(Module.class);
         if (!CollectionUtils.isEmpty(moduleNames)) {
@@ -120,7 +142,7 @@ public class PluginLoader {
         }
     }
 
-    protected void addModules(Map<Integer, List<Module>> modules, Integer level, Module module) {
+    private void addModules(Map<Integer, List<Module>> modules, Integer level, Module module) {
         if (modules.containsKey(level)) {
             modules.get(level).add(module);
         } else {
@@ -128,7 +150,7 @@ public class PluginLoader {
         }
     }
 
-    protected void loadModules(Map<Integer, List<Module>> loadingModules) throws Throwable {
+    private void loadModules(Map<Integer, List<Module>> loadingModules) throws Throwable {
         var levels = loadingModules.keySet().stream().collect(Collectors.toList());
         Collections.sort(levels);
         for (var level : levels) {
@@ -152,6 +174,10 @@ public class PluginLoader {
         }
     }
 
+    /**
+     * 加载插件.
+     * @throws Throwable 加载插件异常
+     */
     protected void initPlugins() throws Throwable {
         var pluginNames = SPILoader.spiNames(Plugin.class);
         if (!CollectionUtils.isEmpty(pluginNames)) {

@@ -30,7 +30,7 @@ import lombok.Getter;
  * @since 1.4.8
  */
 @Getter
-public class SPIResource extends BaseEntity {
+public final class SPIResource extends BaseEntity {
     /** 空资源. */
     public static final SPIResource EMPTY = SPIResource.create(Collections.emptyList(), Collections.emptyMap());
 
@@ -45,6 +45,11 @@ public class SPIResource extends BaseEntity {
         this.streams = Collections.unmodifiableMap(streams);
     }
 
+    /**
+     * @param files SPI资源文件列表
+     * @param streams SPI资源流列表
+     * @return SPI资源
+     */
     public static SPIResource create(List<File> files, Map<String, List<InputStream>> streams) {
         return new SPIResource(files, streams);
     }

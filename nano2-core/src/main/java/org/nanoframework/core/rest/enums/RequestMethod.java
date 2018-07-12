@@ -16,11 +16,25 @@
 package org.nanoframework.core.rest.enums;
 
 /**
- * 
  * @author yanghe
  * @since 1.0
  */
 public enum RequestMethod {
-    GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE, PATCH
+    /** */
+    GET,
+    /** */
+    HEAD,
+    /** */
+    POST,
+    /** */
+    PUT,
+    /** */
+    DELETE,
+    /** */
+    OPTIONS,
+    /** */
+    TRACE,
+    /** */
+    PATCH;
 
 }

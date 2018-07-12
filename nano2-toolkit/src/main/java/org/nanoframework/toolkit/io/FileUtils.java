@@ -74,12 +74,10 @@ public final class FileUtils {
 
         for (var i = pathArray.length - 1; i >= 0; i--) {
             var element = pathArray[i];
-            if (CURRENT_PATH.equals(element)) {
-                // Points to current directory - drop it.
-            } else if (TOP_PATH.equals(element)) {
+            if (TOP_PATH.equals(element)) {
                 // Registering top path found.
                 tops++;
-            } else {
+            } else if (!CURRENT_PATH.equals(element)) {
                 if (tops > 0) {
                     // Merging path element with element corresponding to top path.
                     tops--;

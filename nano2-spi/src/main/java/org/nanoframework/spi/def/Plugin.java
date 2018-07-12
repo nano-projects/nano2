@@ -25,7 +25,13 @@ import org.nanoframework.spi.annotation.Lazy;
  */
 @Lazy
 public interface Plugin {
-    boolean load() throws Throwable;
+    /**
+     * @return 加载插件，如果加载成功则返回true
+     */
+    boolean load();
 
-    void config(ServletConfig config) throws Throwable;
+    /**
+     * @param config Servlet配置
+     */
+    void config(ServletConfig config);
 }

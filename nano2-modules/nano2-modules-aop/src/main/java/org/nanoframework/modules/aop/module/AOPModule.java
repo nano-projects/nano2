@@ -59,12 +59,12 @@ public class AOPModule implements Module {
     }
 
     @Override
-    public List<Module> load() throws Throwable {
+    public List<Module> load() {
         return List.of(this);
     }
 
     @Override
-    public void config(final ServletConfig config) throws Throwable {
+    public void config(final ServletConfig config) {
 
     }
 }

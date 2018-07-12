@@ -20,25 +20,57 @@ import java.util.Comparator;
 import java.util.Map;
 
 /**
- *
  * @author Juergen Hoeller
- * @since 1.2
  * @see AntPathMatcher
+ * @since 1.2
  */
 public interface PathMatcher {
 
-	boolean isPattern(String path);
+    /**
+     * @param path the path
+     * @return boolean
+     */
+    boolean isPattern(String path);
 
-	boolean match(String pattern, String path);
+    /**
+     * @param pattern the pattern
+     * @param path the path
+     * @return boolean
+     */
+    boolean match(String pattern, String path);
 
-	boolean matchStart(String pattern, String path);
+    /**
+     * @param pattern the pattern
+     * @param path the path
+     * @return boolean
+     */
+    boolean matchStart(String pattern, String path);
 
-	String extractPathWithinPattern(String pattern, String path);
+    /**
+     * @param pattern the pattern
+     * @param path the path
+     * @return String
+     */
+    String extractPathWithinPattern(String pattern, String path);
 
-	Map<String, String> extractUriTemplateVariables(String pattern, String path);
+    /**
+     * @param pattern the pattern
+     * @param path the path
+     * @return Map
+     */
+    Map<String, String> extractUriTemplateVariables(String pattern, String path);
 
-	Comparator<String> getPatternComparator(String path);
+    /**
+     * @param path the path
+     * @return Comparator
+     */
+    Comparator<String> getPatternComparator(String path);
 
-	String combine(String pattern1, String pattern2);
+    /**
+     * @param pattern1 the pattern1
+     * @param pattern2 the pattern2
+     * @return String
+     */
+    String combine(String pattern1, String pattern2);
 
 }

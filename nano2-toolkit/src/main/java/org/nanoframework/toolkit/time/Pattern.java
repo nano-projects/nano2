@@ -16,15 +16,14 @@
 package org.nanoframework.toolkit.time;
 
 /**
- *
  * @author yanghe
  * @since 1.0
  */
 public enum Pattern {
     /** The 'Date' Pattern. */
-    DATE("yyyy-MM-dd"), 
+    DATE("yyyy-MM-dd"),
     /** The ‘Time’ Pattern. */
-    TIME("HH:mm:ss"), 
+    TIME("HH:mm:ss"),
     /** The 'DateTime' Pattern. */
     DATETIME("yyyy-MM-dd HH:mm:ss"),
     /** The 'Timestamp' Pattern. */
@@ -36,6 +35,9 @@ public enum Pattern {
         this.pattern = pattern;
     }
 
+    /**
+     * @return 时间转化格式
+     */
     public String get() {
         return pattern;
     }

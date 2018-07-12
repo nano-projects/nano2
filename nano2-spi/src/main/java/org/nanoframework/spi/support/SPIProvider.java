@@ -33,6 +33,9 @@ public class SPIProvider implements Provider<Object> {
 
     private boolean echo;
 
+    /**
+     * @param spi SPI配置
+     */
     public SPIProvider(SPIMapper spi) {
         this.spi = spi;
     }

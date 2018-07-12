@@ -21,7 +21,7 @@ import org.nanoframework.core.rest.annotation.RequestParam;
  * @author yanghe
  * @since 1.0
  */
-public interface ValueConstants {
+public final class ValueConstants {
 
     /**
      * Constant defining a value for no default - as a replacement for <code>null</code> which we cannot use in
@@ -31,5 +31,9 @@ public interface ValueConstants {
      * user-declared values.
      * @see RequestParam#defaultValue()
      */
-    String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
+    public static final String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
+
+    private ValueConstants() {
+
+    }
 }

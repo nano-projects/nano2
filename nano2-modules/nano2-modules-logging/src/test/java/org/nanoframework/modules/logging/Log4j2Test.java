@@ -16,7 +16,6 @@
 package org.nanoframework.modules.logging;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.nanoframework.modules.logging.LoggerFactory;
 
 /**
  * @author yanghe

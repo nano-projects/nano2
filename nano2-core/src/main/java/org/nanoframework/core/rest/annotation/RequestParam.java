@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 import org.nanoframework.core.rest.enums.ValueConstants;
 
 /**
- * 参数绑定
+ * 参数绑定.
  * @author yanghe
  * @since 1.0
  */

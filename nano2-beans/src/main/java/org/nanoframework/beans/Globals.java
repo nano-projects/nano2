@@ -23,22 +23,37 @@ import java.util.concurrent.ConcurrentMap;
  * @author yanghe
  * @since 1.0
  */
-public class Globals {
+public final class Globals {
     private static final ConcurrentMap<Class<?>, Object> GLOBALS = new ConcurrentHashMap<>();
 
     private Globals() {
 
     }
 
+    /**
+     * 设置对象单例映射.
+     * @param clz Type
+     * @param global Instance
+     */
     public static void set(Class<?> clz, Object global) {
         GLOBALS.put(clz, global);
     }
 
+    /**
+     * @param clz Type
+     * @param <T> 泛型类型
+     * @return 获取单例对象
+     */
     @SuppressWarnings("unchecked")
     public static <T> T get(Class<T> clz) {
         return (T) GLOBALS.get(clz);
     }
 
+    /**
+     * @param cls Type
+     * @param <T> 泛型类型
+     * @return 移除单例对象
+     */
     @SuppressWarnings("unchecked")
     public static <T> T remove(Class<?> cls) {
         return (T) GLOBALS.remove(cls);

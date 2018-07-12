@@ -75,12 +75,12 @@ public class SPIModule implements Module {
     }
 
     @Override
-    public List<Module> load() throws Throwable {
+    public List<Module> load() {
         return null;
     }
 
     @Override
-    public void config(ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) {
 
     }
 

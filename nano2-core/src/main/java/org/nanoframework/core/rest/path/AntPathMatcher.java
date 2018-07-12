@@ -40,6 +40,7 @@ import lombok.NonNull;
  * @since 16.07.2003
  */
 public class AntPathMatcher implements PathMatcher {
+    /** */
     public static final String DEFAULT_PATH_SEPARATOR = "/";
 
     private static final int CACHE_TURNOFF_THRESHOLD = 65536;
@@ -59,32 +60,48 @@ public class AntPathMatcher implements PathMatcher {
     private final Map<String, AntPathStringMatcher> stringMatcherCache = new ConcurrentHashMap<String, AntPathStringMatcher>(
             256);
 
-    private boolean caseSensitive = false;
+    private boolean caseSensitive;
 
+    /** */
     public AntPathMatcher() {
         this.pathSeparator = DEFAULT_PATH_SEPARATOR;
         this.pathSeparatorPatternCache = new PathSeparatorPatternCache(DEFAULT_PATH_SEPARATOR);
     }
 
+    /**
+     * @param caseSensitive 区分大小写
+     */
     public AntPathMatcher(boolean caseSensitive) {
         this();
         this.caseSensitive = caseSensitive;
     }
 
+    /**
+     * @param pathSeparator 路由分隔符
+     */
     public AntPathMatcher(@NonNull String pathSeparator) {
         this.pathSeparator = pathSeparator;
         this.pathSeparatorPatternCache = new PathSeparatorPatternCache(pathSeparator);
     }
 
+    /**
+     * @param pathSeparator 路由分隔符
+     */
     public void setPathSeparator(String pathSeparator) {
         this.pathSeparator = (pathSeparator != null ? pathSeparator : DEFAULT_PATH_SEPARATOR);
         this.pathSeparatorPatternCache = new PathSeparatorPatternCache(this.pathSeparator);
     }
 
+    /**
+     * @param trimTokens the trimTokens
+     */
     public void setTrimTokens(boolean trimTokens) {
         this.trimTokens = trimTokens;
     }
 
+    /**
+     * @param cachePatterns the cachePatterns
+     */
     public void setCachePatterns(boolean cachePatterns) {
         this.cachePatterns = cachePatterns;
     }
@@ -110,6 +127,13 @@ public class AntPathMatcher implements PathMatcher {
         return doMatch(pattern, path, false, null);
     }
 
+    /**
+     * @param pattern the pattern
+     * @param path the path
+     * @param fullMatch the fullMatch
+     * @param uriTemplateVariables the uriTemplateVariables
+     * @return boolean
+     */
     protected boolean doMatch(String pattern, String path, boolean fullMatch,
             Map<String, String> uriTemplateVariables) {
         if (path.startsWith(this.pathSeparator) != pattern.startsWith(this.pathSeparator)) {
@@ -242,6 +266,10 @@ public class AntPathMatcher implements PathMatcher {
         return true;
     }
 
+    /**
+     * @param pattern the pattern
+     * @return tokens
+     */
     protected String[] tokenizePattern(String pattern) {
         String[] tokenized = null;
         var cachePatterns = this.cachePatterns;
@@ -267,6 +295,10 @@ public class AntPathMatcher implements PathMatcher {
         return tokenized;
     }
 
+    /**
+     * @param path the path
+     * @return tokens
+     */
     protected String[] tokenizePath(String path) {
         return StringUtils.tokenizeToStringArray(path, this.pathSeparator, this.trimTokens, true);
     }
@@ -282,6 +314,10 @@ public class AntPathMatcher implements PathMatcher {
         return getStringMatcher(pattern).matchStrings(token, uriTemplateVariables);
     }
 
+    /**
+     * @param pattern the pattern
+     * @return AntPathStringMatcher
+     */
     protected AntPathStringMatcher getStringMatcher(String pattern) {
         AntPathStringMatcher matcher = null;
         var cachePatterns = this.cachePatterns;
@@ -374,8 +410,8 @@ public class AntPathMatcher implements PathMatcher {
             return concat(pattern1, pattern2);
         }
 
-        int starDotPos1 = pattern1.indexOf("*.");
-        if (pattern1ContainsUriVar || starDotPos1 == -1 || this.pathSeparator.equals(".")) {
+        var starDotPos1 = pattern1.indexOf("*.");
+        if (pattern1ContainsUriVar || starDotPos1 == -1 || StringUtils.equals(".", this.pathSeparator)) {
             // simply concatenate the two patterns
             return concat(pattern1, pattern2);
         }
@@ -384,8 +420,8 @@ public class AntPathMatcher implements PathMatcher {
         var dotPos2 = pattern2.indexOf('.');
         var file2 = (dotPos2 == -1 ? pattern2 : pattern2.substring(0, dotPos2));
         var ext2 = (dotPos2 == -1 ? "" : pattern2.substring(dotPos2));
-        var ext1All = (ext1.equals(".*") || ext1.equals(""));
-        var ext2All = (ext2.equals(".*") || ext2.equals(""));
+        var ext1All = (StringUtils.equals(ext1, ".*") || StringUtils.equals(ext1, ""));
+        var ext2All = (StringUtils.equals(ext2, ".*") || StringUtils.equals(ext2, ""));
         if (!ext1All && !ext2All) {
             throw new IllegalArgumentException("Cannot combine patterns: " + pattern1 + " vs " + pattern2);
         }
@@ -411,6 +447,10 @@ public class AntPathMatcher implements PathMatcher {
         return new AntPatternComparator(path);
     }
 
+    /**
+     * @author yanghe
+     * @since 2.0.0
+     */
     protected static class AntPathStringMatcher {
 
         private static final Pattern GLOB_PATTERN = Pattern
@@ -422,6 +462,9 @@ public class AntPathMatcher implements PathMatcher {
 
         private final List<String> variableNames = new LinkedList<String>();
 
+        /**
+         * @param pattern the pattern
+         */
         public AntPathStringMatcher(String pattern) {
             var patternBuilder = new StringBuilder();
             var m = GLOB_PATTERN.matcher(pattern);
@@ -462,6 +505,11 @@ public class AntPathMatcher implements PathMatcher {
             return Pattern.quote(s.substring(start, end));
         }
 
+        /**
+         * @param str the str
+         * @param uriTemplateVariables the uriTemplateVariables
+         * @return boolean
+         */
         public boolean matchStrings(String str, Map<String, String> uriTemplateVariables) {
             Matcher matcher = this.pattern.matcher(str);
             if (matcher.matches()) {
@@ -488,9 +536,16 @@ public class AntPathMatcher implements PathMatcher {
         }
     }
 
+    /**
+     * @author yanghe
+     * @since 2.0.0
+     */
     protected static class AntPatternComparator implements Comparator<String> {
         private final String path;
 
+        /**
+         * @param path the path
+         */
         public AntPatternComparator(String path) {
             this.path = path;
         }
@@ -547,6 +602,10 @@ public class AntPathMatcher implements PathMatcher {
             return 0;
         }
 
+        /**
+         * @author yanghe
+         * @since 2.0.0
+         */
         @Getter
         private static class PatternInfo {
 
@@ -564,11 +623,14 @@ public class AntPathMatcher implements PathMatcher {
 
             private Integer length;
 
-            public PatternInfo(String pattern) {
+            /**
+             * @param pattern the pattern
+             */
+            PatternInfo(String pattern) {
                 this.pattern = pattern;
                 if (this.pattern != null) {
                     initCounters();
-                    this.catchAllPattern = this.pattern.equals("/**");
+                    this.catchAllPattern = StringUtils.equals(this.pattern, "/**");
                     this.prefixPattern = !this.catchAllPattern && this.pattern.endsWith("/**");
                 }
                 if (this.uriVars == 0) {
@@ -576,6 +638,7 @@ public class AntPathMatcher implements PathMatcher {
                 }
             }
 
+            /** */
             protected void initCounters() {
                 int pos = 0;
                 while (pos < this.pattern.length()) {
@@ -598,16 +661,22 @@ public class AntPathMatcher implements PathMatcher {
                 }
             }
 
+            /**
+             * @return boolean
+             */
             public boolean isLeastSpecific() {
                 return (this.pattern == null || this.catchAllPattern);
             }
 
+            /**
+             * @return int
+             */
             public int getTotalCount() {
                 return this.uriVars + this.singleWildcards + (2 * this.doubleWildcards);
             }
 
             /**
-             * Returns the length of the given pattern, where template variables are considered to be 1 long.
+             * @return Returns the length of the given pattern, where template variables are considered to be 1 long.
              */
             public int getLength() {
                 if (this.length == null) {
@@ -618,6 +687,10 @@ public class AntPathMatcher implements PathMatcher {
         }
     }
 
+    /**
+     * @author yanghe
+     * @since 2.0.0
+     */
     @Getter
     private static class PathSeparatorPatternCache {
 
@@ -625,7 +698,10 @@ public class AntPathMatcher implements PathMatcher {
 
         private final String endsOnDoubleWildCard;
 
-        public PathSeparatorPatternCache(String pathSeparator) {
+        /**
+         * @param pathSeparator the pathSeparator
+         */
+        PathSeparatorPatternCache(String pathSeparator) {
             this.endsOnWildCard = pathSeparator + '*';
             this.endsOnDoubleWildCard = pathSeparator + "**";
         }

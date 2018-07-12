@@ -26,20 +26,26 @@ import java.util.List;
 import java.util.jar.JarFile;
 
 /**
- * 系统运行时功能扩展类
+ * 系统运行时功能扩展类.
  * @author yanghe
  * @since 1.0
  */
-public class RuntimeUtils {
-
+public final class RuntimeUtils {
+    /** 当前应用进程PID. */
     public static final String PID = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
 
+    /** 当前应用宿主机操作系统. */
     public static final String OSNAME = System.getProperty("os.name");
 
+    /** 当前应用宿主机CPU核心数. */
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors() + 1;
 
+    private RuntimeUtils() {
+
+    }
+
     /**
-     * 杀死当前系统进行
+     * 杀死当前系统进行.
      * @throws IOException IO异常
      */
     public static void killProcess() throws IOException {
@@ -51,39 +57,39 @@ public class RuntimeUtils {
     }
 
     /**
-     * 根据进程号杀死对应的进程
-     * @param PID 进程号
+     * 根据进程号杀死对应的进程.
+     * @param pid 进程号
      * @throws IOException IO异常
      */
-    public static void killProcess(String PID) throws IOException {
+    public static void killProcess(String pid) throws IOException {
         if (OSNAME.indexOf("Mac") > -1 || OSNAME.indexOf("Linux") > -1) {
-            Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("kill -9 %s", PID) });
+            Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("kill -9 %s", pid) });
         } else if (OSNAME.indexOf("Windows") > -1) {
-            Runtime.getRuntime().exec(String.format("cmd /c taskkill /pid %s /f ", PID));
+            Runtime.getRuntime().exec(String.format("cmd /c taskkill /pid %s /f ", pid));
         }
     }
 
     /**
-     * 根据进程号优雅退出进程
-     * @param PID 进程号
+     * 根据进程号优雅退出进程.
+     * @param pid 进程号
      * @throws IOException IO异常
      */
-    public static void exitProcess(String PID) throws IOException {
+    public static void exitProcess(String pid) throws IOException {
         if (OSNAME.indexOf("Mac") > -1 || OSNAME.indexOf("Linux") > -1) {
-            Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("kill -15 %s", PID) });
+            Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("kill -15 %s", pid) });
         } else if (OSNAME.indexOf("Windows") > -1) {
-            Runtime.getRuntime().exec(String.format("cmd /c taskkill /pid %s /f ", PID));
+            Runtime.getRuntime().exec(String.format("cmd /c taskkill /pid %s /f ", pid));
         }
     }
 
     /**
-     * 根据进程号查询该进程是否存在
-     * @param PID 进程号
+     * 根据进程号查询该进程是否存在.
+     * @param pid 进程号
      * @return 查询结果
      * @throws IOException IO异常
      */
-    public static boolean existsProcess(String PID) throws IOException {
-        if (StringUtils.isBlank(PID)) {
+    public static boolean existsProcess(String pid) throws IOException {
+        if (StringUtils.isBlank(pid)) {
             return false;
         }
 
@@ -91,18 +97,18 @@ public class RuntimeUtils {
         Process process = null;
         String result = null;
         if (OSNAME.indexOf("Mac") > -1 || OSNAME.indexOf("Linux") > -1) {
-            process = Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("ps -f -p %s", PID) });
+            process = Runtime.getRuntime().exec(new String[] {"/bin/sh", "-c", String.format("ps -f -p %s", pid) });
 
             try (var in = process.getInputStream(); var input = new BufferedReader(new InputStreamReader(in))) {
                 while ((result = input.readLine()) != null) {
-                    if (StringUtils.isNotEmpty(result) && result.indexOf(PID) > -1) {
+                    if (StringUtils.isNotEmpty(result) && result.indexOf(pid) > -1) {
                         exsits = true;
                     }
                 }
             }
         } else if (OSNAME.indexOf("Windows") > -1) {
             process = Runtime.getRuntime()
-                    .exec(String.format("cmd /c Wmic Process where ProcessId=\"%s\" get ExecutablePath ", PID));
+                    .exec(String.format("cmd /c Wmic Process where ProcessId=\"%s\" get ExecutablePath ", pid));
 
             try (var in = process.getInputStream(); var input = new BufferedReader(new InputStreamReader(in))) {
                 while ((result = input.readLine()) != null) {
@@ -140,7 +146,7 @@ public class RuntimeUtils {
     }
 
     /**
-     * 获取运行时中的所有Jar文件
+     * 获取运行时中的所有Jar文件.
      * @return List
      * @throws IOException if I/O error occur
      */

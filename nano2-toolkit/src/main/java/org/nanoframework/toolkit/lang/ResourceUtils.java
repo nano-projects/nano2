@@ -40,37 +40,41 @@ import lombok.NonNull;
  * @author Juergen Hoeller
  * @since 1.1.5
  */
-public abstract class ResourceUtils {
+public final class ResourceUtils {
 
-    /** Pseudo URL prefix for loading from the class path: "classpath:" */
+    /** Pseudo URL prefix for loading from the class path: "classpath:". */
     public static final String CLASSPATH_URL_PREFIX = "classpath:";
 
-    /** URL prefix for loading from the file system: "file:" */
+    /** URL prefix for loading from the file system: "file:". */
     public static final String FILE_URL_PREFIX = "file:";
 
-    /** URL protocol for a file in the file system: "file" */
+    /** URL protocol for a file in the file system: "file". */
     public static final String URL_PROTOCOL_FILE = "file";
 
-    /** URL protocol for an entry from a jar file: "jar" */
+    /** URL protocol for an entry from a jar file: "jar". */
     public static final String URL_PROTOCOL_JAR = "jar";
 
-    /** URL protocol for an entry from a zip file: "zip" */
+    /** URL protocol for an entry from a zip file: "zip". */
     public static final String URL_PROTOCOL_ZIP = "zip";
 
-    /** URL protocol for an entry from a JBoss jar file: "vfszip" */
+    /** URL protocol for an entry from a JBoss jar file: "vfszip". */
     public static final String URL_PROTOCOL_VFSZIP = "vfszip";
 
-    /** URL protocol for an entry from a WebSphere jar file: "wsjar" */
+    /** URL protocol for an entry from a WebSphere jar file: "wsjar". */
     public static final String URL_PROTOCOL_WSJAR = "wsjar";
 
-    /** URL protocol for an entry from an OC4J jar file: "code-source" */
+    /** URL protocol for an entry from an OC4J jar file: "code-source". */
     public static final String URL_PROTOCOL_CODE_SOURCE = "code-source";
 
-    /** Separator between JAR URL and file path within the JAR */
+    /** Separator between JAR URL and file path within the JAR. */
     public static final String JAR_URL_SEPARATOR = "!/";
 
     private static final List<String> PROTOCOL = List.of(URL_PROTOCOL_JAR, URL_PROTOCOL_ZIP, URL_PROTOCOL_VFSZIP,
             URL_PROTOCOL_WSJAR);
+
+    private ResourceUtils() {
+
+    }
 
     /**
      * Return whether the given resource location is a URL: either a special "classpath" pseudo URL or a standard URL.

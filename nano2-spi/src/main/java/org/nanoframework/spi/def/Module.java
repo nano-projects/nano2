@@ -27,7 +27,13 @@ import org.nanoframework.spi.annotation.Lazy;
  */
 @Lazy
 public interface Module extends com.google.inject.Module {
-    List<Module> load() throws Throwable;
+    /**
+     * @return 待加载的模块列表
+     */
+    List<Module> load();
 
-    void config(ServletConfig config) throws Throwable;
+    /**
+     * @param config Servlet配置
+     */
+    void config(ServletConfig config);
 }

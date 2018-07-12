@@ -21,7 +21,10 @@ package org.nanoframework.toolkit.consts;
  */
 public enum Version {
 
-    V2_0_0("2.0.0"), CURRENT("2.0.0");
+    /** v2.0.0. */
+    V2_0_0("2.0.0"),
+    /** 当前版本号. */
+    CURRENT("2.0.0");
 
     private final String value;
 
@@ -29,6 +32,9 @@ public enum Version {
         this.value = value;
     }
 
+    /**
+     * @return 版本号
+     */
     public String value() {
         return value;
     }

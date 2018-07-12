@@ -30,37 +30,38 @@ import org.slf4j.LoggerFactory;
 /**
  * Provides a very simple API for accessing resources within an application server.
  * @author Ben Gunter
+ * @since 2.0.0
  */
-abstract class VFS {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResolverUtil.class);
-
+abstract class AbstractVFS {
     /** The built-in implementations. */
     public static final Class<?>[] IMPLEMENTATIONS = {JBoss6VFS.class, DefaultVFS.class };
 
     /** The list to which implementations are added by {@link #addImplClass(Class)}. */
-    public static final List<Class<? extends VFS>> USER_IMPLEMENTATIONS = new ArrayList<Class<? extends VFS>>();
+    public static final List<Class<? extends AbstractVFS>> USER_IMPLEMENTATIONS = new ArrayList<Class<? extends AbstractVFS>>();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResolverUtil.class);
 
     /** Singleton instance. */
-    private static VFS instance;
+    private static AbstractVFS INSTANCE;
 
     /**
-     * @return Get the singleton {@link VFS} instance. If no {@link VFS} implementation can be found for the current
-     *         environment, then this method returns null.
+     * @return Get the singleton {@link AbstractVFS} instance. If no {@link AbstractVFS} implementation can be found for
+     *         the current environment, then this method returns null.
      */
     @SuppressWarnings("unchecked")
-    public static VFS getInstance() {
-        if (instance != null) {
-            return instance;
+    public static AbstractVFS getInstance() {
+        if (INSTANCE != null) {
+            return INSTANCE;
         }
 
         // Try the user implementations first, then the built-ins
-        var impls = new ArrayList<Class<? extends VFS>>();
+        var impls = new ArrayList<Class<? extends AbstractVFS>>();
         impls.addAll(USER_IMPLEMENTATIONS);
-        impls.addAll(Arrays.asList((Class<? extends VFS>[]) IMPLEMENTATIONS));
+        impls.addAll(Arrays.asList((Class<? extends AbstractVFS>[]) IMPLEMENTATIONS));
 
         // Try each implementation class until a valid one is found
-        VFS vfs = null;
-        for (int i = 0; vfs == null || !vfs.isValid(); i++) {
+        AbstractVFS vfs = null;
+        for (var i = 0; vfs == null || !vfs.isValid(); i++) {
             var impl = impls.get(i);
             try {
                 vfs = impl.getConstructor().newInstance();
@@ -75,15 +76,16 @@ abstract class VFS {
         }
 
         LOGGER.debug("Using VFS adapter " + vfs.getClass().getName());
-        return VFS.instance = vfs;
+        AbstractVFS.INSTANCE = vfs;
+        return vfs;
     }
 
     /**
-     * Adds the specified class to the list of {@link VFS} implementations. Classes added in this manner are tried in
-     * the order they are added and before any of the built-in implementations.
-     * @param clazz The {@link VFS} implementation class to add.
+     * Adds the specified class to the list of {@link AbstractVFS} implementations. Classes added in this manner are
+     * tried in the order they are added and before any of the built-in implementations.
+     * @param clazz The {@link AbstractVFS} implementation class to add.
      */
-    public static void addImplClass(Class<? extends VFS> clazz) {
+    public static void addImplClass(Class<? extends AbstractVFS> clazz) {
         if (clazz != null) {
             USER_IMPLEMENTATIONS.add(clazz);
         }
@@ -159,7 +161,9 @@ abstract class VFS {
         return Collections.list(Thread.currentThread().getContextClassLoader().getResources(path));
     }
 
-    /** @return Return true if the {@link VFS} implementation is valid for the current environment. */
+    /**
+     * @return Return true if the {@link AbstractVFS} implementation is valid for the current environment.
+     */
     public abstract boolean isValid();
 
     /**

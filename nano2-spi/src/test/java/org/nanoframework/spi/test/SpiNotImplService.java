@@ -16,11 +16,13 @@
 package org.nanoframework.spi.test;
 
 /**
- *
  * @author yanghe
  * @since 1.4.8
  */
 public interface SpiNotImplService {
 
+    /**
+     * @return String
+     */
     String echo();
 }

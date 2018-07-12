@@ -17,26 +17,29 @@ package org.nanoframework.modules.httpclient;
 
 import org.nanoframework.beans.BaseEntity;
 
+import lombok.Getter;
+
 /**
  * @author yanghe
  * @since 1.3.3
  */
+@Getter
 public class HttpResponse extends BaseEntity {
     public static final HttpResponse EMPTY = create(0, "", "", 0, 0);
 
     private static final long serialVersionUID = -3709502418094416380L;
 
-    public final int statusCode;
+    private final int statusCode;
 
-    public final String reasonPhrase;
+    private final String reasonPhrase;
 
-    public final String body;
+    private final String body;
 
-    public final long send;
+    private final long send;
 
-    public final long receive;
+    private final long receive;
 
-    public final long response;
+    private final long response;
 
     public HttpResponse(int statusCode, String reasonPhrase, String body, long send, long receive) {
         this.statusCode = statusCode;

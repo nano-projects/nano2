@@ -18,6 +18,7 @@ package org.nanoframework.toolkit.properties.exception;
 /**
  * 加载异常处理类.
  * @author yanghe
+ * @since 2.0.0
  */
 public class LoaderException extends RuntimeException {
     private static final long serialVersionUID = -5250668209016171838L;

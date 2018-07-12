@@ -26,8 +26,8 @@ import java.util.Set;
 import org.nanoframework.toolkit.message.Message;
 
 /**
- * Handles messages that consist of a format string containing '{}' to represent each replaceable token, and
- * the parameters.
+ * Handles messages that consist of a format string containing '{}' to represent each replaceable token, and the
+ * parameters.
  * <p>
  * This class was originally written for <a href="http://lilithapp.com/">Lilith</a> by Joern Huxhorn where it is
  * licensed under the LGPL. It has been relicensed here with his permission providing that this attribution remain.
@@ -41,6 +41,7 @@ public class ParameterizedMessage implements Message {
      * Prefix for recursion.
      */
     public static final String RECURSION_PREFIX = "[...";
+
     /**
      * Suffix for recursion.
      */
@@ -50,14 +51,17 @@ public class ParameterizedMessage implements Message {
      * Prefix for errors.
      */
     public static final String ERROR_PREFIX = "[!!!";
+
     /**
      * Separator for errors.
      */
     public static final String ERROR_SEPARATOR = "=>";
+
     /**
      * Separator for error messages.
      */
     public static final char ERROR_MSG_SEPARATOR = ':';
+
     /**
      * Suffix for errors.
      */
@@ -68,19 +72,25 @@ public class ParameterizedMessage implements Message {
     private static final int HASHVAL = 31;
 
     private static final char DELIM_START = '{';
+
     private static final char DELIM_STOP = '}';
+
     private static final char ESCAPE_CHAR = '\\';
 
     private final String messagePattern;
+
     private final String[] stringArgs;
+
     private transient Object[] argArray;
+
     private transient String formattedMessage;
+
     private transient Throwable throwable;
 
     /**
      * Creates a parameterized message.
-     * @param messagePattern The message "format" string. This will be a String containing "{}" placeholders
-     * where parameters should be substituted.
+     * @param messagePattern The message "format" string. This will be a String containing "{}" placeholders where
+     *            parameters should be substituted.
      * @param stringArgs The arguments for substitution.
      * @param throwable A Throwable.
      */
@@ -92,8 +102,8 @@ public class ParameterizedMessage implements Message {
 
     /**
      * Creates a parameterized message.
-     * @param messagePattern The message "format" string. This will be a String containing "{}" placeholders
-     * where parameters should be substituted.
+     * @param messagePattern The message "format" string. This will be a String containing "{}" placeholders where
+     *            parameters should be substituted.
      * @param objectArgs The arguments for substitution.
      * @param throwable A Throwable.
      */
@@ -106,13 +116,13 @@ public class ParameterizedMessage implements Message {
     /**
      * Constructs a ParameterizedMessage which contains the arguments converted to String as well as an optional
      * Throwable.
-     *
-     * <p>If the last argument is a Throwable and is NOT used up by a placeholder in the message pattern it is returned
-     * in {@link #getThrowable()} and won't be contained in the created String[].
-     * If it is used up {@link #getThrowable()} will return null even if the last argument was a Throwable!</p>
-     *
+     * <p>
+     * If the last argument is a Throwable and is NOT used up by a placeholder in the message pattern it is returned in
+     * {@link #getThrowable()} and won't be contained in the created String[]. If it is used up {@link #getThrowable()}
+     * will return null even if the last argument was a Throwable!
+     * </p>
      * @param messagePattern the message pattern that to be checked for placeholders.
-     * @param arguments      the argument array to be converted.
+     * @param arguments the argument array to be converted.
      */
     public ParameterizedMessage(final String messagePattern, final Object[] arguments) {
         this.messagePattern = messagePattern;
@@ -125,7 +135,7 @@ public class ParameterizedMessage implements Message {
      * @param arg The parameter.
      */
     public ParameterizedMessage(final String messagePattern, final Object arg) {
-        this(messagePattern, new Object[] { arg });
+        this(messagePattern, new Object[] {arg });
     }
 
     /**
@@ -135,7 +145,7 @@ public class ParameterizedMessage implements Message {
      * @param arg2 The second parameter.
      */
     public ParameterizedMessage(final String messagePattern, final Object arg1, final Object arg2) {
-        this(messagePattern, new Object[] { arg1, arg2 });
+        this(messagePattern, new Object[] {arg1, arg2 });
     }
 
     private String[] argumentsToStrings(final Object[] arguments) {
@@ -200,12 +210,10 @@ public class ParameterizedMessage implements Message {
     }
 
     /**
-     * Returns the Throwable that was given as the last argument, if any.
-     * It will not survive serialization. The Throwable exists as part of the message
-     * primarily so that it can be extracted from the end of the list of parameters
-     * and then be added to the LogEvent. As such, the Throwable in the event should
-     * not be used once the LogEvent has been constructed.
-     *
+     * Returns the Throwable that was given as the last argument, if any. It will not survive serialization. The
+     * Throwable exists as part of the message primarily so that it can be extracted from the end of the list of
+     * parameters and then be added to the LogEvent. As such, the Throwable in the event should not be used once the
+     * LogEvent has been constructed.
      * @return the Throwable, if any.
      */
     @Override
@@ -214,7 +222,6 @@ public class ParameterizedMessage implements Message {
     }
 
     /**
-     * 
      * @param msgPattern the msgPattern
      * @param sArgs the sArgs
      * @return format message
@@ -240,7 +247,7 @@ public class ParameterizedMessage implements Message {
         if (!Arrays.equals(stringArgs, that.stringArgs)) {
             return false;
         }
-        //if (throwable != null ? !throwable.equals(that.throwable) : that.throwable != null) return false;
+        // if (throwable != null ? !throwable.equals(that.throwable) : that.throwable != null) return false;
 
         return true;
     }
@@ -254,9 +261,8 @@ public class ParameterizedMessage implements Message {
 
     /**
      * Replace placeholders in the given messagePattern with arguments.
-     *
      * @param messagePattern the message pattern containing placeholders.
-     * @param arguments      the arguments to be used to replace placeholders.
+     * @param arguments the arguments to be used to replace placeholders.
      * @return the formatted message.
      */
     public static String format(final String messagePattern, final Object[] arguments) {
@@ -277,20 +283,18 @@ public class ParameterizedMessage implements Message {
      * Replace placeholders in the given messagePattern with arguments.
      * <p>
      * Package protected for unit tests.
-     *
      * @param messagePattern the message pattern containing placeholders.
-     * @param arguments      the arguments to be used to replace placeholders.
+     * @param arguments the arguments to be used to replace placeholders.
      * @return the formatted message.
      */
     // Profiling showed this method is important to log4j performance. Modify with care!
     // 33 bytes (allows immediate JVM inlining: < 35 bytes) LOG4J2-1096
     static String formatStringArgs(final String messagePattern, final String[] arguments) {
-        int len = 0;
-        if (messagePattern == null || (len = messagePattern.length()) == 0 || arguments == null || arguments.length == 0) {
+        if (messagePattern == null || messagePattern.length() == 0 || arguments == null || arguments.length == 0) {
             return messagePattern;
         }
 
-        return formatStringArgs0(messagePattern, len, arguments);
+        return formatStringArgs0(messagePattern, messagePattern.length(), arguments);
     }
 
     // Profiling showed this method is important to log4j performance. Modify with care!
@@ -360,7 +364,8 @@ public class ParameterizedMessage implements Message {
      */
     // Profiling showed this method is important to log4j performance. Modify with care!
     // 28 bytes (allows immediate JVM inlining: < 35 bytes) LOG4J2-1096
-    private static int handleRemainingCharIfAny(final String messagePattern, final int len, final char[] result, int pos, int escapeCounter, int i) {
+    private static int handleRemainingCharIfAny(final String messagePattern, final int len, final char[] result,
+            int pos, int escapeCounter, int i) {
         if (i == len - 1) {
             final char curChar = messagePattern.charAt(i);
             pos = handleLastChar(result, pos, escapeCounter, curChar);
@@ -447,7 +452,8 @@ public class ParameterizedMessage implements Message {
      */
     // Profiling showed this method is important to log4j performance. Modify with care!
     // 25 bytes (allows immediate JVM inlining: < 35 bytes) LOG4J2-1096
-    private static int writeArgOrDelimPair(final String[] arguments, final int currentArgument, final char[] result, int pos) {
+    private static int writeArgOrDelimPair(final String[] arguments, final int currentArgument, final char[] result,
+            int pos) {
         if (currentArgument < arguments.length) {
             pos = writeArgAt0(arguments, currentArgument, result, pos);
         } else {
@@ -462,7 +468,8 @@ public class ParameterizedMessage implements Message {
      */
     // Profiling showed this method is important to log4j performance. Modify with care!
     // 30 bytes (allows immediate JVM inlining: < 35 bytes) LOG4J2-1096
-    private static int writeArgAt0(final String[] arguments, final int currentArgument, final char[] result, final int pos) {
+    private static int writeArgAt0(final String[] arguments, final int currentArgument, final char[] result,
+            final int pos) {
         final String arg = String.valueOf(arguments[currentArgument]);
         int argLen = arg.length();
         arg.getChars(0, argLen, result, pos);
@@ -471,7 +478,6 @@ public class ParameterizedMessage implements Message {
 
     /**
      * Counts the number of unescaped placeholders in the given messagePattern.
-     *
      * @param messagePattern the message pattern to be analyzed.
      * @return the number of unescaped placeholders.
      */
@@ -506,19 +512,18 @@ public class ParameterizedMessage implements Message {
     }
 
     /**
-     * This method performs a deep toString of the given Object.
-     * Primitive arrays are converted using their respective Arrays.toString methods while
-     * special handling is implemented for "container types", i.e. Object[], Map and Collection because those could
-     * contain themselves.
+     * This method performs a deep toString of the given Object. Primitive arrays are converted using their respective
+     * Arrays.toString methods while special handling is implemented for "container types", i.e. Object[], Map and
+     * Collection because those could contain themselves.
      * <p>
      * It should be noted that neither AbstractMap.toString() nor AbstractCollection.toString() implement such a
      * behavior. They only check if the container is directly contained in itself, but not if a contained container
-     * contains the original one. Because of that, Arrays.toString(Object[]) isn't safe either.
-     * Confusing? Just read the last paragraph again and check the respective toString() implementation.
+     * contains the original one. Because of that, Arrays.toString(Object[]) isn't safe either. Confusing? Just read the
+     * last paragraph again and check the respective toString() implementation.
      * </p>
      * <p>
-     * This means, in effect, that logging would produce a usable output even if an ordinary sysout.println(o)
-     * would produce a relatively hard-to-debug StackOverflowError.
+     * This means, in effect, that logging would produce a usable output even if an ordinary sysout.println(o) would
+     * produce a relatively hard-to-debug StackOverflowError.
      * </p>
      * @param o The object.
      * @return The String representation.
@@ -537,27 +542,24 @@ public class ParameterizedMessage implements Message {
     }
 
     /**
-     * This method performs a deep toString of the given Object.
-     * Primitive arrays are converted using their respective Arrays.toString methods while
-     * special handling is implemented for "container types", i.e. Object[], Map and Collection because those could
-     * contain themselves.
+     * This method performs a deep toString of the given Object. Primitive arrays are converted using their respective
+     * Arrays.toString methods while special handling is implemented for "container types", i.e. Object[], Map and
+     * Collection because those could contain themselves.
      * <p>
      * dejaVu is used in case of those container types to prevent an endless recursion.
      * </p>
      * <p>
      * It should be noted that neither AbstractMap.toString() nor AbstractCollection.toString() implement such a
-     * behavior.
-     * They only check if the container is directly contained in itself, but not if a contained container contains the
-     * original one. Because of that, Arrays.toString(Object[]) isn't safe either.
-     * Confusing? Just read the last paragraph again and check the respective toString() implementation.
+     * behavior. They only check if the container is directly contained in itself, but not if a contained container
+     * contains the original one. Because of that, Arrays.toString(Object[]) isn't safe either. Confusing? Just read the
+     * last paragraph again and check the respective toString() implementation.
      * </p>
      * <p>
-     * This means, in effect, that logging would produce a usable output even if an ordinary sysout.println(o)
-     * would produce a relatively hard-to-debug StackOverflowError.
+     * This means, in effect, that logging would produce a usable output even if an ordinary sysout.println(o) would
+     * produce a relatively hard-to-debug StackOverflowError.
      * </p>
-     *
-     * @param o      the Object to convert into a String
-     * @param str    the StringBuilder that o will be appended to
+     * @param o the Object to convert into a String
+     * @param str the StringBuilder that o will be appended to
      * @param dejaVu a list of container identities that were already used.
      */
     private static void recursiveDeepToString(final Object o, final StringBuilder str, final Set<String> dejaVu) {
@@ -601,7 +603,8 @@ public class ParameterizedMessage implements Message {
         return o.getClass().isArray() || o instanceof Map || o instanceof Collection;
     }
 
-    private static void appendPotentiallyRecursiveValue(final Object o, final StringBuilder str, final Set<String> dejaVu) {
+    private static void appendPotentiallyRecursiveValue(final Object o, final StringBuilder str,
+            final Set<String> dejaVu) {
         final Class<?> oClass = o.getClass();
         if (oClass.isArray()) {
             appendArray(o, str, dejaVu, oClass);
@@ -612,7 +615,8 @@ public class ParameterizedMessage implements Message {
         }
     }
 
-    private static void appendArray(final Object o, final StringBuilder str, final Set<String> dejaVu, final Class<?> oClass) {
+    private static void appendArray(final Object o, final StringBuilder str, final Set<String> dejaVu,
+            final Class<?> oClass) {
         if (oClass == byte[].class) {
             str.append(Arrays.toString((byte[]) o));
         } else if (oClass == short[].class) {
@@ -649,7 +653,7 @@ public class ParameterizedMessage implements Message {
                 }
                 str.append(']');
             }
-            //str.append(Arrays.deepToString((Object[]) o));
+            // str.append(Arrays.deepToString((Object[]) o));
         }
     }
 
@@ -726,22 +730,17 @@ public class ParameterizedMessage implements Message {
     }
 
     /**
-     * This method returns the same as if Object.toString() would not have been
-     * overridden in obj.
+     * This method returns the same as if Object.toString() would not have been overridden in obj.
      * <p>
      * Note that this isn't 100% secure as collisions can always happen with hash codes.
      * </p>
      * <p>
      * Copied from Object.hashCode():
      * </p>
-     * <blockquote>
-     * As much as is reasonably practical, the hashCode method defined by
-     * class {@code Object} does return distinct integers for distinct
-     * objects. (This is typically implemented by converting the internal
-     * address of the object into an integer, but this implementation
-     * technique is not required by the Java&#8482; programming language.)
-     * </blockquote>
-     *
+     * <blockquote> As much as is reasonably practical, the hashCode method defined by class {@code Object} does return
+     * distinct integers for distinct objects. (This is typically implemented by converting the internal address of the
+     * object into an integer, but this implementation technique is not required by the Java&#8482; programming
+     * language.) </blockquote>
      * @param obj the Object that is to be converted into an identity string.
      * @return the identity string as also defined in Object.toString()
      */
@@ -754,7 +753,7 @@ public class ParameterizedMessage implements Message {
 
     @Override
     public String toString() {
-        return "ParameterizedMessage[messagePattern=" + messagePattern + ", stringArgs=" + Arrays.toString(stringArgs) + ", throwable=" + throwable
-                + ']';
+        return "ParameterizedMessage[messagePattern=" + messagePattern + ", stringArgs=" + Arrays.toString(stringArgs)
+                + ", throwable=" + throwable + ']';
     }
 }

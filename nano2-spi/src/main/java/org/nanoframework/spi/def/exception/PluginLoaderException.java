@@ -22,18 +22,29 @@ package org.nanoframework.spi.def.exception;
 public class PluginLoaderException extends RuntimeException {
     private static final long serialVersionUID = -3388677411268525198L;
 
+    /** */
     public PluginLoaderException() {
         super();
     }
 
+    /**
+     * @param message 异常信息
+     */
     public PluginLoaderException(String message) {
         super(message);
     }
 
+    /**
+     * @param message 异常信息
+     * @param cause 异常
+     */
     public PluginLoaderException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * @param cause 异常
+     */
     public PluginLoaderException(Throwable cause) {
         super(cause);
     }

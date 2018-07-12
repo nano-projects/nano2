@@ -43,6 +43,7 @@ public abstract class AbstractResource implements Resource {
      * This implementation checks whether a File can be opened,
      * falling back to whether an InputStream can be opened.
      * This will cover both directories and content resources.
+     * @return 如果存在文件，则返回true
      */
     public boolean exists() {
         // Try file existence: can we find the file in the file system?
@@ -62,6 +63,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation always returns <code>true</code>.
+     * @return true
      */
     public boolean isReadable() {
         return true;
@@ -69,6 +71,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation always returns <code>false</code>.
+     * @return false
      */
     public boolean isOpen() {
         return false;
@@ -77,6 +80,8 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation throws a FileNotFoundException, assuming
      * that the resource cannot be resolved to a URL.
+     * @return URL
+     * @throws IOException FileNotFoundException
      */
     public URL getURL() throws IOException {
         throw new FileNotFoundException(getDescription() + " cannot be resolved to URL");
@@ -85,6 +90,8 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation builds a URI based on the URL returned
      * by {@link #getURL()}.
+     * @return URI
+     * @throws IOException NestedIOException
      */
     public URI getURI() throws IOException {
         var url = getURL();
@@ -98,6 +105,8 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation throws a FileNotFoundException, assuming
      * that the resource cannot be resolved to an absolute file path.
+     * @return File
+     * @throws IOException FileNotFoundException
      */
     public File getFile() throws IOException {
         throw new FileNotFoundException(getDescription() + " cannot be resolved to absolute file path");
@@ -106,6 +115,8 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation checks the timestamp of the underlying File,
      * if available.
+     * @return long
+     * @throws IOException FileNotFoundException
      * @see #getFileForLastModifiedCheck()
      */
     public long lastModified() throws IOException {
@@ -130,6 +141,9 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation throws a FileNotFoundException, assuming
      * that relative resources cannot be created for this resource.
+     * @param relativePath relativePath
+     * @return Resource
+     * @throws IOException FileNotFoundException
      */
     public Resource createRelative(String relativePath) throws IOException {
         throw new FileNotFoundException("Cannot create a relative resource for " + getDescription());
@@ -138,6 +152,8 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation always throws IllegalStateException,
      * assuming that the resource does not carry a filename.
+     * @return String
+     * @throws IllegalStateException IllegalStateException
      */
     public String getFilename() throws IllegalStateException {
         throw new IllegalStateException(getDescription() + " does not carry a filename");
@@ -145,6 +161,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation returns the description of this resource.
+     * @return String
      * @see #getDescription()
      */
     public String toString() {
@@ -153,6 +170,8 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation compares description strings.
+     * @param obj Object
+     * @return boolean
      * @see #getDescription()
      */
     public boolean equals(Object obj) {
@@ -161,6 +180,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation returns the description's hash code.
+     * @return int
      * @see #getDescription()
      */
     public int hashCode() {

@@ -32,11 +32,11 @@ public class ObjectMessage implements Message {
     private static final long serialVersionUID = -5903272448334166185L;
 
     private transient Object obj;
+
     private transient String objectString;
 
     /**
      * Creates the ObjectMessage.
-     * 
      * @param obj The Object to format.
      */
     public ObjectMessage(final Object obj) {
@@ -45,7 +45,6 @@ public class ObjectMessage implements Message {
 
     /**
      * Returns the formatted object message.
-     * 
      * @return the formatted object message.
      */
     @Override
@@ -59,7 +58,6 @@ public class ObjectMessage implements Message {
 
     /**
      * Returns the object formatted using its toString method.
-     * 
      * @return the String representation of the object.
      */
     @Override
@@ -69,12 +67,11 @@ public class ObjectMessage implements Message {
 
     /**
      * Returns the object as if it were a parameter.
-     * 
      * @return The object.
      */
     @Override
     public Object[] getParameters() {
-        return new Object[] { obj };
+        return new Object[] {obj };
     }
 
     @Override
@@ -120,7 +117,6 @@ public class ObjectMessage implements Message {
 
     /**
      * Gets the message if it is a throwable.
-     *
      * @return the message if it is a throwable.
      */
     @Override

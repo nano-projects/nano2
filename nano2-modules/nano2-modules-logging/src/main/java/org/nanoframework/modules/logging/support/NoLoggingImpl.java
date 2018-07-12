@@ -57,15 +57,18 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
 
     private MessageFactory messageFactory = ParameterizedMessageFactory.INSTANCE;
 
+    /**
+     * @param loggerName 日志名称
+     */
     public NoLoggingImpl(@NonNull String loggerName) {
         setLoggerName(loggerName);
     }
 
-    protected String message(String level, String message, Object... args) {
+    private String message(String level, String message, Object... args) {
         var stacks = Thread.currentThread().getStackTrace();
         var line = stackLine(stacks);
 
-        var newArgs = new Object[6 + args.length];
+        var newArgs = new Object[MESSAGE_ARGS_INDEX + args.length];
         newArgs[LEVEL] = level;
         newArgs[DATETIME] = DateFormat.format(System.currentTimeMillis(), Pattern.DATETIME);
         newArgs[CLASS_NAME] = stacks[line].getClassName();
@@ -79,7 +82,7 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
         return messageFactory.newMessage("{} {} {}.{}({}:{}) >>> " + message, newArgs).getFormattedMessage();
     }
 
-    protected int stackLine(StackTraceElement[] stacks) {
+    private int stackLine(StackTraceElement[] stacks) {
         var invokeIndex = 0;
         for (var idx = 0; idx < stacks.length; idx++) {
             if (FQCN.equals(stacks[idx].getClassName()) && (idx + 1 < stacks.length)
@@ -92,17 +95,11 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
         return invokeIndex;
     }
 
-    protected void outputStack(Throwable cause) {
-        if (cause != null) {
-            outputStack(cause.getMessage(), cause);
-        }
-    }
-
-    protected void outputStack(String message, Throwable cause) {
+    private void outputStack(String message, Throwable cause) {
         outputStack(message, cause, false);
     }
 
-    protected void outputStack(String message, Throwable cause, boolean caused) {
+    private void outputStack(String message, Throwable cause, boolean caused) {
         if (cause != null) {
             var stacks = cause.getStackTrace();
             if (caused) {
@@ -134,11 +131,13 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
         return true;
     }
 
+    @Override
     public void error(String message, Throwable cause) {
         error(message);
         outputStack(message, cause);
     }
 
+    @Override
     public void error(String message) {
         System.out.println(message(ERROR_LEVEL, message));
         incrementError();
@@ -160,6 +159,7 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
         return true;
     }
 
+    @Override
     public void warn(String message) {
         System.out.println(message(WARN_LEVEL, message));
         incrementWarn();
@@ -182,15 +182,18 @@ public class NoLoggingImpl extends AbstractAnalysisLogger implements Logger {
         warn(cause.getMessage(), cause);
     }
 
+    @Override
     public boolean isDebugEnabled() {
         return true;
     }
 
+    @Override
     public void debug(String message) {
         System.out.println(message(DEBUG_LEVEL, message));
         incrementDebug();
     }
 
+    @Override
     public void debug(String message, Throwable cause) {
         debug(message);
         outputStack(message, cause);

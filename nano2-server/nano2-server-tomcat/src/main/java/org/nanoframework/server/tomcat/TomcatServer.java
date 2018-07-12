@@ -48,7 +48,7 @@ import com.alibaba.fastjson.TypeReference;
  * @author yanghe
  * @since 2.0.0
  */
-public class TomcatServer extends Tomcat implements Server {
+public final class TomcatServer extends Tomcat implements Server {
     public static final String READY = "org.apache.catalina.startup.READY";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TomcatServer.class);

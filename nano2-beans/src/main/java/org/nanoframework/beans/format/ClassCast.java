@@ -89,7 +89,7 @@ public final class ClassCast {
      * @param typeName 类型
      * @return 返回转换后的值
      */
-    public static final Object cast(final String value, final String typeName) {
+    public static Object cast(String value, String typeName) {
         if (value == null) {
             return null;
         }
@@ -136,7 +136,7 @@ public final class ClassCast {
                     return JSON.parseObject(value, Class.forName(typeName));
 
             }
-        } catch (final ClassCastException | ClassNotFoundException | ParseException e) {
+        } catch (ClassCastException | ClassNotFoundException | ParseException e) {
             throw new org.nanoframework.beans.format.exception.ClassCastException(e.getMessage(), e);
 
         }
@@ -144,12 +144,12 @@ public final class ClassCast {
     }
 
     /**
-     * 根据Class进行转换，转换简单数据类型
+     * 根据Class进行转换，转换简单数据类型.
      * @param value 值
      * @param typeName 类型
      * @return 返回转换后的值
      */
-    public static final Object cast(final Object value, final String typeName) {
+    public static Object cast(Object value, String typeName) {
         if (value == null) {
             return null;
         }
@@ -278,49 +278,53 @@ public final class ClassCast {
                     throw new ClassCastException("只支持对对象数据类型的转换，不支持基本数据类型的转换");
 
                 default:
-                    String newType;
-                    if (typeName.startsWith("[L") && typeName.endsWith(";")) {
-                        newType = typeName.substring(2, typeName.length() - 1);
-                    } else {
-                        newType = typeName;
-                    }
-
-                    if (value instanceof String[]) {
-                        var cls = Class.forName(newType);
-                        var type = new TypeReference<Object>() {
-                            public Type getType() {
-                                return cls;
-                            };
-                        };
-
-                        var array = (String[]) value;
-                        var objs = (Object[]) Array.newInstance(cls, array.length);
-                        int idx = 0;
-                        for (var val : array) {
-                            if (String.class == cls) {
-                                objs[idx] = (String) val;
-                            } else {
-                                objs[idx] = JSON.parseObject(val, type);
-                            }
-
-                            idx++;
-                        }
-
-                        return objs;
-                    } else if (value instanceof String) {
-                        var cls = Class.forName(typeName);
-                        if (cls == String.class) {
-                            return value;
-                        }
-
-                        return JSON.parseObject((String) value, cls);
-                    }
-
-                    return value;
+                    return castDefault(value, typeName);
             }
-        } catch (final Throwable e) {
+        } catch (Throwable e) {
             throw new org.nanoframework.beans.format.exception.ClassCastException(e.getMessage(), e);
         }
+    }
+
+    private static Object castDefault(Object value, String typeName) throws ClassNotFoundException {
+        String newType;
+        if (typeName.startsWith("[L") && typeName.endsWith(";")) {
+            newType = typeName.substring(2, typeName.length() - 1);
+        } else {
+            newType = typeName;
+        }
+
+        if (value instanceof String[]) {
+            var cls = Class.forName(newType);
+            var type = new TypeReference<Object>() {
+                public Type getType() {
+                    return cls;
+                };
+            };
+
+            var array = (String[]) value;
+            var objs = (Object[]) Array.newInstance(cls, array.length);
+            int idx = 0;
+            for (var val : array) {
+                if (String.class == cls) {
+                    objs[idx] = (String) val;
+                } else {
+                    objs[idx] = JSON.parseObject(val, type);
+                }
+
+                idx++;
+            }
+
+            return objs;
+        } else if (value instanceof String) {
+            var cls = Class.forName(typeName);
+            if (cls == String.class) {
+                return value;
+            }
+
+            return JSON.parseObject((String) value, cls);
+        }
+
+        return value;
     }
 
     /**
@@ -328,20 +332,18 @@ public final class ClassCast {
      * @return 时间对象
      * @throws ParseException 时间转换异常
      */
-    public static Date parseDate(final String date) throws ParseException {
+    public static Date parseDate(String date) throws ParseException {
         if (StringUtils.isEmpty(date)) {
             return null;
         }
 
-        final String pattern;
+        String pattern = "yyyy-MM-dd";
         if (date.indexOf(':') > 0) {
             if (date.indexOf('.') > 0) {
                 pattern = "yyyy-MM-dd HH:mm:ss.SSS";
             } else {
                 pattern = "yyyy-MM-dd HH:mm:ss";
             }
-        } else {
-            pattern = "yyyy-MM-dd";
         }
 
         return DateFormat.parse(date, pattern);

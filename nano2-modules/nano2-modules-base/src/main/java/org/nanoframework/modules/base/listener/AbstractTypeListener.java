@@ -47,8 +47,17 @@ public abstract class AbstractTypeListener<T extends Annotation> implements Type
         });
     }
 
+    /**
+     * @return 设置注解类
+     */
     protected abstract Class<? extends T> type();
 
+    /**
+     * 初始化自定义Field注解依赖注入.
+     * @param annotation 注解类
+     * @param instance 实现对象
+     * @param field 对象属性
+     */
     protected abstract void init(T annotation, Object instance, Field field);
 
     /**

@@ -17,8 +17,6 @@ package org.nanoframework.modules.logging;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.nanoframework.modules.logging.Logger;
-import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.modules.logging.exception.LoggerException;
 import org.nanoframework.modules.logging.mxbean.AnalysisLoggerMXBean;
 
@@ -42,9 +40,9 @@ class NoLoggingTest {
         logger.error("Test error {}", 2);
         logger.error("Test error 3", new LoggerException("Test error 4"));
 
-        final Throwable cause0 = new Exception("Level 1");
-        final Throwable cause1 = new RuntimeException("Level 2", cause0);
-        final Throwable cause2 = new LoggerException("Level 3", cause1);
+        var cause0 = new Exception("Level 1");
+        var cause1 = new RuntimeException("Level 2", cause0);
+        var cause2 = new LoggerException("Level 3", cause1);
         logger.error(cause2);
     }
 
@@ -55,9 +53,9 @@ class NoLoggingTest {
         logger.warn("Test warn {}", 2);
         logger.warn("Test warn 3", new LoggerException("Test warn 4"));
 
-        final Throwable cause0 = new Exception("Level 1");
-        final Throwable cause1 = new RuntimeException("Level 2", cause0);
-        final Throwable cause2 = new LoggerException("Level 3", cause1);
+        var cause0 = new Exception("Level 1");
+        var cause1 = new RuntimeException("Level 2", cause0);
+        var cause2 = new LoggerException("Level 3", cause1);
         logger.warn(cause2);
     }
 
@@ -68,9 +66,9 @@ class NoLoggingTest {
         logger.info("Test info {}", 2);
         logger.info("Test info 3", new LoggerException("Test info 4"));
 
-        final Throwable cause0 = new Exception("Level 1");
-        final Throwable cause1 = new RuntimeException("Level 2", cause0);
-        final Throwable cause2 = new LoggerException("Level 3", cause1);
+        var cause0 = new Exception("Level 1");
+        var cause1 = new RuntimeException("Level 2", cause0);
+        var cause2 = new LoggerException("Level 3", cause1);
         logger.info(cause2);
     }
 
@@ -81,9 +79,9 @@ class NoLoggingTest {
         logger.debug("Test debug {}", 2);
         logger.debug("Test debug 3", new LoggerException("Test debug 4"));
 
-        final Throwable cause0 = new Exception("Level 1");
-        final Throwable cause1 = new RuntimeException("Level 2", cause0);
-        final Throwable cause2 = new LoggerException("Level 3", cause1);
+        var cause0 = new Exception("Level 1");
+        var cause1 = new RuntimeException("Level 2", cause0);
+        var cause2 = new LoggerException("Level 3", cause1);
         logger.debug(cause2);
     }
 
@@ -94,18 +92,19 @@ class NoLoggingTest {
         logger.trace("Test trace {}", 2);
         logger.trace("Test trace 3", new LoggerException("Test trace 4"));
 
-        final Throwable cause0 = new Exception("Level 1");
-        final Throwable cause1 = new RuntimeException("Level 2", cause0);
-        final Throwable cause2 = new LoggerException("Level 3", cause1);
+        var cause0 = new Exception("Level 1");
+        var cause1 = new RuntimeException("Level 2", cause0);
+        var cause2 = new LoggerException("Level 3", cause1);
         logger.trace(cause2);
     }
 
     @Test
     void logCount() {
-        System.out.println("Error Invoke count: " + ((AnalysisLoggerMXBean) logger).getErrorCount());
-        System.out.println("Warn Invoke count: " + ((AnalysisLoggerMXBean) logger).getWarnCount());
-        System.out.println("Info Invoke count: " + ((AnalysisLoggerMXBean) logger).getInfoCount());
-        System.out.println("Debug Invoke count: " + ((AnalysisLoggerMXBean) logger).getDebugCount());
-        System.out.println("Trace Invoke count: " + ((AnalysisLoggerMXBean) logger).getTraceCount());
+        var mxbean = (AnalysisLoggerMXBean) logger;
+        System.out.println("Error Invoke count: " + mxbean.getErrorCount());
+        System.out.println("Warn Invoke count: " + mxbean.getWarnCount());
+        System.out.println("Info Invoke count: " + mxbean.getInfoCount());
+        System.out.println("Debug Invoke count: " + mxbean.getDebugCount());
+        System.out.println("Trace Invoke count: " + mxbean.getTraceCount());
     }
 }

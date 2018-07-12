@@ -49,12 +49,12 @@ public class TypeListenerModule implements Module {
     }
 
     @Override
-    public List<Module> load() throws Throwable {
+    public List<Module> load() {
         return List.of(this);
     }
 
     @Override
-    public void config(ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) {
 
     }
 

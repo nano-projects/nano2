@@ -67,11 +67,12 @@ public class SPILoader {
 
     private static Set<JarFile> JAR_FILES = Sets.newHashSet();
 
+    /** */
     protected SPILoader() {
 
     }
 
-    protected static void loading() {
+    private static void loading() {
         var lock = LOCK;
         SPILoader loader = null;
         Map<String, List<InputStream>> streams = null;
@@ -115,6 +116,9 @@ public class SPILoader {
         }
     }
 
+    /**
+     * @return 获取所有已被加载的SPI配置关系
+     */
     public static Map<Class<?>, List<SPIMapper>> spis() {
         if (!LOADED.get()) {
             loading();
@@ -123,10 +127,18 @@ public class SPILoader {
         return Collections.unmodifiableMap(SPI_MAPPERS);
     }
 
+    /**
+     * @param cls Class
+     * @return 获取指定Class对应的所有已被加载的SPI配置信息
+     */
     public static List<SPIMapper> spis(Class<?> cls) {
         return Collections.unmodifiableList(spis().get(cls));
     }
 
+    /**
+     * @param spiCls Class
+     * @return 获取指定Class对应的所有的已被加载的SPI类名信息
+     */
     public static Set<String> spiNames(Class<?> spiCls) {
         if (!LOADED.get()) {
             loading();
@@ -142,6 +154,10 @@ public class SPILoader {
         return Collections.emptySet();
     }
 
+    /**
+     * @return 获取SPI资源配置文件信息
+     * @throws IOException 读取SPI资源异常
+     */
     protected Enumeration<URL> getResources() throws IOException {
         var loader = SPILoader.class.getClassLoader();
         if (loader != null) {
@@ -151,6 +167,13 @@ public class SPILoader {
         }
     }
 
+    /**
+     * @param resources SPI资源配置文件信息
+     * @return SPI资源
+     * @throws URISyntaxException URI格式异常
+     * @throws MalformedURLException URL格式异常
+     * @throws IOException SPI信息读取异常
+     */
     protected SPIResource getSPIResource(Enumeration<URL> resources)
             throws URISyntaxException, MalformedURLException, IOException {
         if (resources != null) {
@@ -209,7 +232,7 @@ public class SPILoader {
         }
     }
 
-    protected void getSPIMapper(List<File> spiFiles, Map<Class<?>, List<SPIMapper>> spiMappers) {
+    private void getSPIMapper(List<File> spiFiles, Map<Class<?>, List<SPIMapper>> spiMappers) {
         if (!CollectionUtils.isEmpty(spiFiles)) {
             spiFiles.forEach(file -> {
                 Properties define = PropertiesLoader.load(file.getAbsolutePath());
@@ -218,7 +241,7 @@ public class SPILoader {
         }
     }
 
-    protected void getSPIMapperWithStream(Map<String, List<InputStream>> stream,
+    private void getSPIMapperWithStream(Map<String, List<InputStream>> stream,
             Map<Class<?>, List<SPIMapper>> spiMappers) {
         stream.entrySet().forEach(entry -> {
             var spiClsName = entry.getKey();

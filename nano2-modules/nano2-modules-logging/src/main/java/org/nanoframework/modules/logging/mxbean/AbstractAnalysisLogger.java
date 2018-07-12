@@ -20,10 +20,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.util.concurrent.AtomicLongMap;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author yanghe
  * @since 2.0.0
  */
+@Getter
+@Setter
 public abstract class AbstractAnalysisLogger implements AnalysisLoggerMXBean {
     private static final AtomicLongMap<String> ERROR = AtomicLongMap.create();
 
@@ -36,6 +41,8 @@ public abstract class AbstractAnalysisLogger implements AnalysisLoggerMXBean {
     private static final AtomicLongMap<String> TRACE = AtomicLongMap.create();
 
     private static final String DEFAULT_LOGGER_NAME = "nil";
+
+    private static final long INIT_LOGGER_ANALYSIS = 0;
 
     private String loggerName = DEFAULT_LOGGER_NAME;
 
@@ -91,11 +98,11 @@ public abstract class AbstractAnalysisLogger implements AnalysisLoggerMXBean {
 
     @Override
     public void reset() {
-        ERROR.put(loggerName, 0);
-        WARN.put(loggerName, 0);
-        INFO.put(loggerName, 0);
-        DEBUG.put(loggerName, 0);
-        TRACE.put(loggerName, 0);
+        ERROR.put(loggerName, INIT_LOGGER_ANALYSIS);
+        WARN.put(loggerName, INIT_LOGGER_ANALYSIS);
+        INFO.put(loggerName, INIT_LOGGER_ANALYSIS);
+        DEBUG.put(loggerName, INIT_LOGGER_ANALYSIS);
+        TRACE.put(loggerName, INIT_LOGGER_ANALYSIS);
     }
 
     @Override
@@ -179,13 +186,5 @@ public abstract class AbstractAnalysisLogger implements AnalysisLoggerMXBean {
      */
     public void incrementTrace() {
         TRACE.incrementAndGet(loggerName);
-    }
-
-    public void setLoggerName(final String loggerName) {
-        this.loggerName = loggerName;
-    }
-
-    public String getLoggerName() {
-        return loggerName;
     }
 }

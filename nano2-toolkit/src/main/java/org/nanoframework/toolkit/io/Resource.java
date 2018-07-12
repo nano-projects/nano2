@@ -30,12 +30,12 @@ import org.nanoframework.toolkit.io.support.InputStreamSource;
  * An InputStream can be opened for every resource if it exists in physical form, but a URL or File handle can just be
  * returned for certain resources. The actual behavior is implementation-specific.
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see #getInputStream()
  * @see #getURL()
  * @see #getURI()
  * @see #getFile()
  * @see ClassPathResource
+ * @since 28.12.2003
  */
 public interface Resource extends InputStreamSource {
 

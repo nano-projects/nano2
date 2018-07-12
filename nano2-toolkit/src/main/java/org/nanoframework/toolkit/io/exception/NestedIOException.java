@@ -24,9 +24,9 @@ import java.io.IOException;
  * The similarity between this class and the NestedChecked/RuntimeException class is unavoidable, as this class needs to
  * derive from IOException and cannot derive from NestedCheckedException.
  * @author Juergen Hoeller
- * @since 2.0
  * @see #getMessage
  * @see #printStackTrace
+ * @since 2.0
  */
 public class NestedIOException extends IOException {
     private static final long serialVersionUID = -713470029719907448L;
@@ -50,7 +50,7 @@ public class NestedIOException extends IOException {
     }
 
     /**
-     * Return the detail message, including the message from the nested exception if there is one.
+     * @return Return the detail message, including the message from the nested exception if there is one.
      */
     public String getMessage() {
         return buildMessage(super.getMessage(), getCause());

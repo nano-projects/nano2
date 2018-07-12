@@ -18,12 +18,14 @@ package org.nanoframework.spi.test;
 import org.nanoframework.spi.annotation.Lazy;
 
 /**
- *
  * @author yanghe
  * @since 1.4.8
  */
 @Lazy
 public interface SpiLazyService {
 
+    /**
+     * @return String
+     */
     String echo();
 }

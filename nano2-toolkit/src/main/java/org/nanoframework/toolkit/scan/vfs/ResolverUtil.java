@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Tim Fennell
+ * @since 2.0.0
  */
 public class ResolverUtil<T> {
     /*
@@ -36,7 +37,7 @@ public class ResolverUtil<T> {
      * A simple interface that specifies how to test classes to determine if they are to be included in the results
      * produced by the ResolverUtil.
      */
-    public static interface Test {
+    public interface Test {
         /**
          * @param type the type
          * @return Will be called repeatedly with candidate classes. Must return True if a class is to be included in
@@ -60,7 +61,10 @@ public class ResolverUtil<T> {
             this.parent = parentType;
         }
 
-        /** Returns true if type is assignable to the parent type supplied in the constructor. */
+        /**
+         * @param type Class
+         * @return Returns true if type is assignable to the parent type supplied in the constructor.
+         */
         public boolean matches(Class<?> type) {
             return type != null && parent.isAssignableFrom(type);
         }
@@ -86,7 +90,10 @@ public class ResolverUtil<T> {
             this.annotation = annotation;
         }
 
-        /** @return Returns true if the type is annotated with the class provided to the constructor. */
+        /**
+         * @param type Class
+         * @return Returns true if the type is annotated with the class provided to the constructor.
+         */
         public boolean matches(Class<?> type) {
             return type != null && type.isAnnotationPresent(annotation);
         }
@@ -186,7 +193,7 @@ public class ResolverUtil<T> {
     public ResolverUtil<T> find(Test test, String packageName) {
         var path = getPackagePath(packageName);
         try {
-            var children = VFS.getInstance().list(path);
+            var children = AbstractVFS.getInstance().list(path);
             for (var child : children) {
                 if (child.endsWith(".class")) {
                     addIfMatching(test, child);
@@ -203,6 +210,7 @@ public class ResolverUtil<T> {
      * Converts a Java package name to a path that can be looked up with a call to
      * {@link ClassLoader#getResources(String)}.
      * @param packageName The Java package name to convert to a path
+     * @return String
      */
     protected String getPackagePath(String packageName) {
         return packageName == null ? null : packageName.replace('.', '/');

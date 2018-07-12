@@ -42,8 +42,6 @@ import lombok.Getter;
  */
 @Getter
 public class HttpConfigure extends BaseEntity {
-    private static final long serialVersionUID = 7466575473562761447L;
-
     /** */
     public static final String TIME_TO_LIVE = "context.httpclient.time.to.live";
 
@@ -88,6 +86,8 @@ public class HttpConfigure extends BaseEntity {
      * 字符集.
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
+
+    private static final long serialVersionUID = 7466575473562761447L;
 
     private static final ConcurrentMap<String, HttpClient> CLIENTS = Maps.newConcurrentMap();
 

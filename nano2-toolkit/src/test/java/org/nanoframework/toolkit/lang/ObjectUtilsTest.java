@@ -42,8 +42,8 @@ class ObjectUtilsTest {
 
         assertArrayEquals(toObjectArray(new int[0]), new Object[0]);
         assertArrayEquals(toObjectArray(new int[0]), new Integer[0]);
-        
-        assertArrayEquals(toObjectArray(new int[] {1, 2, 3}), new Integer[] {1, 2, 3});
+
+        assertArrayEquals(toObjectArray(new int[] {1, 2, 3 }), new Integer[] {1, 2, 3 });
     }
 
 }

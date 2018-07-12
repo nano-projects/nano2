@@ -30,5 +30,8 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Scan {
 
+    /**
+     * @return 包扫描配置，示例：{"org.nanoframework.toolkit.scan.pkg1", "org.nanoframework.toolkit.scan.pkg2"}
+     */
     String[] value() default {};
 }

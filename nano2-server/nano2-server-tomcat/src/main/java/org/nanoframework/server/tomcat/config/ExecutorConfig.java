@@ -31,17 +31,35 @@ public class ExecutorConfig extends AbstractConfig {
 
     private static final long serialVersionUID = 4483458534269995105L;
 
+    private static final String DEFAULT_NAME = "tomcatThreadPool";
+
+    private static final Boolean DEFAULT_DAEMON = Boolean.TRUE;
+
+    private static final String DEFAULT_NAME_PREFIX = "tomcat-exec-";
+
+    private static final Integer DEFAULT_MAX_THREADS = 200;
+
+    private static final Integer DEFAULT_MIN_SPARE_THREADS = 25;
+
+    private static final Integer DEFAULT_MAX_IDLE_TIME = 60_000;
+
+    private static final Integer DEFAULT_MAX_QUEUE_SIZE = Integer.MAX_VALUE;
+
+    private static final Boolean DEFAULT_PRESTARTMIN_SPARE_THREADS = Boolean.FALSE;
+
+    private static final Long DEFAULT_THREAD_RENEWAL_DELAY = 1000L;
+
     static {
         var conf = new ExecutorConfig();
-        conf.name = "tomcatThreadPool";
-        conf.daemon = Boolean.TRUE;
-        conf.namePrefix = "tomcat-exec-";
-        conf.maxThreads = 200;
-        conf.minSpareThreads = 25;
-        conf.maxIdleTime = 60_000;
-        conf.maxQueueSize = Integer.MAX_VALUE;
-        conf.prestartminSpareThreads = Boolean.FALSE;
-        conf.threadRenewalDelay = 1000L;
+        conf.name = DEFAULT_NAME;
+        conf.daemon = DEFAULT_DAEMON;
+        conf.namePrefix = DEFAULT_NAME_PREFIX;
+        conf.maxThreads = DEFAULT_MAX_THREADS;
+        conf.minSpareThreads = DEFAULT_MIN_SPARE_THREADS;
+        conf.maxIdleTime = DEFAULT_MAX_IDLE_TIME;
+        conf.maxQueueSize = DEFAULT_MAX_QUEUE_SIZE;
+        conf.prestartminSpareThreads = DEFAULT_PRESTARTMIN_SPARE_THREADS;
+        conf.threadRenewalDelay = DEFAULT_THREAD_RENEWAL_DELAY;
         DEF = conf;
     }
 

@@ -24,9 +24,9 @@ import org.nanoframework.toolkit.io.Resource;
  * Simple interface for objects that are sources for an {@link InputStream}.
  *
  * @author Juergen Hoeller
- * @since 20.01.2004
  * @see java.io.InputStream
  * @see Resource
+ * @since 20.01.2004
  */
 public interface InputStreamSource {
 

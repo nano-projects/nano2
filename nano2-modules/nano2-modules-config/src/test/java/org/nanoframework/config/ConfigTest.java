@@ -36,7 +36,6 @@ import com.google.inject.ProvisionException;
 
 /**
  * 单元测试需要依赖Apollo服务，可以从Github上clone Quick Start的资源库来快速搭建环境，步骤如下：
- * 
  * <pre>
  * 资源仓库：{@link https://github.com/nobodyiam/apollo-build-scripts}
  * 需要按照文档，预先配置好MySQL库
@@ -44,7 +43,6 @@ import com.google.inject.ProvisionException;
  * ~$ cd apollo-build-scripts
  * ~$ ./demo.sh &
  * </pre>
- * 
  * @author yanghe
  * @since 2.0.0
  */

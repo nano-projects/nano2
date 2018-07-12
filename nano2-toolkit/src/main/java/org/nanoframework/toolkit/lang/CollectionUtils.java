@@ -29,7 +29,7 @@ public final class CollectionUtils {
     }
 
     /**
-     * 判断是否为空集合
+     * 判断是否为空集合.
      * @param collection 集合对象
      * @param <E> 集合对象类型
      * @return 如果集合为null或者empty，则返回true
@@ -39,7 +39,7 @@ public final class CollectionUtils {
     }
 
     /**
-     * 判断是否为空集合
+     * 判断是否为空集合.
      * @param collection 集合对象
      * @param <E> 集合对象类型
      * @return 如果集合为null或者empty，则返回false
@@ -49,7 +49,7 @@ public final class CollectionUtils {
     }
 
     /**
-     * 判断是否为空集合
+     * 判断是否为空集合.
      * @param map 集合对象
      * @param <K> 集合键类型
      * @param <V> 集合值类型
@@ -60,7 +60,7 @@ public final class CollectionUtils {
     }
 
     /**
-     * 判断是否为空集合
+     * 判断是否为空集合.
      * @param map 集合对象
      * @param <K> 集合键类型
      * @param <V> 集合值类型

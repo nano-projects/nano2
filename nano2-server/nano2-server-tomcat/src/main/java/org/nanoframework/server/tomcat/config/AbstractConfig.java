@@ -28,9 +28,9 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
  * @since 2.0.0
  */
 public abstract class AbstractConfig extends BaseEntity {
-    private static final long serialVersionUID = 2578839220433405594L;
-
     protected static BaseEntity DEF;
+
+    private static final long serialVersionUID = 2578839220433405594L;
 
     public void merge(BaseEntity conf) {
         if (DEF != null) {

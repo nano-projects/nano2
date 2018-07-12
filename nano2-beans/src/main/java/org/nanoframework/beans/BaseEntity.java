@@ -46,8 +46,10 @@ public abstract class BaseEntity implements Cloneable, Serializable {
 
     private static transient List<String> FILTER_FIELD_NAMES = List.of("names", "cls", "methods", "fields");
 
+    /** 当前对象的所有Method. */
     protected transient Map<String, Method> methods = paramMethods();
 
+    /** 当前对象的所有Field. */
     protected transient Map<String, Field> fields = paramFields();
 
     private transient String[] names;
@@ -315,20 +317,30 @@ public abstract class BaseEntity implements Cloneable, Serializable {
         return allFields(allFields, clazz.getSuperclass());
     }
 
+    /**
+     * @param field Field
+     * @return 判断是否内置属性，如果是则返回false
+     */
     protected static boolean filterField(Field field) {
         return !FILTER_FIELD_NAMES.contains(field.getName());
     }
 
+    /**
+     * @return 当前对象所有的Method
+     */
     public Collection<Method> methods() {
         return methods.values();
     }
 
+    /**
+     * @return 当前对象所有的Field
+     */
     public Collection<Field> fields() {
         return fields.values();
     }
 
     @Override
-    public BaseEntity clone() {
+    public final BaseEntity clone() {
         try {
             return (BaseEntity) super.clone();
         } catch (CloneNotSupportedException e) {

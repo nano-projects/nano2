@@ -69,22 +69,37 @@ public final class StringUtils {
         return !isBlank(text);
     }
 
-    public static boolean hasLength(CharSequence str) {
-        return (str != null && str.length() > 0);
+    /**
+     * 判断字符串是否有字符.
+     * @param text 字符串
+     * @return 如果字符串有字符，则返回true
+     */
+    public static boolean hasLength(CharSequence text) {
+        return (text != null && text.length() > 0);
     }
 
-    public static boolean hasLength(String str) {
-        return hasLength((CharSequence) str);
+    /**
+     * 判断字符串是否有字符.
+     * @param text 字符串
+     * @return 如果字符串有字符，则返回true
+     */
+    public static boolean hasLength(String text) {
+        return hasLength((CharSequence) text);
     }
 
-    public static boolean hasText(CharSequence str) {
-        if (!hasLength(str)) {
+    /**
+     * 判断字符串是否有字符，且不是空格.
+     * @param text 字符串
+     * @return 如果字符串有字符且不是空格，则返回true
+     */
+    public static boolean hasText(CharSequence text) {
+        if (!hasLength(text)) {
             return false;
         }
 
-        var len = str.length();
+        var len = text.length();
         for (var i = 0; i < len; i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
+            if (!Character.isWhitespace(text.charAt(i))) {
                 return true;
             }
         }
@@ -92,28 +107,33 @@ public final class StringUtils {
         return false;
     }
 
-    public static boolean hasText(String str) {
-        return hasText((CharSequence) str);
+    /**
+     * 判断字符串是否有字符，且不是空格.
+     * @param text 字符串
+     * @return 如果字符串有字符且不是空格，则返回true
+     */
+    public static boolean hasText(String text) {
+        return hasText((CharSequence) text);
     }
 
     /**
-     * 判断2个字符串equals
-     * @param str1 字符串1
-     * @param str2 字符串2
+     * 判断2个字符串equals.
+     * @param text1 字符串1
+     * @param text2 字符串2
      * @return 如果字符串1 equals 字符串2
      */
-    public static boolean equals(String str1, String str2) {
-        if (str1 == null && str2 == null) {
+    public static boolean equals(String text1, String text2) {
+        if (text1 == null && text2 == null) {
             return true;
-        } else if (str1 == null || str2 == null) {
+        } else if (text1 == null || text2 == null) {
             return false;
         }
 
-        return str1.equals(str2);
+        return text1.equals(text2);
     }
 
     /**
-     * 判断字符串{text}是否以{prefix}开头
+     * 判断字符串{text}是否以{prefix}开头.
      * @param text 原文本
      * @param prefix 对比文本
      * @return 如果text的开头和prefix一致，则返回true
@@ -131,7 +151,7 @@ public final class StringUtils {
     }
 
     /**
-     * 判断字符串{text}是否以{prefix}开头，比较时不区分大小写
+     * 判断字符串{text}是否以{prefix}开头，比较时不区分大小写.
      * @param text 原文本
      * @param prefix 对比文本
      * @return 如果text的开头和prefix一致，则返回true
@@ -149,7 +169,7 @@ public final class StringUtils {
     }
 
     /**
-     * 替换所有匹配的字符串
+     * 替换所有匹配的字符串.
      * @param inString {@code String} to examine
      * @param oldPattern {@code String} to replace
      * @param newPattern {@code String} to insert
@@ -315,6 +335,18 @@ public final class StringUtils {
         return builder.toString();
     }
 
+    /**
+     * Parse the given {@code localeString} value into a Locale.
+     * <p>This is the inverse operation of Locale#toString Locale's toString.
+     * @param str the locale {@code String}, following {@code Locale's}
+     * @param delimiters the delimiters
+     * @param trimTokens the trimTokens
+     * @param ignoreEmptyTokens the ignoreEmptyTokens
+     * {@code toString()} format ("en", "en_UK", etc);
+     * also accepts spaces as separators, as an alternative to underscores
+     * @return a corresponding {@code Locale} instance
+     * @throws IllegalArgumentException in case of an invalid locale specification
+     */
     public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens,
             boolean ignoreEmptyTokens) {
 

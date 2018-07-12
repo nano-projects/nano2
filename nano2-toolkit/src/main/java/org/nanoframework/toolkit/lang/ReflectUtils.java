@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
  * @author yanghe
  * @since 1.3.7
  */
-public class ReflectUtils {
+public final class ReflectUtils {
 
     private ReflectUtils() {
 
@@ -47,11 +47,23 @@ public class ReflectUtils {
         }
     }
 
+    /**
+     * 对类进行泛型转换.
+     * @param <T> the newInstance type
+     * @param cls 原Class
+     * @return 泛型Class
+     */
     @SuppressWarnings("unchecked")
     public static <T> Class<T> convert(Class<?> cls) {
         return (Class<T>) cls;
     }
 
+    /**
+     * 对Type进行泛型转换.
+     * @param <T> the newInstance type
+     * @param type Type
+     * @return 泛型Class
+     */
     public static <T> Class<T> convert(Type type) {
         return loadClass(type.getTypeName());
     }

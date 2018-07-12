@@ -46,11 +46,13 @@ public class RequestMapper extends BaseEntity {
 
     private Method method;
 
-    /** @since 1.2 */
     private RequestMethod[] requestMethods = new RequestMethod[] {RequestMethod.GET, RequestMethod.POST };
 
     private Map<String, String> param;
 
+    /**
+     * @return 请求类型列表
+     */
     public String[] getRequestMethodStrs() {
         if (ArrayUtils.isNotEmpty(requestMethods)) {
             return Arrays.stream(requestMethods).map(RequestMethod::name).toArray(String[]::new);
@@ -59,6 +61,10 @@ public class RequestMapper extends BaseEntity {
         return ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
+    /**
+     * @param method 请求类型
+     * @return 判断当前路由是否支持此请求类型
+     */
     public boolean hasMethod(RequestMethod method) {
         if (ArrayUtils.isNotEmpty(requestMethods)) {
             return Lists.newArrayList(requestMethods).contains(method);

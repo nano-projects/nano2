@@ -34,9 +34,9 @@ import org.nanoframework.toolkit.lang.ResourceUtils;
  * Supports resolution as <code>java.io.File</code> if the class path resource resides in the file system, but not for
  * resources in a JAR. Always supports resolution as URL.
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see java.lang.ClassLoader#getResourceAsStream(String)
  * @see java.lang.Class#getResourceAsStream(String)
+ * @since 28.12.2003
  */
 public class ClassPathResource extends AbstractResource {
 
@@ -115,6 +115,7 @@ public class ClassPathResource extends AbstractResource {
 
     /**
      * @return This implementation opens an InputStream for the given class path resource.
+     * @throws IOException FileNotFoundException
      * @see java.lang.ClassLoader#getResourceAsStream(String)
      * @see java.lang.Class#getResourceAsStream(String)
      */
@@ -133,6 +134,7 @@ public class ClassPathResource extends AbstractResource {
 
     /**
      * @return This implementation returns a URL for the underlying class path resource.
+     * @throws IOException FileNotFoundException
      * @see java.lang.ClassLoader#getResource(String)
      * @see java.lang.Class#getResource(String)
      */
@@ -152,13 +154,15 @@ public class ClassPathResource extends AbstractResource {
     /**
      * @return This implementation returns a File reference for the underlying class path resource, provided that it
      *         refers to a file in the file system.
+     * @throws IOException IOException
      */
     public File getFile() throws IOException {
         return ResourceUtils.getFile(getURL(), getDescription());
     }
 
     /**
-     * @reutnr This implementation determines the underlying File (or jar file, in case of a resource in a jar/zip).
+     * @return This implementation determines the underlying File (or jar file, in case of a resource in a jar/zip).
+     * @throws IOException IOException
      */
     protected File getFileForLastModifiedCheck() throws IOException {
         URL url = getURL();
@@ -171,6 +175,7 @@ public class ClassPathResource extends AbstractResource {
     }
 
     /**
+     * @param relativePath relativePath
      * @return This implementation creates a ClassPathResource, applying the given path relative to the path of the
      *         underlying resource of this descriptor.
      */
@@ -194,6 +199,7 @@ public class ClassPathResource extends AbstractResource {
     }
 
     /**
+     * @param obj Object
      * @return This implementation compares the underlying class path locations.
      */
     public boolean equals(Object obj) {

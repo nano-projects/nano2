@@ -111,6 +111,7 @@ public final class LoggerFactory {
         }
     }
 
+    /** */
     protected static synchronized void selectJdk14Logging() {
         try {
             Resources.forName(JDK_LOGGER);
@@ -121,6 +122,7 @@ public final class LoggerFactory {
         }
     }
 
+    /** */
     protected static synchronized void selectLog4j2Logging() {
         try {
             Resources.forName(LOG4J2_LOGGER);
@@ -130,6 +132,7 @@ public final class LoggerFactory {
         }
     }
 
+    /** */
     protected static synchronized void selectNoLogging() {
         try {
             LOGGER_CONSTRUCTOR = Resources.forName(NO_LOGGING_IMPL_CLASS_NAME)

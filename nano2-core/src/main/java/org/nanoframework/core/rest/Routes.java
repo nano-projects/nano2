@@ -48,7 +48,7 @@ import lombok.NonNull;
  * @author yanghe
  * @since 1.4.2
  */
-public class Routes {
+public final class Routes {
     private static final Logger LOGGER = LoggerFactory.getLogger(Routes.class);
 
     private static final Routes INSTANCE = new Routes();
@@ -63,10 +63,18 @@ public class Routes {
 
     }
 
+    /**
+     * @return Routes
+     */
     public static Routes route() {
         return INSTANCE;
     }
 
+    /**
+     * @param url 路由地址
+     * @param requestMethod 请求类型
+     * @return 路由配置
+     */
     public RequestMapper lookup(String url, RequestMethod requestMethod) {
         var mappers = this.mappers.get(url);
         if (CollectionUtils.isNotEmpty(mappers)) {
@@ -90,7 +98,7 @@ public class Routes {
         return lookup(url, requestMethod, bestPatternMatch, matchingPatterns, patternComparator);
     }
 
-    protected RequestMapper lookup(String url, RequestMethod requestMethod, String bestPatternMatch,
+    private RequestMapper lookup(String url, RequestMethod requestMethod, String bestPatternMatch,
             List<String> matchingPatterns, Comparator<String> patternComparator) {
         if (bestPatternMatch != null) {
             var mappers = this.mappers.get(bestPatternMatch);
@@ -126,6 +134,10 @@ public class Routes {
         return null;
     }
 
+    /**
+     * @param url 路由地址
+     * @param mappers 路由配置
+     */
     public void register(String url, Map<RequestMethod, RequestMapper> mappers) {
         if (CollectionUtils.isEmpty(mappers)) {
             return;
@@ -153,10 +165,20 @@ public class Routes {
         }
     }
 
+    /**
+     * 清理路由配置.
+     */
     public void clear() {
         this.mappers.clear();
     }
 
+    /**
+     * @param instance 服务对象
+     * @param methods 服务方法列表
+     * @param annotated 注解配置
+     * @param url 路由地址
+     * @return 根据给定的信息进行路由匹配
+     */
     public Map<String, Map<RequestMethod, RequestMapper>> matchers(Object instance, Method[] methods,
             Class<? extends RequestMapping> annotated, String url) {
         if (ArrayUtils.isEmpty(methods)) {
@@ -171,7 +193,7 @@ public class Routes {
         return routes;
     }
 
-    protected boolean filterMethod(Method method, Class<? extends RequestMapping> annotated) {
+    private boolean filterMethod(Method method, Class<? extends RequestMapping> annotated) {
         if (method.isAnnotationPresent(annotated)) {
             var mapping = method.getAnnotation(annotated);
             if (mapping != null && StringUtils.isNotBlank(mapping.value())) {
@@ -182,7 +204,7 @@ public class Routes {
         return false;
     }
 
-    protected Route routeDefine(Object instance, Method method, Class<? extends RequestMapping> annotated, String url) {
+    private Route routeDefine(Object instance, Method method, Class<? extends RequestMapping> annotated, String url) {
         var mapping = method.getAnnotation(annotated);
         var mapper = RequestMapper.builder().instance(instance).cls(instance.getClass()).method(method)
                 .requestMethods(mapping.method()).build();
@@ -199,7 +221,7 @@ public class Routes {
         return new Route(newRoute, mappers);
     }
 
-    protected String execRoutePath(String route) {
+    private String execRoutePath(String route) {
         var rtks = route.split("/");
         var routeBuilder = new StringBuilder();
         for (var rtk : rtks) {
@@ -228,7 +250,7 @@ public class Routes {
         return routeBuilder.toString();
     }
 
-    protected void routeDefine0(Route route, Map<String, Map<RequestMethod, RequestMapper>> routes) {
+    private void routeDefine0(Route route, Map<String, Map<RequestMethod, RequestMapper>> routes) {
         var routeURL = route.getRoute();
         if (!CollectionUtils.isEmpty(route.getMappers()) && routes.containsKey(routeURL)) {
             var before = route.getMappers().keySet();
@@ -275,6 +297,10 @@ public class Routes {
 
         private final Map<RequestMethod, RequestMapper> mappers;
 
+        /**
+         * @param route the route
+         * @param mappers the mappers
+         */
         public Route(String route, Map<RequestMethod, RequestMapper> mappers) {
             this.route = route;
             this.mappers = mappers;

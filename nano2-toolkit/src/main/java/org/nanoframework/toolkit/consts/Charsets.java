@@ -67,6 +67,10 @@ public final class Charsets {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Charsets.class);
 
+    private Charsets() {
+
+    }
+
     /**
      * Returns a Charset, if possible the Charset for the specified {@code charsetName}, otherwise (if the specified
      * {@code charsetName} is {@code null} or not supported) this method returns the platform default Charset.
@@ -98,10 +102,6 @@ public final class Charsets {
         }
 
         return charset;
-    }
-
-    private Charsets() {
-
     }
 
 }

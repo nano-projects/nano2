@@ -27,6 +27,10 @@ import org.nanoframework.toolkit.consts.Charsets;
  * @since 1.4.2
  */
 public class UrlPathHelper {
+    /**
+     * @param vars the vars
+     * @return Map
+     */
     public Map<String, String> decodePathVariables(final Map<String, String> vars) {
         var decodedVars = new LinkedHashMap<String, String>(vars.size());
         for (var entry : vars.entrySet()) {

@@ -66,7 +66,7 @@ public class HttpClientTest {
     public void httpGetTest() throws IOException {
         var httpClient = Guice.createInjector().getInstance(HttpClient.class);
         var response = httpClient.process(RequestMethod.GET, "https://www.baidu.com");
-        assertEquals(response.statusCode, HttpStatus.SC_OK);
+        assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
     }
 
     @Test

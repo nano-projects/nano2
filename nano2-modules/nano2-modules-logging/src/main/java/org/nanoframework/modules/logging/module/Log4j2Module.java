@@ -58,7 +58,7 @@ public class Log4j2Module implements Module {
         }
     }
 
-    protected boolean load0(URI resource) {
+    private boolean load0(URI resource) {
         if (resource != null) {
             try {
                 var logManager = Class.forName("org.apache.logging.log4j.LogManager");
@@ -79,12 +79,12 @@ public class Log4j2Module implements Module {
     }
 
     @Override
-    public List<Module> load() throws Throwable {
+    public List<Module> load() {
         return List.of(this);
     }
 
     @Override
-    public void config(ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) {
 
     }
 

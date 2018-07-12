@@ -16,7 +16,6 @@
 package org.nanoframework.server.enums;
 
 /**
- * 
  * @author yanghe
  * @since 1.3.14
  */

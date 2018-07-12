@@ -20,6 +20,7 @@ package org.nanoframework.toolkit.lang;
  * @since 2.0.0
  */
 public final class ArrayUtils {
+    /** 空字符数组. */
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private ArrayUtils() {

@@ -38,7 +38,7 @@ public class RestfulPlugin implements Plugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestfulPlugin.class);
 
     @Override
-    public boolean load() throws Throwable {
+    public boolean load() {
         var classes = ClassScanner.filter(Restful.class);
         LOGGER.info("Restful API size: {}", classes.size());
 
@@ -60,7 +60,7 @@ public class RestfulPlugin implements Plugin {
     }
 
     @Override
-    public void config(ServletConfig config) throws Throwable {
+    public void config(ServletConfig config) {
 
     }
 

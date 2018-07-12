@@ -34,57 +34,64 @@ import org.slf4j.LoggerFactory;
 import lombok.NonNull;
 
 /**
- * 扫描组件，并返回符合要求的集合
+ * 扫描组件，并返回符合要求的集合.
  * @author yanghe
  * @since 1.0
  */
-public class ClassScanner {
+public final class ClassScanner {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassScanner.class);
 
-    private static Set<Class<?>> classes;
+    private static Set<Class<?>> CLASSES = new HashSet<>();
+
+    private ClassScanner() {
+
+    }
 
     /**
-     * 返回所有带有参数中的注解的类
+     * 返回所有带有参数中的注解的类.
      * @param annotationClass 注解类
      * @return 过滤后的类
      */
     public static Set<Class<?>> filter(Class<? extends Annotation> annotationClass) {
-        if (classes == null) {
-            return Collections.emptySet();
-        }
-
-        if (classes.size() > 0) {
+        if (CLASSES.size() > 0) {
             var annClasses = new LinkedHashSet<Class<?>>();
-            classes.stream().filter(clz -> clz.isAnnotationPresent(annotationClass))
+            CLASSES.stream().filter(clz -> clz.isAnnotationPresent(annotationClass))
                     .forEach(clz -> annClasses.add(clz));
             return annClasses;
-
         }
 
         return Collections.emptySet();
     }
 
+    /**
+     * @return 已经被扫描的类数量
+     */
     public static long loadedClassSize() {
-        if (CollectionUtils.isEmpty(classes)) {
+        if (CollectionUtils.isEmpty(CLASSES)) {
             return 0;
         }
 
-        return classes.size();
+        return CLASSES.size();
     }
 
+    /**
+     * 根据给定的包名进行类扫描.
+     * @param packageName 包路径
+     */
     public static void scan(String packageName) {
         if (StringUtils.isEmpty(packageName)) {
             LOGGER.warn("没有设置packageName, 跳过扫描");
             return;
         }
 
-        if (classes == null) {
-            classes = new HashSet<>();
-        }
-
-        classes.addAll(getClasses(packageName));
+        CLASSES.addAll(getClasses(packageName));
     }
 
+    /**
+     * 根据Class进行类扫描，如果该类设置了类级注解{@link Scan}, 并且设置了包配置，则使用配置的包路径进行扫描，并且对Class自身包路径进行扫描. 如果Class没有配置类级注解{@link Scan},
+     * 则使用Class自身包路径进行扫描.
+     * @param cls 扫描基础类
+     */
     public static void scan(Class<?> cls) {
         if (cls.isAnnotationPresent(Scan.class)) {
             var scan = cls.getAnnotation(Scan.class);
@@ -106,13 +113,16 @@ public class ClassScanner {
             } else {
                 scan(clsPkg);
             }
+        } else {
+            scan(cls.getPackageName());
         }
     }
 
+    /**
+     * 清理已扫描的类缓存.
+     */
     public static void clear() {
-        if (classes != null) {
-            classes.clear();
-        }
+        CLASSES.clear();
     }
 
     /**

@@ -22,7 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
  * @author yanghe
  * @since 1.0
  */
@@ -32,7 +31,6 @@ import java.lang.annotation.Target;
 public @interface PathVariable {
 
     /**
-     * 
      * @return The URI template variable to bind to.
      */
     String value() default "";
