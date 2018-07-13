@@ -55,6 +55,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class RouteMapper extends BaseEntity {
+    protected static final HttpType[] DEFAULT_TYPES = new HttpType[] {HttpType.GET, HttpType.POST };
+
     private static final long serialVersionUID = 6571078157462085564L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteMapper.class);
@@ -65,9 +67,23 @@ public class RouteMapper extends BaseEntity {
 
     private Method method;
 
-    private HttpType[] types = new HttpType[] {HttpType.GET, HttpType.POST };
+    private HttpType[] types;
 
     private Map<String, String> param;
+
+    private RouteMapper(Object instance, Class<?> cls, Method method, HttpType[] types, Map<String, String> param) {
+        this.instance = instance;
+        this.cls = cls;
+        this.method = method;
+        this.param = param;
+
+        // lombok的builder模式不支持默认值，只能使用这种形式对默认值的属性进行判断
+        if (types == null) {
+            this.types = DEFAULT_TYPES;
+        } else {
+            this.types = types;
+        }
+    }
 
     /**
      * @return 请求类型列表

@@ -234,6 +234,7 @@ public final class ArrayUtils {
      * @since 2.1
      * @throws IllegalArgumentException if the array types are incompatible
      */
+    @SuppressWarnings("unchecked")
     public static <T> T[] addAll(final T[] array1, final T... array2) {
         if (array1 == null) {
             return clone(array2);
@@ -241,7 +242,6 @@ public final class ArrayUtils {
             return clone(array1);
         }
         final Class<?> type1 = array1.getClass().getComponentType();
-        @SuppressWarnings("unchecked") // OK, because array is of type T
         final T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
         System.arraycopy(array1, 0, joinedArray, 0, array1.length);
         try {

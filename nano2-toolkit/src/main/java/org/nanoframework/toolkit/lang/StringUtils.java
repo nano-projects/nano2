@@ -245,6 +245,7 @@ public final class StringUtils {
      * @since 2.0
      * @since 3.0 Changed signature to use varargs
      */
+    @SuppressWarnings("unchecked")
     public static <T> String join(final T... elements) {
         return join(elements, null);
     }
