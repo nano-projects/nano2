@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.rest.enums;
+package org.nanoframework.toolkit.secure;
 
 /**
  * @author yanghe
- * @since 1.0
+ * @since 1.3.7
  */
-public enum RequestMethod {
-    /** */
-    GET,
-    /** */
-    HEAD,
-    /** */
-    POST,
-    /** */
-    PUT,
-    /** */
-    DELETE,
-    /** */
-    OPTIONS,
-    /** */
-    TRACE,
-    /** */
-    PATCH;
+public interface CipherExecutor {
 
+    /**
+     * Encrypt the value. Implementations may choose to also sign the final value.
+     * @param value the value
+     * @return the encrypted value or null
+     */
+    String encode(String value);
+
+    /**
+     * Decode the value. Signatures may also be verified.
+     * @param value encrypted value
+     * @return the decoded value.
+     */
+    String decode(String value);
 }

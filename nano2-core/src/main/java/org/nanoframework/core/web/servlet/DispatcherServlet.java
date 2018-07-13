@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.servlet;
+package org.nanoframework.core.web.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+
+import org.nanoframework.core.plugins.PluginLoader;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
 
 /**
  * 核心入口，用于项目启动时加载相关组件，初始化依赖注入等.
@@ -26,8 +30,16 @@ import javax.servlet.http.HttpServlet;
 public class DispatcherServlet extends HttpServlet {
     private static final long serialVersionUID = 1685855250487831145L;
 
+    private Logger LOGGER = LoggerFactory.getLogger(DispatcherServlet.class);
+
     @Override
     public void init() throws ServletException {
         super.init();
+        try {
+            new PluginLoader().init(this);
+        } catch (Throwable e) {
+            LOGGER.error(e.getMessage(), e);
+            System.exit(1);
+        }
     }
 }

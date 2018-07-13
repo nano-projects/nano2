@@ -16,6 +16,9 @@
 package org.nanoframework.toolkit.lang;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author yanghe
@@ -61,5 +64,51 @@ public final class ObjectUtils {
         }
 
         return newArray;
+    }
+
+    public static long isNull(Object... objs) {
+        return Arrays.stream(objs).filter(obj -> obj == null).count();
+    }
+
+    public static long isNotNull(Object... objs) {
+        return Arrays.stream(objs).filter(obj -> obj != null).count();
+    }
+
+    public static boolean isEmpty(Object[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    public static boolean isNotEmpty(Object[] array) {
+        return !isEmpty(array);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+
+        if (obj.getClass().isArray()) {
+            return Array.getLength(obj) == 0;
+        }
+
+        if (obj instanceof CharSequence) {
+            return ((CharSequence) obj).length() == 0;
+        }
+
+        if (obj instanceof Collection) {
+            return ((Collection) obj).isEmpty();
+        }
+
+        if (obj instanceof Map) {
+            return ((Map) obj).isEmpty();
+        }
+
+        // else
+        return false;
+    }
+
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
     }
 }

@@ -28,7 +28,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.entity.ContentType;
-import org.nanoframework.core.rest.enums.RequestMethod;
+import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.modules.httpclient.HttpClient;
 import org.nanoframework.modules.httpclient.HttpResponse;
 import org.nanoframework.modules.httpclient.config.HttpConfigure;
@@ -275,8 +275,8 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url) throws HttpClientException {
-        switch (requestMethod) {
+    public HttpResponse process(HttpType type, String url) throws HttpClientException {
+        switch (type) {
             case GET:
                 return get(url);
             case POST:
@@ -299,9 +299,9 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> params)
+    public HttpResponse process(HttpType type, String url, Map<String, String> params)
             throws HttpClientException {
-        switch (requestMethod) {
+        switch (type) {
             case GET:
                 return get(url, params);
             case POST:
@@ -324,8 +324,8 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, String json) throws HttpClientException {
-        switch (requestMethod) {
+    public HttpResponse process(HttpType type, String url, String json) throws HttpClientException {
+        switch (type) {
             case POST:
                 return post(url, json);
             case PUT:
@@ -338,9 +338,9 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers,
+    public HttpResponse process(HttpType type, String url, Map<String, String> headers,
             Map<String, String> params) throws HttpClientException {
-        switch (requestMethod) {
+        switch (type) {
             case GET:
                 return get(url, headers, params);
             case POST:
@@ -363,9 +363,9 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String json)
+    public HttpResponse process(HttpType type, String url, Map<String, String> headers, String json)
             throws HttpClientException {
-        switch (requestMethod) {
+        switch (type) {
             case POST:
                 return post(url, headers, json);
             case PUT:
@@ -378,9 +378,9 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, String stream, ContentType contentType)
+    public HttpResponse process(HttpType type, String url, String stream, ContentType contentType)
             throws HttpClientException {
-        switch (requestMethod) {
+        switch (type) {
             case POST:
                 return post(url, stream, contentType);
             case PUT:
@@ -393,9 +393,9 @@ public class HttpClientImpl extends AbstractHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String stream,
+    public HttpResponse process(HttpType type, String url, Map<String, String> headers, String stream,
             ContentType contentType) throws HttpClientException {
-        switch (requestMethod) {
+        switch (type) {
             case POST:
                 return post(url, headers, stream, contentType);
             case PUT:

@@ -26,7 +26,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.nanoframework.beans.Globals;
-import org.nanoframework.core.rest.enums.RequestMethod;
+import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.modules.base.module.TypeListenerModule;
 import org.nanoframework.modules.httpclient.annotation.Http;
 import org.nanoframework.modules.httpclient.config.HttpConfigure;
@@ -65,7 +65,7 @@ public class HttpClientTest {
     @Test
     public void httpGetTest() throws IOException {
         var httpClient = Guice.createInjector().getInstance(HttpClient.class);
-        var response = httpClient.process(RequestMethod.GET, "https://www.baidu.com");
+        var response = httpClient.process(HttpType.GET, "https://www.baidu.com");
         assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
     }
 

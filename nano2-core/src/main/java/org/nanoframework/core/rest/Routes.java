@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.nanoframework.beans.BaseEntity;
-import org.nanoframework.core.rest.annotation.RequestMapping;
-import org.nanoframework.core.rest.enums.RequestMethod;
+import org.nanoframework.core.rest.annotation.Route;
+import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.core.rest.exception.RouteException;
 import org.nanoframework.core.rest.path.AntPathMatcher;
 import org.nanoframework.core.rest.path.PathMatcher;
@@ -53,7 +53,7 @@ public final class Routes {
 
     private static final Routes INSTANCE = new Routes();
 
-    private final Map<String, Map<RequestMethod, RequestMapper>> mappers = Maps.newLinkedHashMap();
+    private final Map<String, Map<HttpType, RouteMapper>> mappers = Maps.newLinkedHashMap();
 
     private final PathMatcher pathMatcher = new AntPathMatcher();
 
@@ -70,15 +70,57 @@ public final class Routes {
         return INSTANCE;
     }
 
+    public Object invoke(final RouteMapper mapper) {
+        return invoke(mapper, Maps.newHashMap());
+    }
+
+    public Object invoke(RouteMapper mapper, Map<String, Object> parameter, Object... objs) {
+        if (mapper == null) {
+            throw new RouteException("未找到路由资源");
+        }
+
+        try {
+            var param = mapper.getParam();
+            if (CollectionUtils.isNotEmpty(param)) {
+                parameter.putAll(param);
+            }
+
+            var instance = mapper.getInstance();
+            var method = mapper.getMethod();
+            var bind = mapper.bind(method, parameter, objs);
+            return method.invoke(instance, bind);
+        } catch (Throwable e) {
+            if (e instanceof RouteException) {
+                throw (RouteException) e;
+            }
+
+            throw invokeThrow(e);
+        }
+    }
+
+    private RouteException invokeThrow(Throwable e) {
+        Throwable tmp = e;
+        Throwable cause;
+        while ((cause = tmp.getCause()) != null) {
+            if (cause instanceof RouteException) {
+                return (RouteException) cause;
+            } else {
+                tmp = cause;
+            }
+        }
+
+        return new RouteException(tmp.getMessage(), tmp);
+    }
+
     /**
      * @param url 路由地址
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @return 路由配置
      */
-    public RequestMapper lookup(String url, RequestMethod requestMethod) {
+    public RouteMapper lookup(String url, HttpType type) {
         var mappers = this.mappers.get(url);
         if (CollectionUtils.isNotEmpty(mappers)) {
-            var mapper = mappers.get(requestMethod);
+            var mapper = mappers.get(type);
             if (mapper != null) {
                 return mapper;
             }
@@ -95,10 +137,10 @@ public final class Routes {
             bestPatternMatch = matchingPatterns.get(0);
         }
 
-        return lookup(url, requestMethod, bestPatternMatch, matchingPatterns, patternComparator);
+        return lookup(url, type, bestPatternMatch, matchingPatterns, patternComparator);
     }
 
-    private RequestMapper lookup(String url, RequestMethod requestMethod, String bestPatternMatch,
+    private RouteMapper lookup(String url, HttpType type, String bestPatternMatch,
             List<String> matchingPatterns, Comparator<String> patternComparator) {
         if (bestPatternMatch != null) {
             var mappers = this.mappers.get(bestPatternMatch);
@@ -113,7 +155,7 @@ public final class Routes {
                 }
             }
 
-            var mapper = mappers.get(requestMethod);
+            var mapper = mappers.get(type);
             if (mapper == null) {
                 return null;
             }
@@ -138,7 +180,7 @@ public final class Routes {
      * @param url 路由地址
      * @param mappers 路由配置
      */
-    public void register(String url, Map<RequestMethod, RequestMapper> mappers) {
+    public void register(String url, Map<HttpType, RouteMapper> mappers) {
         if (CollectionUtils.isEmpty(mappers)) {
             return;
         }
@@ -179,13 +221,13 @@ public final class Routes {
      * @param url 路由地址
      * @return 根据给定的信息进行路由匹配
      */
-    public Map<String, Map<RequestMethod, RequestMapper>> matchers(Object instance, Method[] methods,
-            Class<? extends RequestMapping> annotated, String url) {
+    public Map<String, Map<HttpType, RouteMapper>> matchers(Object instance, Method[] methods,
+            Class<? extends Route> annotated, String url) {
         if (ArrayUtils.isEmpty(methods)) {
             return Collections.emptyMap();
         }
 
-        var routes = new HashMap<String, Map<RequestMethod, RequestMapper>>();
+        var routes = new HashMap<String, Map<HttpType, RouteMapper>>();
         Arrays.stream(methods).filter(method -> filterMethod(method, annotated))
                 .map(method -> routeDefine(instance, method, annotated, url))
                 .forEach(routeRes -> routeDefine0(routeRes, routes));
@@ -193,7 +235,7 @@ public final class Routes {
         return routes;
     }
 
-    private boolean filterMethod(Method method, Class<? extends RequestMapping> annotated) {
+    private boolean filterMethod(Method method, Class<? extends Route> annotated) {
         if (method.isAnnotationPresent(annotated)) {
             var mapping = method.getAnnotation(annotated);
             if (mapping != null && StringUtils.isNotBlank(mapping.value())) {
@@ -204,21 +246,21 @@ public final class Routes {
         return false;
     }
 
-    private Route routeDefine(Object instance, Method method, Class<? extends RequestMapping> annotated, String url) {
+    private RouteEntity routeDefine(Object instance, Method method, Class<? extends Route> annotated, String url) {
         var mapping = method.getAnnotation(annotated);
-        var mapper = RequestMapper.builder().instance(instance).cls(instance.getClass()).method(method)
-                .requestMethods(mapping.method()).build();
-        var mappers = new HashMap<RequestMethod, RequestMapper>();
-        var requestMethods = mapper.getRequestMethods();
-        for (var requestMethod : requestMethods) {
+        var mapper = RouteMapper.builder().instance(instance).cls(instance.getClass()).method(method)
+                .types(mapping.type()).build();
+        var mappers = new HashMap<HttpType, RouteMapper>();
+        var types = mapper.getTypes();
+        for (var requestMethod : types) {
             mappers.put(requestMethod, mapper);
         }
 
         var route = (url + mapping.value());
         var newRoute = execRoutePath(route);
         LOGGER.debug("Route define: {}.{}:{} {}", instance.getClass().getName(), method.getName(), newRoute,
-                List.of(requestMethods));
-        return new Route(newRoute, mappers);
+                List.of(types));
+        return new RouteEntity(newRoute, mappers);
     }
 
     private String execRoutePath(String route) {
@@ -250,7 +292,7 @@ public final class Routes {
         return routeBuilder.toString();
     }
 
-    private void routeDefine0(Route route, Map<String, Map<RequestMethod, RequestMapper>> routes) {
+    private void routeDefine0(RouteEntity route, Map<String, Map<HttpType, RouteMapper>> routes) {
         var routeURL = route.getRoute();
         if (!CollectionUtils.isEmpty(route.getMappers()) && routes.containsKey(routeURL)) {
             var before = route.getMappers().keySet();
@@ -265,7 +307,7 @@ public final class Routes {
         }
     }
 
-    private void putRoute(Route route, Map<String, Map<RequestMethod, RequestMapper>> routes) {
+    private void putRoute(RouteEntity route, Map<String, Map<HttpType, RouteMapper>> routes) {
         var url = route.getRoute();
         var mapper = route.getMappers();
         var mappers = routes.get(url);
@@ -277,7 +319,7 @@ public final class Routes {
         }
     }
 
-    private boolean isIntersectionRequestMethod(@NonNull Set<RequestMethod> before, @NonNull Set<RequestMethod> after) {
+    private boolean isIntersectionRequestMethod(@NonNull Set<HttpType> before, @NonNull Set<HttpType> after) {
         for (var bf : before) {
             for (var af : after) {
                 if (bf == af) {
@@ -290,18 +332,18 @@ public final class Routes {
     }
 
     @Getter
-    protected static class Route extends BaseEntity {
+    protected static class RouteEntity extends BaseEntity {
         private static final long serialVersionUID = 4937587574776102818L;
 
         private final String route;
 
-        private final Map<RequestMethod, RequestMapper> mappers;
+        private final Map<HttpType, RouteMapper> mappers;
 
         /**
          * @param route the route
          * @param mappers the mappers
          */
-        public Route(String route, Map<RequestMethod, RequestMapper> mappers) {
+        public RouteEntity(String route, Map<HttpType, RouteMapper> mappers) {
             this.route = route;
             this.mappers = mappers;
         }

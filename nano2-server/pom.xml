@@ -78,13 +78,6 @@
                 <artifactId>tomcat-embed-logging-juli</artifactId>
                 <version>${tomcat.logging.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-server-base</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 </project>

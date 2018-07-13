@@ -43,8 +43,6 @@
         <maven-surefire-plubin.version>2.22.0</maven-surefire-plubin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-        <checkstyle.version>6.18</checkstyle.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
@@ -59,6 +57,7 @@
         <mapstruct-processor.version>1.2.0.Final</mapstruct-processor.version>
         <guice.version>4.1.0</guice.version>
         <fastjson.version>1.2.47</fastjson.version>
+        <jose4j.version>0.6.3</jose4j.version>
     </properties>
 
     <issueManagement>
@@ -162,6 +161,11 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>${jose4j.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.nanoframework</groupId>
@@ -211,6 +215,16 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-modules-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-server-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-server-tomcat</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -328,34 +342,6 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>${coveralls-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>${cs.dir}/checkstyle-rules.xml</configLocation>
-                    <suppressionsLocation>${cs.dir}/checkstyle-suppressions.xml</suppressionsLocation>
-                    <failsOnError>true</failsOnError>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>checkstyle</id>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>com.mycila</groupId>

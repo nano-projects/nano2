@@ -132,7 +132,12 @@ public class SPILoader {
      * @return 获取指定Class对应的所有已被加载的SPI配置信息
      */
     public static List<SPIMapper> spis(Class<?> cls) {
-        return Collections.unmodifiableList(spis().get(cls));
+        var mappers = spis().get(cls);
+        if (CollectionUtils.isEmpty(mappers)) {
+            return Collections.emptyList();
+        }
+
+        return Collections.unmodifiableList(mappers);
     }
 
     /**

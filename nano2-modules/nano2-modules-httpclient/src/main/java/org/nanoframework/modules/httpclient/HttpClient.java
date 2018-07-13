@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
-import org.nanoframework.core.rest.enums.RequestMethod;
+import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.modules.httpclient.exception.HttpClientException;
 import org.nanoframework.modules.httpclient.support.HttpClientImpl;
 import org.nanoframework.spi.annotation.Lazy;
@@ -378,67 +378,67 @@ public interface HttpClient {
     HttpResponse trace(String url, Map<String, String> headers, Map<String, String> params) throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @return HttpResonse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url) throws HttpClientException;
+    HttpResponse process(HttpType type, String url) throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param params 参数列表
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> params)
+    HttpResponse process(HttpType type, String url, Map<String, String> params)
             throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param json JSON格式流式报文
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, String json) throws HttpClientException;
+    HttpResponse process(HttpType type, String url, String json) throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param headers 请求头列表
      * @param params 参数列表
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers,
+    HttpResponse process(HttpType type, String url, Map<String, String> headers,
             Map<String, String> params) throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param headers 请求头列表
      * @param json JSON格式流式报文
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String json)
+    HttpResponse process(HttpType type, String url, Map<String, String> headers, String json)
             throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param stream 流式报文
      * @param contentType 报文类型
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, String stream, ContentType contentType)
+    HttpResponse process(HttpType type, String url, String stream, ContentType contentType)
             throws HttpClientException;
 
     /**
-     * @param requestMethod 请求类型
+     * @param type 请求类型
      * @param url URL
      * @param headers 请求头列表
      * @param stream 流式报文
@@ -446,7 +446,7 @@ public interface HttpClient {
      * @return HttpResponse
      * @throws HttpClientException Http请求异常
      */
-    HttpResponse process(RequestMethod requestMethod, String url, Map<String, String> headers, String stream,
+    HttpResponse process(HttpType type, String url, Map<String, String> headers, String stream,
             ContentType contentType) throws HttpClientException;
 
     /**

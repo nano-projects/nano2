@@ -13,27 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.rest.enums;
+package org.nanoframework.core.web.mvc;
 
-import org.nanoframework.core.rest.annotation.Param;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 视图接口.
  * @author yanghe
  * @since 1.0
  */
-public final class ValueConstants {
+public interface View {
 
     /**
-     * Constant defining a value for no default - as a replacement for <code>null</code> which we cannot use in
-     * annotation attributes.
-     * <p>
-     * This is an artificial arrangement of 16 unicode characters, with its sole purpose being to never match
-     * user-declared values.
-     * @see Param#defaultValue()
+     * 完成对内容的跳转.
+     * @param model 模型
+     * @param request HttpServletRequest
+     * @param response HttpServletRequest
+     * @throws IOException IO异常
+     * @throws ServletException Servlet异常
      */
-    public static final String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
+    void redirect(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException;
 
-    private ValueConstants() {
-
-    }
 }

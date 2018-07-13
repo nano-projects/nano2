@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.rest.enums;
+package org.nanoframework.core.web.filter;
 
-import org.nanoframework.core.rest.annotation.Param;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.nanoframework.core.web.filter.RouteFilter.HttpContext;
 
 /**
  * @author yanghe
- * @since 1.0
+ * @since 1.3.7
  */
-public final class ValueConstants {
+public class EnvironmentFilter extends AbstractFilter {
 
-    /**
-     * Constant defining a value for no default - as a replacement for <code>null</code> which we cannot use in
-     * annotation attributes.
-     * <p>
-     * This is an artificial arrangement of 16 unicode characters, with its sole purpose being to never match
-     * user-declared values.
-     * @see Param#defaultValue()
-     */
-    public static final String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
-
-    private ValueConstants() {
-
+    @Override
+    protected boolean invoke(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        HttpContext.set(Map.of(HttpServletRequest.class, request, HttpServletResponse.class, response));
+        return true;
     }
+
 }

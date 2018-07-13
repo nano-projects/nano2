@@ -92,7 +92,7 @@ public final class TomcatServer extends Tomcat implements Server {
     }
 
     protected void load(String path) {
-        server = PropertiesLoader.load(path);
+        server = PropertiesLoader.loadContext(path);
     }
 
     protected void init(String contextRoot, String resourceBase) throws ServletException, IOException {

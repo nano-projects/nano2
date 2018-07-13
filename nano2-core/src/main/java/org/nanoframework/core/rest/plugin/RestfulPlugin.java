@@ -19,7 +19,7 @@ import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.rest.Routes;
-import org.nanoframework.core.rest.annotation.RequestMapping;
+import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.annotation.Restful;
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
@@ -48,11 +48,12 @@ public class RestfulPlugin implements Plugin {
                 LOGGER.info("Inject Restful API Class: {}", cls.getName());
                 var instance = injector.getInstance(cls);
                 var methods = cls.getMethods();
-                var mapping = cls.isAnnotationPresent(RequestMapping.class)
-                        ? cls.getAnnotation(RequestMapping.class).value()
+                var mapping = cls.isAnnotationPresent(Route.class)
+                        ? cls.getAnnotation(Route.class).value()
                         : StringUtils.EMPTY;
-                var mappers = Routes.route().matchers(instance, methods, RequestMapping.class, mapping);
-                mappers.forEach((url, mapper) -> Routes.route().register(url, mapper));
+                var routes = Routes.route();
+                var mappers = routes.matchers(instance, methods, Route.class, mapping);
+                mappers.forEach((url, mapper) -> routes.register(url, mapper));
             });
         }
 

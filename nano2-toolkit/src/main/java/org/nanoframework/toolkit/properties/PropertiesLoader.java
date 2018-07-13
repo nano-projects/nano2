@@ -112,10 +112,11 @@ public final class PropertiesLoader {
      * 加载属性文件.
      * @param path 文件相对路径
      */
-    public static void loadContext(@NonNull String path) {
+    public static Properties loadContext(@NonNull String path) {
         var prop = load(path);
         prop.forEach((key, value) -> System.setProperty((String) key, (String) value));
         loadContext0(prop);
+        return prop;
     }
 
     private static void loadContext0(@NonNull Properties prop) {

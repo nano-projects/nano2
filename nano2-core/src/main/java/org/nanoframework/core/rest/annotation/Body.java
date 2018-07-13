@@ -21,35 +21,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.nanoframework.core.rest.enums.RequestMethod;
-
 /**
- * 组件服务地址映射注解.
+ * 参数绑定.
  * @author yanghe
  * @since 1.0
  */
-@Target({ElementType.METHOD, ElementType.TYPE })
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RequestMapping {
+public @interface Body {
 
-    /**
-     * @return 路由地址
-     */
-    String value();
-
-    /**
-     * @return 请求类型列表
-     */
-    RequestMethod[] method() default {};
-
-    /**
-     * @return 暂未定义
-     */
-    String[] params() default {};
-
-    /**
-     * @return 暂未定义
-     */
-    String[] headers() default {};
 }

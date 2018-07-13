@@ -21,33 +21,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.nanoframework.core.rest.enums.ValueConstants;
+import org.nanoframework.core.rest.enums.HttpType;
 
 /**
- * 参数绑定.
+ * 组件服务地址映射注解.
  * @author yanghe
  * @since 1.0
  */
-@Target(ElementType.PARAMETER)
+@Target({ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RequestParam {
+public @interface Route {
 
     /**
-     * The value of the request parameter to bind to.
-     * @return parameter name value
+     * @return 路由地址
      */
-    String value() default "";
+    String value();
 
     /**
-     * @return Whether the parameter is required.
+     * @return 请求类型列表
      */
-    boolean required() default true;
-
-    /**
-     * @return The default value to use as a fallback. Supplying a default value implicitly
-     * sets {@link #required()} to false.
-     */
-    String defaultValue() default ValueConstants.DEFAULT_NONE;
-
+    HttpType[] type() default {};
 }
