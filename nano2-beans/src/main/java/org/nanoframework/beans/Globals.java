@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * 全局变量，针对一些全局的属性做统一管理.
  * @author yanghe
- * @since 1.0
+ * @since 2.0.0
  */
 public final class Globals {
     private static final ConcurrentMap<Class<?>, Object> GLOBALS = new ConcurrentHashMap<>();

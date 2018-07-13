@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.nanoframework.beans.exception;
 /**
  * 实体类操作异常类.
  * @author yanghe
- * @since 1.0
+ * @since 2.0.0
  */
 public class EntityException extends RuntimeException {
     private static final long serialVersionUID = 3642079270948106738L;

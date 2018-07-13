@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.nanoframework.core.rest.exception;
 /**
  * 重复组件服务异常.
  * @author yanghe
- * @since 1.0
+ * @since 2.0.0
  */
 public class RouteException extends RuntimeException {
     private static final long serialVersionUID = -4050783744076776903L;
