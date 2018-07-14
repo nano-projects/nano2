@@ -78,7 +78,7 @@ public class RouteMapper extends BaseEntity {
         this.param = param;
 
         // lombok的builder模式不支持默认值，只能使用这种形式对默认值的属性进行判断
-        if (types == null) {
+        if (ArrayUtils.isEmpty(types)) {
             this.types = DEFAULT_TYPES;
         } else {
             this.types = types;

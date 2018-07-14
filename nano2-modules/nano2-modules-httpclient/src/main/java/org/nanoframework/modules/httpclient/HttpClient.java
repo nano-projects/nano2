@@ -23,7 +23,6 @@ import org.apache.http.entity.ContentType;
 import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.modules.httpclient.exception.HttpClientException;
 import org.nanoframework.modules.httpclient.support.HttpClientImpl;
-import org.nanoframework.spi.annotation.Lazy;
 
 import com.google.inject.ImplementedBy;
 
@@ -31,7 +30,6 @@ import com.google.inject.ImplementedBy;
  * @author yanghe
  * @since 1.3.3
  */
-@Lazy
 @ImplementedBy(HttpClientImpl.class)
 public interface HttpClient {
     /**

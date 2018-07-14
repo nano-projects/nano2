@@ -104,7 +104,7 @@ public class PluginLoader {
                 PropertiesLoader.loadContext(InitParameter.DEFAULT_CONTEXT);
             }
         } catch (Throwable e) {
-            throw new PluginLoaderException(e.getMessage(), e);
+            LOGGER.warn(e.getMessage());
         }
 
         LOGGER.info("加载主配置完成, 耗时: {}ms", System.currentTimeMillis() - time);

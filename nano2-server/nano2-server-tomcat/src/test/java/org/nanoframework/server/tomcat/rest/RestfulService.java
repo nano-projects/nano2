@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.rest.tests;
+package org.nanoframework.server.tomcat.rest;
 
+import java.util.Map;
+
+import org.nanoframework.core.rest.annotation.Body;
 import org.nanoframework.core.rest.annotation.Param;
 import org.nanoframework.core.rest.annotation.PathVariable;
 import org.nanoframework.core.rest.annotation.Restful;
@@ -27,20 +30,20 @@ import org.nanoframework.core.rest.enums.HttpType;
  */
 @Restful
 @Route("/test")
-public class RouteService {
+public class RestfulService {
 
-    @Route(value = "/hello", type = HttpType.GET)
-    public String hello() {
-        return "world";
+    @Route(value = "/say/{id}", type = HttpType.POST)
+    public String say(@PathVariable("id") String id, @Param("name") String name, @Body Map<String, String> map) {
+        return "say " + id + name + map.get("value");
+    }
+    
+    @Route(value = "/say/{id}/123", type = HttpType.POST)
+    public String say2(@PathVariable("id") String id, @Param("name") String name, @Body Map<String, String> map) {
+        return "say " + id + name + map.get("value");
     }
 
-    @Route(value = "/say", type = HttpType.GET)
-    public String say(@Param("name") String name) {
-        return "say " + name;
-    }
+    @Route
+    public void noResponse() {
 
-    @Route(value = "/say/{id}", type = HttpType.GET)
-    public String say(@PathVariable("id") String id, @Param("name") String name) {
-        return "say " + id + name;
     }
 }

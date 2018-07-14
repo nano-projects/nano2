@@ -19,13 +19,10 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 
-import org.nanoframework.spi.annotation.Lazy;
-
 /**
  * @author yanghe
  * @since 1.1
  */
-@Lazy
 public interface Module extends com.google.inject.Module {
     /**
      * @return 待加载的模块列表

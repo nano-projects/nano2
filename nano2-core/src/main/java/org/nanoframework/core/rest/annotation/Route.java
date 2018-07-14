@@ -36,7 +36,7 @@ public @interface Route {
     /**
      * @return 路由地址
      */
-    String value();
+    String value() default "";
 
     /**
      * @return 请求类型列表

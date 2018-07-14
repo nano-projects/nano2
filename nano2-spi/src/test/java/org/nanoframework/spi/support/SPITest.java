@@ -26,9 +26,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.nanoframework.beans.Globals;
 import org.nanoframework.spi.SPIModule;
-import org.nanoframework.spi.test.SpiLazyService;
 import org.nanoframework.spi.test.SpiService;
-import org.nanoframework.spi.test.impl.TestLazyServiceImpl;
 import org.nanoframework.spi.test.impl.TestService2Impl;
 import org.nanoframework.spi.test.impl.TestServiceImpl;
 
@@ -43,8 +41,7 @@ import com.google.inject.name.Named;
  */
 class SPITest {
     private List<String> spiFiles = List.of("org.nanoframework.spi.test.SpiService",
-            "org.nanoframework.spi.test.SpiLazyService", "org.nanoframework.spi.test.NotSpiService",
-            "org.nanoframework.spi.test.SpiNotImplService");
+            "org.nanoframework.spi.test.NotSpiService", "org.nanoframework.spi.test.SpiNotImplService");
 
     @Inject
     @Named("testService")
@@ -53,10 +50,6 @@ class SPITest {
     @Inject
     @Named("TestService2Impl")
     private SpiService testService2;
-
-    @Inject
-    @Named("testLazyService")
-    private SpiLazyService testLazyService;
 
     @Test
     void getResourcesTest() throws IOException, URISyntaxException {
@@ -96,8 +89,5 @@ class SPITest {
         assertTrue(testService2.getClass() == TestService2Impl.class);
         assertEquals(testService2.echo(), "Echo TestService 2");
 
-        assertNotNull(testLazyService);
-        assertTrue(testLazyService.getClass() == TestLazyServiceImpl.class);
-        assertEquals(testLazyService.echo(), "Echo Lazy TestService");
     }
 }

@@ -88,7 +88,12 @@ public final class Routes {
             var instance = mapper.getInstance();
             var method = mapper.getMethod();
             var bind = mapper.bind(method, parameter, objs);
-            return method.invoke(instance, bind);
+            var value = method.invoke(instance, bind);
+            if (method.getReturnType() == void.class) {
+                return Void.TYPE;
+            }
+
+            return value;
         } catch (Throwable e) {
             if (e instanceof RouteException) {
                 throw (RouteException) e;
@@ -127,7 +132,9 @@ public final class Routes {
         }
 
         var matchingPatterns = this.mappers.keySet().stream()
-                .filter(registeredPattern -> pathMatcher.match(registeredPattern, url)).collect(Collectors.toList());
+                .filter(registeredPattern -> pathMatcher.match(registeredPattern, url)
+                        || pathMatcher.match(url, registeredPattern))
+                .collect(Collectors.toList());
 
         var patternComparator = pathMatcher.getPatternComparator(url);
         String bestPatternMatch = null;
@@ -140,8 +147,8 @@ public final class Routes {
         return lookup(url, type, bestPatternMatch, matchingPatterns, patternComparator);
     }
 
-    private RouteMapper lookup(String url, HttpType type, String bestPatternMatch,
-            List<String> matchingPatterns, Comparator<String> patternComparator) {
+    private RouteMapper lookup(String url, HttpType type, String bestPatternMatch, List<String> matchingPatterns,
+            Comparator<String> patternComparator) {
         if (bestPatternMatch != null) {
             var mappers = this.mappers.get(bestPatternMatch);
             if (mappers == null) {
@@ -185,21 +192,25 @@ public final class Routes {
             return;
         }
 
-        mappers.keySet().forEach(requestMethod -> {
-            var mapped = lookup(url, requestMethod);
-            if (mapped != null) {
+        mappers.keySet().forEach(type -> {
+            try {
+                var mapped = lookup(url, type);
+                if (mapped != null) {
+                    throw new RouteException("Duplicate Restful-style URL definition: " + url);
+                }
+            } catch (IllegalStateException e) {
                 throw new RouteException("Duplicate Restful-style URL definition: " + url);
             }
         });
 
         var mappedMapper = this.mappers.get(url);
         if (mappedMapper != null) {
-            mappers.forEach((requestMethod, mapper) -> {
-                if (mappedMapper.containsKey(requestMethod)) {
+            mappers.forEach((type, mapper) -> {
+                if (mappedMapper.containsKey(type)) {
                     throw new RouteException(
-                            "Duplicate Restful-style URL definition: " + url + " of method [ " + requestMethod + " ]");
+                            "Duplicate Restful-style URL definition: " + url + " of type [ " + type + " ]");
                 } else {
-                    mappedMapper.put(requestMethod, mapper);
+                    mappedMapper.put(type, mapper);
                 }
             });
         } else {
@@ -230,7 +241,7 @@ public final class Routes {
         var routes = new HashMap<String, Map<HttpType, RouteMapper>>();
         Arrays.stream(methods).filter(method -> filterMethod(method, annotated))
                 .map(method -> routeDefine(instance, method, annotated, url))
-                .forEach(routeRes -> routeDefine0(routeRes, routes));
+                .forEach(route -> routeDefine0(routes, route));
 
         return routes;
     }
@@ -238,7 +249,7 @@ public final class Routes {
     private boolean filterMethod(Method method, Class<? extends Route> annotated) {
         if (method.isAnnotationPresent(annotated)) {
             var mapping = method.getAnnotation(annotated);
-            if (mapping != null && StringUtils.isNotBlank(mapping.value())) {
+            if (mapping != null) {
                 return true;
             }
         }
@@ -292,22 +303,22 @@ public final class Routes {
         return routeBuilder.toString();
     }
 
-    private void routeDefine0(RouteEntity route, Map<String, Map<HttpType, RouteMapper>> routes) {
+    private void routeDefine0(Map<String, Map<HttpType, RouteMapper>> routes, RouteEntity route) {
         var routeURL = route.getRoute();
         if (!CollectionUtils.isEmpty(route.getMappers()) && routes.containsKey(routeURL)) {
             var before = route.getMappers().keySet();
             var after = routes.get(routeURL).keySet();
             if (!isIntersectionRequestMethod(before, after)) {
-                putRoute(route, routes);
+                putRoute(routes, route);
             } else {
                 throw new RouteException(routeURL);
             }
         } else {
-            putRoute(route, routes);
+            putRoute(routes, route);
         }
     }
 
-    private void putRoute(RouteEntity route, Map<String, Map<HttpType, RouteMapper>> routes) {
+    private void putRoute(Map<String, Map<HttpType, RouteMapper>> routes, RouteEntity route) {
         var url = route.getRoute();
         var mapper = route.getMappers();
         var mappers = routes.get(url);

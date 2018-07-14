@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,7 +39,6 @@ import org.nanoframework.core.web.mvc.Model;
 import org.nanoframework.core.web.mvc.View;
 import org.nanoframework.toolkit.consts.Charsets;
 import org.nanoframework.toolkit.consts.ContentType;
-import org.nanoframework.toolkit.lang.ArrayUtils;
 import org.nanoframework.toolkit.lang.ObjectUtils;
 import org.nanoframework.toolkit.lang.StringUtils;
 
@@ -98,7 +96,7 @@ public abstract class AbstractFilter implements Filter {
             response.setContentType(ContentType.APPLICATION_JSON);
             out = response.getWriter();
             out.write((String) ret);
-        } else if (ret instanceof Void) {
+        } else if (ret == Void.TYPE) {
             return;
         } else if (ret != null) {
             response.setContentType(ContentType.APPLICATION_JSON);
@@ -129,39 +127,6 @@ public abstract class AbstractFilter implements Filter {
                 }
             }
         });
-
-        var contentType = request.getContentType();
-        if (StringUtils.isBlank(contentType) || StringUtils.equals(contentType.split(";")[0],
-                ContentType.APPLICATION_FORM_URLENCODED.split(";")[0])) {
-            try (var scanner = new Scanner(request.getInputStream())) {
-                while (scanner.hasNextLine()) {
-                    var line = scanner.nextLine();
-                    var kvs = line.split("&");
-                    for (var kv : kvs) {
-                        if (StringUtils.isBlank(kv)) {
-                            continue;
-                        }
-
-                        var keyValue = kv.split("=");
-                        var key = StringUtils.lowerCase(keyValue[0]);
-                        var value = keyValue.length > 1 ? URLDecoder.decode(keyValue[1], Charsets.UTF_8.name())
-                                : StringUtils.EMPTY;
-                        if (value.length() > 0) {
-                            if (key.endsWith("[]")) {
-                                var values = (String[]) parameter.get(key);
-                                if (values == null) {
-                                    parameter.put(key, new String[] {value });
-                                } else {
-                                    parameter.put(key, ArrayUtils.add(values, value));
-                                }
-                            } else {
-                                parameter.put(key, value);
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         var uri = URLDecoder.decode(((HttpServletRequest) request).getRequestURI(), Charsets.UTF_8.name());
         var urlContext = URLContext.builder().context(uri).parameter(parameter).build();

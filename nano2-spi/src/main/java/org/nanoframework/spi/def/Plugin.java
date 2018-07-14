@@ -17,13 +17,10 @@ package org.nanoframework.spi.def;
 
 import javax.servlet.ServletConfig;
 
-import org.nanoframework.spi.annotation.Lazy;
-
 /**
  * @author yanghe
  * @since 1.1
  */
-@Lazy
 public interface Plugin {
     /**
      * @return 加载插件，如果加载成功则返回true

@@ -16,7 +16,6 @@
 package org.nanoframework.spi.support;
 
 import org.nanoframework.beans.BaseEntity;
-import org.nanoframework.spi.annotation.Lazy;
 import org.nanoframework.spi.annotation.Order;
 
 import lombok.Getter;
@@ -43,8 +42,6 @@ public final class SPIMapper extends BaseEntity {
 
     private final String instanceClsName;
 
-    private final Boolean lazy;
-
     private final Integer order;
 
     private SPIMapper(@NonNull Class spi, @NonNull String name, @NonNull Class instance) {
@@ -53,7 +50,6 @@ public final class SPIMapper extends BaseEntity {
         this.name = name;
         this.instance = instance;
         this.instanceClsName = instance.getName();
-        this.lazy = instance.isAnnotationPresent(Lazy.class);
         if (instance.isAnnotationPresent(Order.class)) {
             var order = (Order) instance.getAnnotation(Order.class);
             this.order = order.value();
