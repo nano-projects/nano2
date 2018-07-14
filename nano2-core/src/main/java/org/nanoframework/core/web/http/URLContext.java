@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.nanoframework.server.Server;
 import org.nanoframework.toolkit.lang.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -40,6 +39,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class URLContext {
+    private static final String ROOT = "server.root";
 
     /** URI串. */
     private String context;
@@ -51,7 +51,7 @@ public class URLContext {
     private Map<String, Object> parameter;
 
     public String getNoRootContext() {
-        var root = System.getProperty(Server.ROOT);
+        var root = System.getProperty(ROOT);
         return context == null ? EMPTY : StringUtils.isEmpty(root) ? context : context.replaceFirst(root, EMPTY);
     }
 

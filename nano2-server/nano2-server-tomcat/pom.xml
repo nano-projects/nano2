@@ -94,5 +94,9 @@
             <groupId>org.nanoframework</groupId>
             <artifactId>nano2-modules-httpclient</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.nanoframework</groupId>
+            <artifactId>nano2-server-base</artifactId>
+        </dependency>
     </dependencies>
 </project>
