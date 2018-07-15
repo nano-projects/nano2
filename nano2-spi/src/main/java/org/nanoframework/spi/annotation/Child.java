@@ -28,10 +28,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE })
-public @interface Level {
-
-    /**
-     * @return 级别，值越小，越早加载
-     */
-    int value() default 0;
+public @interface Child {
+    
 }

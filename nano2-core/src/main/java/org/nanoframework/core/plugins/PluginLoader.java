@@ -31,7 +31,7 @@ import org.nanoframework.core.config.InitParameter;
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.spi.SPIModule;
-import org.nanoframework.spi.annotation.Level;
+import org.nanoframework.spi.annotation.Child;
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.def.Plugin;
 import org.nanoframework.spi.def.exception.PluginLoaderException;
@@ -130,9 +130,9 @@ public class PluginLoader {
             var modules = new HashMap<Integer, List<Module>>();
             moduleNames.forEach(moduleName -> {
                 var module = injector.getInstance(Key.get(Module.class, Names.named(moduleName)));
-                var level = module.getClass().getAnnotation(Level.class);
-                if (level != null) {
-                    addModules(modules, level.value(), module);
+                var isChild = module.getClass().isAnnotationPresent(Child.class);
+                if (isChild) {
+                    addModules(modules, 1, module);
                 } else {
                     addModules(modules, 0, module);
                 }
@@ -142,19 +142,19 @@ public class PluginLoader {
         }
     }
 
-    private void addModules(Map<Integer, List<Module>> modules, Integer level, Module module) {
-        if (modules.containsKey(level)) {
-            modules.get(level).add(module);
+    private void addModules(Map<Integer, List<Module>> modules, Integer child, Module module) {
+        if (modules.containsKey(child)) {
+            modules.get(child).add(module);
         } else {
-            modules.put(level, Lists.newArrayList(module));
+            modules.put(child, Lists.newArrayList(module));
         }
     }
 
     private void loadModules(Map<Integer, List<Module>> loadingModules) throws Throwable {
-        var levels = loadingModules.keySet().stream().collect(Collectors.toList());
-        Collections.sort(levels);
-        for (var level : levels) {
-            var modules = loadingModules.get(level);
+        var keys = loadingModules.keySet().stream().collect(Collectors.toList());
+        Collections.sort(keys);
+        for (var key : keys) {
+            var modules = loadingModules.get(key);
             if (!CollectionUtils.isEmpty(modules)) {
                 var mdus = new ArrayList<Module>();
                 for (var module : modules) {
@@ -163,7 +163,7 @@ public class PluginLoader {
                 }
 
                 if (!CollectionUtils.isEmpty(mdus)) {
-                    if (level.intValue() == 0) {
+                    if (key.intValue() == 0) {
                         mdus.add(0, new SPIModule());
                         Globals.set(Injector.class, Guice.createInjector(mdus));
                     } else {
