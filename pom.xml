@@ -60,6 +60,8 @@
         <jose4j.version>0.6.3</jose4j.version>
         <druid.version>1.0.18</druid.version>
         <tomcat-jdbc.version>8.0.33</tomcat-jdbc.version>
+        <mybatis.version>3.4.6</mybatis.version>
+        <mybatis-guice.version>3.10</mybatis-guice.version>
     </properties>
 
     <issueManagement>
@@ -189,6 +191,16 @@
                 <artifactId>tomcat-jdbc</artifactId>
                 <version>${tomcat-jdbc.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-guice</artifactId>
+                <version>${mybatis-guice.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.nanoframework</groupId>
@@ -238,6 +250,16 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-modules-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-orm-jdbc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-orm-mybatis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

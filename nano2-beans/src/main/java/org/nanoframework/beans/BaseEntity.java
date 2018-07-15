@@ -17,7 +17,6 @@ package org.nanoframework.beans;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -219,8 +218,7 @@ public abstract class BaseEntity implements Cloneable, Serializable {
             var bean = (T) beanType.getConstructor().newInstance();
             beanMap.forEach((key, value) -> bean.setAttributeValue(key, value));
             return bean;
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
+        } catch (Throwable e) {
             throw new EntityException(e.getMessage(), e);
         }
     }

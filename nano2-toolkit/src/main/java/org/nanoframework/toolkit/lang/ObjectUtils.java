@@ -19,6 +19,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author yanghe
@@ -110,5 +112,103 @@ public final class ObjectUtils {
 
     public static boolean isNotEmpty(Object obj) {
         return !isEmpty(obj);
+    }
+
+    /**
+     * 判断目标值是否存在与源列表中
+     * @param target 源
+     * @param source 目标
+     * @return 返回是否存在结果 true=存在，false=不存在
+     */
+    public static final boolean isInList(Object target, Object... source) {
+        if (target == null) {
+            return false;
+        }
+
+        if (source != null && source.length > 0) {
+            for (var src : source) {
+                if (target.equals(src)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 判断目标值是否存在与源列表中
+     * @param target 源
+     * @param source 目标
+     * @return 返回是否存在结果 true=存在，false=不存在
+     */
+    public static final boolean isInList(Object target, String... source) {
+        if (target == null) {
+            return false;
+        }
+
+        if (source != null && source.length > 0) {
+            for (var src : source) {
+                if (StringUtils.isEmpty(src)) {
+                    return false;
+                }
+
+                if (target.equals(src.trim())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 正则表达式比较target是否在regExs内
+     * @param target 源
+     * @param regExs 正则列表
+     * @return 返回是否存在结果 true=存在，false=不存在
+     */
+    public static final boolean isInListByRegEx(String target, String... regExs) {
+        if (StringUtils.isBlank(target)) {
+            return false;
+        }
+
+        if (regExs != null && regExs.length > 0) {
+            for (var regEx : regExs) {
+                if (StringUtils.isBlank(regEx)) {
+                    continue;
+                }
+
+                if (Pattern.compile(regEx).matcher(target).find()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static final boolean isInListByRegEx(String target, Set<String> regExs) {
+        if (CollectionUtils.isEmpty(regExs)) {
+            return false;
+        }
+
+        return isInListByRegEx(target, regExs.toArray(new String[regExs.size()]));
+    }
+
+    public static final boolean isInEndWiths(String target, String... source) {
+        if (target == null) {
+            return false;
+        }
+
+        if (source != null && source.length > 0) {
+            for (var suffix : source) {
+                if (target.endsWith(suffix)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
