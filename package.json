@@ -1,0 +1,28 @@
+{
+  "name": "nano2",
+  "version": "2.0.0",
+  "description": "[![Build Status](https://travis-ci.org/nano-projects/nano2.svg?branch=master)](https://travis-ci.org/nano-projects/nano2) [![Coverage Status](https://coveralls.io/repos/github/nano-projects/nano2/badge.svg)](https://coveralls.io/github/nano-projects/nano2) [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nano-projects/nano2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nano-projects/nano2/issues"
+  },
+  "homepage": "https://github.com/nano-projects/nano2#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
