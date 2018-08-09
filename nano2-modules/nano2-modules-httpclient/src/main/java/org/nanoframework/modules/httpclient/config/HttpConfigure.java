@@ -15,6 +15,7 @@
  */
 package org.nanoframework.modules.httpclient.config;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
@@ -185,7 +186,12 @@ public class HttpConfigure extends BaseEntity {
         }
     }
 
-    public static void clear() {
+    public static void clear() throws IOException {
+        var clients = CLIENTS.values();
+        for (var client : clients) {
+            client.close();
+        }
+
         CLIENTS.clear();
     }
 

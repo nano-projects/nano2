@@ -15,6 +15,7 @@
  */
 package org.nanoframework.modules.httpclient.listener;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import org.nanoframework.modules.base.listener.AbstractTypeListener;
@@ -40,6 +41,11 @@ public class HttpClientTypeListener extends AbstractTypeListener<Http> {
         } catch (Throwable e) {
             throw new HttpClientException(String.format("设置置配异常: %s", e.getMessage()), e);
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        HttpConfigure.clear();
     }
 
 }

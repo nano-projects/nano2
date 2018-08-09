@@ -208,4 +208,9 @@ public class MultiDataSourceModule extends AbstractModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

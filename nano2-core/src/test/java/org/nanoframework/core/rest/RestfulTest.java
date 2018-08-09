@@ -26,7 +26,7 @@ import javax.servlet.ServletContext;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.nanoframework.core.plugins.PluginLoader;
+import org.nanoframework.core.boot.BootLoader;
 import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.core.web.http.URLContext;
 import org.nanoframework.toolkit.scan.ClassScanner;
@@ -40,7 +40,7 @@ class RestfulTest {
     @BeforeAll
     static void setup() {
         ClassScanner.scan(RestfulTest.class);
-        new PluginLoader().init(new ServletConfig() {
+        new BootLoader().init(new ServletConfig() {
 
             @Override
             public String getServletName() {

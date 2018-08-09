@@ -88,4 +88,9 @@ public class Log4j2Module implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

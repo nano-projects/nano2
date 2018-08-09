@@ -71,4 +71,9 @@ public class JdbcModule extends AbstractModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

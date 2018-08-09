@@ -23,13 +23,12 @@ import com.google.common.collect.Lists;
 import com.google.inject.MembersInjector;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
-import com.google.inject.spi.TypeListener;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public abstract class AbstractTypeListener<T extends Annotation> implements TypeListener {
+public abstract class AbstractTypeListener<T extends Annotation> implements CloseableTypeListener {
 
     @Override
     public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {

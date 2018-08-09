@@ -119,4 +119,9 @@ public class APIModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

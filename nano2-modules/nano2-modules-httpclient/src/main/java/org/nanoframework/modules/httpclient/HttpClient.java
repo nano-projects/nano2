@@ -15,6 +15,7 @@
  */
 package org.nanoframework.modules.httpclient;
 
+import java.io.Closeable;
 import java.net.URISyntaxException;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import com.google.inject.ImplementedBy;
  * @since 1.3.3
  */
 @ImplementedBy(HttpClientImpl.class)
-public interface HttpClient {
+public interface HttpClient extends Closeable {
     /**
      * Http 'GET' request.
      * @param url request url

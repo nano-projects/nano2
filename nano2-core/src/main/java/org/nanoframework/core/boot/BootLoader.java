@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.core.plugins;
+package org.nanoframework.core.boot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,6 +40,7 @@ import org.nanoframework.toolkit.lang.StringUtils;
 import org.nanoframework.toolkit.properties.PropertiesLoader;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -50,14 +50,18 @@ import com.google.inject.name.Names;
  * @author yanghe
  * @since 2.0.0
  */
-public class PluginLoader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PluginLoader.class);
+public class BootLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BootLoader.class);
 
     /** */
     protected ServletConfig config;
 
     /** */
     protected ServletContext context;
+
+    private Map<Integer, List<Module>> modules = Maps.newHashMap();
+
+    private List<Plugin> plugins = Lists.newArrayList();
 
     /**
      * @param servlet HttpServlet
@@ -86,6 +90,7 @@ public class PluginLoader {
             initRootInjector();
             initModules();
             initPlugins();
+            addShutdownHook();
         } catch (Throwable e) {
             throw new PluginLoaderException(e.getMessage(), e);
         }
@@ -127,7 +132,6 @@ public class PluginLoader {
         var moduleNames = SPILoader.spiNames(Module.class);
         if (!CollectionUtils.isEmpty(moduleNames)) {
             var injector = Globals.get(Injector.class);
-            var modules = new HashMap<Integer, List<Module>>();
             moduleNames.forEach(moduleName -> {
                 var module = injector.getInstance(Key.get(Module.class, Names.named(moduleName)));
                 var isChild = module.getClass().isAnnotationPresent(Child.class);
@@ -180,7 +184,7 @@ public class PluginLoader {
      */
     protected void initPlugins() throws Throwable {
         var pluginNames = SPILoader.spiNames(Plugin.class);
-        if (!CollectionUtils.isEmpty(pluginNames)) {
+        if (CollectionUtils.isNotEmpty(pluginNames)) {
             var injector = Globals.get(Injector.class);
             for (var pluginName : pluginNames) {
                 var plugin = injector.getInstance(Key.get(Plugin.class, Names.named(pluginName)));
@@ -188,7 +192,34 @@ public class PluginLoader {
                 if (plugin.load()) {
                     LOGGER.info("Loading Plugin: {}", plugin.getClass().getName());
                 }
+
+                plugins.add(plugin);
             }
         }
+    }
+
+    private void addShutdownHook() {
+        var shutdown = new Thread(() -> destroy());
+        shutdown.setName("BootLoader-ShutdownHook-Thread");
+        Runtime.getRuntime().addShutdownHook(shutdown);
+    }
+
+    public void destroy() {
+        for (var modules : this.modules.values()) {
+            if (CollectionUtils.isNotEmpty(modules)) {
+                for (var module : modules) {
+                    module.destroy();
+                }
+            }
+
+            modules.clear();
+        }
+
+        for (var plugin : plugins) {
+            plugin.destroy();
+        }
+
+        this.modules.clear();
+        plugins.clear();
     }
 }

@@ -53,4 +53,9 @@ public class MultiTransactionalModule extends AbstractModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

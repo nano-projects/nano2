@@ -75,6 +75,7 @@
         <module>nano2-spi</module>
         <module>nano2-core</module>
         <module>nano2-modules</module>
+        <module>nano2-plugins</module>
         <module>nano2-orm</module>
         <module>nano2-server</module>
         <module>nano2-tests</module>

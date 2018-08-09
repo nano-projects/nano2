@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.spi.def;
+package org.nanoframework.modules.base.listener;
 
-import javax.servlet.ServletConfig;
+import java.io.Closeable;
+
+import com.google.inject.spi.TypeListener;
 
 /**
  * @author yanghe
- * @since 1.1
+ * @since 2.0.0
  */
-public interface Plugin {
-    /**
-     * @return 加载插件，如果加载成功则返回true
-     */
-    boolean load();
+public interface CloseableTypeListener extends TypeListener, Closeable {
 
-    /**
-     * @param config Servlet配置
-     */
-    void config(ServletConfig config);
-
-    void destroy();
 }

@@ -33,4 +33,6 @@ public interface Module extends com.google.inject.Module {
      * @param config Servlet配置
      */
     void config(ServletConfig config);
+
+    void destroy();
 }

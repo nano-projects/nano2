@@ -63,4 +63,9 @@ public class SPIModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+        SPILoader.clear();
+    }
+
 }

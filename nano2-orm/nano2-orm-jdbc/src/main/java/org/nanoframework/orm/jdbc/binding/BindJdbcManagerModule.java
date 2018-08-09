@@ -50,4 +50,9 @@ public class BindJdbcManagerModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

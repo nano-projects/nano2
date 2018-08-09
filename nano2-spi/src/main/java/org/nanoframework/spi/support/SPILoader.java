@@ -100,7 +100,7 @@ public class SPILoader {
             loader.getSPIMapperWithStream(streams, spiMappers);
             loader.sortSPIMapper(spiMappers);
 
-            SPI_MAPPERS.clear();
+            clear();
             SPI_MAPPERS.putAll(spiMappers);
             LOADED.set(true);
         } finally {
@@ -345,5 +345,13 @@ public class SPILoader {
 
             JAR_FILES.clear();
         }
+    }
+
+    public static void clear() {
+        SPI_MAPPERS.values().forEach(mappers -> {
+            mappers.clear();
+        });
+
+        SPI_MAPPERS.clear();
     }
 }

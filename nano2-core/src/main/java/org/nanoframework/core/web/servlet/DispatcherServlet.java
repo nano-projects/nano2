@@ -18,7 +18,7 @@ package org.nanoframework.core.web.servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.nanoframework.core.plugins.PluginLoader;
+import org.nanoframework.core.boot.BootLoader;
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
 
@@ -36,7 +36,7 @@ public class DispatcherServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         try {
-            new PluginLoader().init(this);
+            new BootLoader().init(this);
         } catch (Throwable e) {
             LOGGER.error(e.getMessage(), e);
             System.exit(1);

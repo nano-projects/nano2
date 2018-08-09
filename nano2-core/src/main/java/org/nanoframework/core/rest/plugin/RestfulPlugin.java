@@ -19,8 +19,8 @@ import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.rest.Routes;
-import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.annotation.Restful;
+import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.spi.def.Plugin;
@@ -48,8 +48,7 @@ public class RestfulPlugin implements Plugin {
                 LOGGER.info("Inject Restful API Class: {}", cls.getName());
                 var instance = injector.getInstance(cls);
                 var methods = cls.getMethods();
-                var mapping = cls.isAnnotationPresent(Route.class)
-                        ? cls.getAnnotation(Route.class).value()
+                var mapping = cls.isAnnotationPresent(Route.class) ? cls.getAnnotation(Route.class).value()
                         : StringUtils.EMPTY;
                 var routes = Routes.route();
                 var mappers = routes.matchers(instance, methods, Route.class, mapping);
@@ -63,6 +62,11 @@ public class RestfulPlugin implements Plugin {
     @Override
     public void config(ServletConfig config) {
 
+    }
+
+    @Override
+    public void destroy() {
+        Routes.route().clear();
     }
 
 }

@@ -27,6 +27,7 @@ import static org.nanoframework.modules.httpclient.config.HttpConfigure.MAX_TOTA
 import static org.nanoframework.modules.httpclient.config.HttpConfigure.TIME_TO_LIVE;
 import static org.nanoframework.modules.httpclient.config.HttpConfigure.TIME_UNIT;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
@@ -339,5 +340,10 @@ public abstract class AbstractHttpClient implements HttpClient {
         } catch (Throwable e) {
             throw new HttpClientInvokeException(e.getMessage(), e, send, System.currentTimeMillis());
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        client.close();
     }
 }

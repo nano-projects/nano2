@@ -58,4 +58,9 @@ public class BindSqlSessionModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

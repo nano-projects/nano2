@@ -65,4 +65,9 @@ public class AOPModule implements Module {
     public void config(final ServletConfig config) {
 
     }
+
+    @Override
+    public void destroy() {
+
+    }
 }

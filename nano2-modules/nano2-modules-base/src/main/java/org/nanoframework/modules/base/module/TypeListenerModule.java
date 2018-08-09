@@ -15,20 +15,22 @@
  */
 package org.nanoframework.modules.base.module;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
+import org.nanoframework.modules.base.listener.CloseableTypeListener;
 import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.support.SPILoader;
 import org.nanoframework.toolkit.lang.CollectionUtils;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
-import com.google.inject.spi.TypeListener;
 
 /**
  * @author yanghe
@@ -36,16 +38,18 @@ import com.google.inject.spi.TypeListener;
  */
 @Order(-9998)
 public class TypeListenerModule implements Module {
+    private List<CloseableTypeListener> listeners = Lists.newArrayList();
 
     @SuppressWarnings("unchecked")
     @Override
     public void configure(Binder binder) {
-        var spis = SPILoader.spis(TypeListener.class);
+        var spis = SPILoader.spis(CloseableTypeListener.class);
         if (CollectionUtils.isNotEmpty(spis)) {
             var injector = Globals.get(Injector.class);
             spis.forEach(spi -> {
-                var listener = (TypeListener) injector.getInstance(spi.getInstance());
+                var listener = (CloseableTypeListener) injector.getInstance(spi.getInstance());
                 binder.bindListener(Matchers.any(), listener);
+                listeners.add(listener);
             });
         }
     }
@@ -58,6 +62,17 @@ public class TypeListenerModule implements Module {
     @Override
     public void config(ServletConfig config) {
 
+    }
+
+    @Override
+    public void destroy() {
+        for (var listener : listeners) {
+            try {
+                listener.close();
+            } catch (IOException e) {
+                // ignore
+            }
+        }
     }
 
 }

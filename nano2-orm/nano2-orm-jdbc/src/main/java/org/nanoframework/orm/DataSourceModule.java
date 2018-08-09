@@ -75,4 +75,9 @@ public class DataSourceModule implements Module {
 
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }

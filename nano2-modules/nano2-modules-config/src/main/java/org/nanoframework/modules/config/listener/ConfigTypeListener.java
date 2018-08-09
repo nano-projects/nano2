@@ -15,9 +15,10 @@
  */
 package org.nanoframework.modules.config.listener;
 
-import static org.nanoframework.modules.config.listener.DefaultConfigChangeListener.add;
-
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.nanoframework.beans.format.ClassCast;
@@ -25,10 +26,15 @@ import org.nanoframework.modules.base.listener.AbstractTypeListener;
 import org.nanoframework.modules.config.ConfigMapper;
 import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.config.exception.ConfigException;
+import org.nanoframework.modules.logging.Logger;
+import org.nanoframework.modules.logging.LoggerFactory;
+import org.nanoframework.toolkit.lang.CollectionUtils;
 
 import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.utils.StringUtils;
+import com.ctrip.framework.apollo.model.ConfigChangeEvent;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -36,7 +42,9 @@ import com.google.common.collect.Maps;
  * @since 2.0.0
  */
 public class ConfigTypeListener extends AbstractTypeListener<Value> {
-    private Map<String, ConfigChangeListener> listeners = Maps.newConcurrentMap();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigTypeListener.class);
+
+    private Map<String, DefaultConfigChangeListener> listeners = Maps.newConcurrentMap();
 
     @Override
     protected Class<? extends Value> type() {
@@ -45,7 +53,7 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
 
     @Override
     protected void init(Value value, Object instance, Field field) {
-        add(ConfigMapper.create(value, instance, field));
+        DefaultConfigChangeListener.add(ConfigMapper.create(value, instance, field));
 
         var config = ConfigService.getConfig(value.namespace());
         var ns = value.namespace();
@@ -68,4 +76,74 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        if (CollectionUtils.isNotEmpty(listeners)) {
+            DefaultConfigChangeListener.clear();
+        }
+    }
+
+    private static class DefaultConfigChangeListener implements ConfigChangeListener {
+        private static final Map<String, Map<String, List<ConfigMapper>>> MAPPER = Maps.newConcurrentMap();
+
+        @Override
+        public void onChange(ConfigChangeEvent event) {
+            var keys = event.changedKeys();
+            if (CollectionUtils.isNotEmpty(keys)) {
+                keys.stream().filter(MAPPER::containsKey).forEach(key -> {
+                    var ns = MAPPER.get(key);
+                    var change = event.getChange(key);
+                    var cms = ns.get(change.getNamespace());
+                    if (CollectionUtils.isNotEmpty(cms)) {
+                        change(cms, change.getNewValue());
+                    }
+                });
+            }
+        }
+
+        private void change(List<ConfigMapper> cms, String value) {
+            cms.forEach(cm -> {
+                var field = cm.getField();
+                var fieldType = field.getType().getName();
+                try {
+                    field.set(cm.getInstance(), ClassCast.cast(value, fieldType));
+                    LOGGER.debug("配置变更通知: key = {}, value = {}", cm.getKey(), value);
+                } catch (Throwable e) {
+                    LOGGER.error(String.format("设置配置异常: %s", e.getMessage()), e);
+                }
+            });
+        }
+
+        private static void add(ConfigMapper cm) {
+            var key = cm.getKey();
+            if (!MAPPER.containsKey(key)) {
+                MAPPER.put(key, Maps.newConcurrentMap());
+            }
+
+            var ns = MAPPER.get(key);
+            var namespace = cm.getNamespace();
+            if (!ns.containsKey(namespace)) {
+                ns.put(namespace, Collections.synchronizedList(Lists.newArrayList()));
+            }
+
+            ns.get(namespace).add(cm);
+        }
+
+        private static void clear() {
+            if (CollectionUtils.isNotEmpty(MAPPER)) {
+                MAPPER.values().forEach(ns -> {
+                    if (CollectionUtils.isNotEmpty(ns)) {
+                        var configs = ns.values();
+                        if (CollectionUtils.isNotEmpty(configs)) {
+                            configs.clear();
+                        }
+                    }
+
+                    ns.clear();
+                });
+
+                MAPPER.clear();
+            }
+        }
+    }
 }

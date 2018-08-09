@@ -14,7 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -23,35 +24,27 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nano2-orm</artifactId>
+    <artifactId>nano2-plugins</artifactId>
     <packaging>pom</packaging>
     <inceptionYear>2018</inceptionYear>
-    <name>Nano2 ORM</name>
+    <name>Nano2 Modules</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <cs.dir>${project.parent.basedir}</cs.dir>
-        <h2.version>1.4.191</h2.version>
-        <mysql-connector.version>5.1.29</mysql-connector.version>
+        <sentinel.version>0.1.1</sentinel.version>
     </properties>
 
     <modules>
-        <module>nano2-orm-jdbc</module>
-    <module>nano2-orm-mybatis</module>
-  </modules>
+        <module>nano2-plugins-sentinel</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql-connector.version}</version>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

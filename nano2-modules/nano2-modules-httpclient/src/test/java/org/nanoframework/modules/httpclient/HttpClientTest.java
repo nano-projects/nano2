@@ -57,7 +57,7 @@ public class HttpClientTest {
     }
 
     @AfterAll
-    static void destory() {
+    static void destory() throws IOException {
         Globals.remove(Injector.class);
         HttpConfigure.clear();
     }
