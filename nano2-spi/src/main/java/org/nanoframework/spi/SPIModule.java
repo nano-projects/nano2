@@ -20,6 +20,7 @@ import java.util.List;
 import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
+import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.support.SPILoader;
 import org.nanoframework.spi.support.SPIMapper;
@@ -34,6 +35,7 @@ import com.google.inject.name.Names;
  * @author yanghe
  * @since 1.4.8
  */
+@Order(-9999)
 public class SPIModule implements Module {
 
     @Override

@@ -20,6 +20,7 @@ import java.util.List;
 import javax.servlet.ServletConfig;
 
 import org.nanoframework.beans.Globals;
+import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.support.SPILoader;
 import org.nanoframework.toolkit.lang.CollectionUtils;
@@ -33,6 +34,7 @@ import com.google.inject.spi.TypeListener;
  * @author yanghe
  * @since 2.0.0
  */
+@Order(-9998)
 public class TypeListenerModule implements Module {
 
     @SuppressWarnings("unchecked")

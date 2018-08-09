@@ -48,9 +48,10 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
         add(ConfigMapper.create(value, instance, field));
 
         var config = ConfigService.getConfig(value.namespace());
-        if (!listeners.containsKey(value.namespace())) {
+        var ns = value.namespace();
+        if (!listeners.containsKey(ns)) {
             var listener = new DefaultConfigChangeListener();
-            listeners.put(value.namespace(), listener);
+            listeners.put(ns, listener);
             config.addChangeListener(listener);
         }
 

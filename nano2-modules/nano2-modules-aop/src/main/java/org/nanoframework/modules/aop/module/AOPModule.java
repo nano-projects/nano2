@@ -31,7 +31,6 @@ import org.nanoframework.modules.aop.interceptor.BeforeAndAfterInterceptor;
 import org.nanoframework.modules.aop.interceptor.BeforeAndAfterMoreInterceptor;
 import org.nanoframework.modules.aop.interceptor.BeforeInterceptor;
 import org.nanoframework.modules.aop.interceptor.BeforeMoreInterceptor;
-import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
 
 import com.google.inject.Binder;
@@ -41,7 +40,6 @@ import com.google.inject.matcher.Matchers;
  * @author yanghe
  * @since 1.1
  */
-@Order(-10)
 public class AOPModule implements Module {
 
     @Override
