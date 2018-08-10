@@ -23,7 +23,7 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>nano2-server-tomcat</artifactId>
-    <name>nano2-server-tomcat</name>
+    <name>Nano2 Server Tomcat</name>
     <url>http://maven.apache.org</url>
     <properties>
         <cs.dir>${project.parent.parent.basedir}</cs.dir>
