@@ -63,7 +63,7 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
     }
 
     @Override
-    protected void init(Value value, Object instance, Field field) {
+    protected void init(Value value, Class<?> type, Object instance, Field field) {
         DefaultConfigChangeListener.add(ConfigMapper.create(value, instance, field));
 
         var config = ConfigService.getConfig(value.namespace());
@@ -132,6 +132,8 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
                         var changeType = change.getChangeType();
                         if (changeType == PropertyChangeType.DELETED) {
                             LOGGER.warn("属性配置已删除，本地配置不变更: key = {}", key);
+                            listeners.values()
+                                    .forEach(listener -> EXECUTOR.execute(() -> listener.remove(key)));
                         } else {
                             var newValue = change.getNewValue();
                             change(cms, newValue);

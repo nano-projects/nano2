@@ -26,6 +26,8 @@ import org.aopalliance.intercept.Joinpoint;
  */
 public interface Invoker {
 
+    Class<?> getType();
+
     /**
      * Gets the method being called.
      * <p>

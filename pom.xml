@@ -78,7 +78,7 @@
         <module>nano2-plugins</module>
         <module>nano2-orm</module>
         <module>nano2-server</module>
-        <module>nano2-tests</module>
+        <module>nano2-demo</module>
     </modules>
 
     <scm>
@@ -276,6 +276,11 @@
             <dependency>
                 <groupId>org.nanoframework</groupId>
                 <artifactId>nano2-modules-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nanoframework</groupId>
+                <artifactId>nano2-modules-sentinel</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -13,15 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.base.listener;
+package org.nanoframework.demo.rest;
+
+import org.nanoframework.core.rest.annotation.Mock;
+import org.nanoframework.core.rest.annotation.Restful;
+import org.nanoframework.core.rest.annotation.Route;
+import org.nanoframework.core.rest.enums.HttpType;
+import org.nanoframework.modules.sentinel.annotation.Sentinel;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public interface NotifyListener {
+@Restful
+@Route("/v1/hello")
+public class HelloComponent {
 
-    void notify(String key, String value);
-
-    void remove(String key);
+    @Route(type = HttpType.GET)
+    @Sentinel
+    @Mock
+    public Object hello() {
+        return "Hello World";
+    }
 }

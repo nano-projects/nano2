@@ -19,6 +19,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.nanoframework.toolkit.lang.ReflectUtils;
 
 /**
  * @author yanghe
@@ -35,6 +36,16 @@ public abstract class Filter {
     final Object doFilter(MethodInvocation invocation) throws Throwable {
         this.invocation = invocation;
         this.invoker = new Invoker() {
+            @Override
+            public Class<?> getType() {
+                var clsName = invocation.getThis().getClass().getName();
+                var index = clsName.indexOf("$$EnhancerByGuice$$");
+                if (index > -1) {
+                    return ReflectUtils.loadClass(clsName.substring(0, index));
+                } else {
+                    return ReflectUtils.loadClass(clsName);
+                }
+            }
 
             @Override
             public Method getMethod() {
@@ -58,7 +69,7 @@ public abstract class Filter {
 
         };
 
-        return doNext();
+        return proceed(invoker);
     }
 
     protected final Object doNext() throws Throwable {

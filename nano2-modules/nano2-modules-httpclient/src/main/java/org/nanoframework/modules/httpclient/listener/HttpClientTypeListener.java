@@ -35,7 +35,7 @@ public class HttpClientTypeListener extends AbstractTypeListener<Http> {
     }
 
     @Override
-    protected void init(Http http, Object instance, Field field) {
+    protected void init(Http http, Class<?> type, Object instance, Field field) {
         try {
             field.set(instance, new HttpConfigure(http).get());
         } catch (Throwable e) {

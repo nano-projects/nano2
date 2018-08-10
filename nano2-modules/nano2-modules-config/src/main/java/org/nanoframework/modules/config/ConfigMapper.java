@@ -16,6 +16,7 @@
 package org.nanoframework.modules.config;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import org.nanoframework.modules.config.annotation.Value;
 
@@ -37,9 +38,15 @@ public class ConfigMapper {
 
     private final Object instance;
 
+    private final Method method;
+
     private final Field field;
 
+    public static ConfigMapper create(Value value, Object instance, Method method) {
+        return new ConfigMapper(value.value(), value.namespace(), value.required(), instance, method, null);
+    }
+
     public static ConfigMapper create(Value value, Object instance, Field field) {
-        return new ConfigMapper(value.value(), value.namespace(), value.required(), instance, field);
+        return new ConfigMapper(value.value(), value.namespace(), value.required(), instance, null, field);
     }
 }

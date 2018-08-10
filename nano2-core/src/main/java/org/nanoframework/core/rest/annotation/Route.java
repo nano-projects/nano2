@@ -42,4 +42,5 @@ public @interface Route {
      * @return 请求类型列表
      */
     HttpType[] type() default {};
+
 }

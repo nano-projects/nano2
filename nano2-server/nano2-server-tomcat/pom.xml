@@ -93,6 +93,7 @@
         <dependency>
             <groupId>org.nanoframework</groupId>
             <artifactId>nano2-modules-httpclient</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.nanoframework</groupId>

@@ -15,17 +15,30 @@
  */
 package org.nanoframework.core.rest.mock;
 
+import java.util.Map;
+
 import org.nanoframework.core.rest.invoker.Invoker;
+import org.nanoframework.core.web.http.HttpStatusCode;
+
+import com.google.inject.Singleton;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
+@Singleton
 public class DefaultMocker implements Mocker {
+
+    // private static final String MESSAGE = "{\"error\": {\"code\": 502, \"message\": \"服务已降级\"}}";
+    //
+    // @Override
+    // public Object mock(Invoker invoker) {
+    // return MESSAGE;
+    // }
 
     @Override
     public Object mock(Invoker invoker) {
-        return null;
+        return Map.of("error", Map.of("code", HttpStatusCode.SC_BAD_GATEWAY, "message", "服务已降级"));
     }
 
 }

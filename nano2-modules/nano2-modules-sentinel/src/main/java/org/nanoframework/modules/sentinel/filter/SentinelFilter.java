@@ -37,9 +37,16 @@ public class SentinelFilter extends Filter {
 
     @Override
     protected Object proceed(Invoker invoker) throws Throwable {
+        var type = invoker.getType();
         var method = invoker.getMethod();
-        var route = method.getAnnotation(Route.class);
-        if (SphO.entry(route.value())) {
+        String route;
+        if (type.isAnnotationPresent(Route.class)) {
+            route = type.getAnnotation(Route.class).value() + method.getAnnotation(Route.class).value();
+        } else {
+            route = method.getAnnotation(Route.class).value();
+        }
+
+        if (SphO.entry(route)) {
             try {
                 return doNext();
             } finally {

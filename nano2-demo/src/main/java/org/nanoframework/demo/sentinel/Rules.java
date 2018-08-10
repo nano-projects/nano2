@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.base.listener;
+package org.nanoframework.demo.sentinel;
+
+import com.google.inject.Singleton;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public interface NotifyListener {
+@Singleton
+public class Rules {
 
-    void notify(String key, String value);
-
-    void remove(String key);
 }

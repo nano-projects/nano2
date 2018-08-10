@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.base.listener;
+package org.nanoframework.demo;
+
+import org.nanoframework.server.tomcat.TomcatServer;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-public interface NotifyListener {
+public class Bootstrap {
 
-    void notify(String key, String value);
-
-    void remove(String key);
+    public static void main(String[] args) throws Throwable {
+        TomcatServer.server(Bootstrap.class).bootstrap("start");
+    }
 }

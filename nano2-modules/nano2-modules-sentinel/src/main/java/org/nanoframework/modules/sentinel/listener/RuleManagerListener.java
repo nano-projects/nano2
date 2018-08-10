@@ -16,6 +16,7 @@
 package org.nanoframework.modules.sentinel.listener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,7 +66,7 @@ public class RuleManagerListener implements NotifyListener {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
-        }, delay);
+        }, new Date(), delay);
     }
 
     @Override
@@ -74,7 +75,24 @@ public class RuleManagerListener implements NotifyListener {
         try {
             lock.lock();
             var rule = JSON.parseObject(value, SentinelRule.class);
-            rules.put(key, rule);
+            if (rule != null) {
+                rules.put(key, rule);
+            }
+
+            changed.set(true);
+        } catch (Throwable e) {
+            LOGGER.error(e.getMessage(), e);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void remove(String key) {
+        var lock = this.lock;
+        try {
+            lock.lock();
+            rules.remove(key);
             changed.set(true);
         } catch (Throwable e) {
             LOGGER.error(e.getMessage(), e);
@@ -120,6 +138,8 @@ public class RuleManagerListener implements NotifyListener {
                     if (CollectionUtils.isNotEmpty(systems)) {
                         SystemRuleManager.loadRules(systems);
                     }
+
+                    LOGGER.info("同步Sentinel配置结束");
                 }
             } finally {
                 changed.set(false);

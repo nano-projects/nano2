@@ -24,7 +24,7 @@ public final class InitParameter {
     public static final String CONTEXT = "context";
 
     /** 主配置属性文件路径. */
-    public static final String DEFAULT_CONTEXT = "/context.properties";
+    public static final String DEFAULT_CONTEXT = "/META-INF/context.properties";
 
     private InitParameter() {
 
