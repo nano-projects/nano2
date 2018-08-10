@@ -32,20 +32,13 @@
 
     <properties>
         <cs.dir>${project.parent.basedir}</cs.dir>
-        <sentinel.version>0.1.1</sentinel.version>
     </properties>
 
     <modules>
-        <module>nano2-plugins-sentinel</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.alibaba.csp</groupId>
-                <artifactId>sentinel-core</artifactId>
-                <version>${sentinel.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

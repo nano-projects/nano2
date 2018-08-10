@@ -13,31 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.config.annotation;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.ctrip.framework.apollo.core.ConfigConsts;
+package org.nanoframework.modules.sentinel.exception;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-@Target({ElementType.FIELD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Value {
-    String value();
+public class SentinelBlockException extends SentinelException {
+    private static final long serialVersionUID = 5168881939409927453L;
 
-    String namespace() default ConfigConsts.NAMESPACE_APPLICATION;
+    /** */
+    public SentinelBlockException() {
 
-    boolean required() default false;
+    }
 
-    String defaultValue() default "";
+    /**
+     * @param message the message
+     */
+    public SentinelBlockException(String message) {
+        super(message);
+    }
 
-    String[] listeners() default {};
+    /**
+     * @param message the message
+     * @param cause the cause
+     */
+    public SentinelBlockException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

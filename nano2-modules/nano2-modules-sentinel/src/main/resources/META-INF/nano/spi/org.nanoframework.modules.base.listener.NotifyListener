@@ -1,0 +1,1 @@
+sentinel=org.nanoframework.modules.sentinel.listener.RuleManagerListener

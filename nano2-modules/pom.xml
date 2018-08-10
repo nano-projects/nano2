@@ -35,6 +35,7 @@
 
         <apollo-client.version>0.10.2</apollo-client.version>
         <httpclient-version>4.5.1</httpclient-version>
+        <sentinel.version>0.1.1</sentinel.version>
     </properties>
 
     <modules>
@@ -44,6 +45,7 @@
         <module>nano2-modules-api</module>
         <module>nano2-modules-config</module>
         <module>nano2-modules-httpclient</module>
+        <module>nano2-modules-sentinel</module>
     </modules>
 
     <dependencyManagement>
@@ -57,6 +59,16 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpclient-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-transport-simple-http</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

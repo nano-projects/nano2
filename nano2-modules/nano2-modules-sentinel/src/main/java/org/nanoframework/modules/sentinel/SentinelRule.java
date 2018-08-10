@@ -13,31 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.config.annotation;
+package org.nanoframework.modules.sentinel;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.nanoframework.beans.BaseEntity;
 
-import com.ctrip.framework.apollo.core.ConfigConsts;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.system.SystemRule;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-@Target({ElementType.FIELD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Value {
-    String value();
+@Getter
+@Setter
+public class SentinelRule extends BaseEntity {
+    private static final long serialVersionUID = 728239344800011682L;
 
-    String namespace() default ConfigConsts.NAMESPACE_APPLICATION;
+    private FlowRule flow;
 
-    boolean required() default false;
+    private DegradeRule degrade;
 
-    String defaultValue() default "";
+    private SystemRule system;
 
-    String[] listeners() default {};
 }

@@ -17,25 +17,36 @@ package org.nanoframework.modules.config.listener;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import org.nanoframework.beans.Globals;
 import org.nanoframework.beans.format.ClassCast;
 import org.nanoframework.modules.base.listener.AbstractTypeListener;
+import org.nanoframework.modules.base.listener.NotifyListener;
 import org.nanoframework.modules.config.ConfigMapper;
 import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.config.exception.ConfigException;
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
+import org.nanoframework.toolkit.lang.ArrayUtils;
 import org.nanoframework.toolkit.lang.CollectionUtils;
+import org.nanoframework.toolkit.lang.RuntimeUtils;
+import org.nanoframework.toolkit.lang.StringUtils;
 
 import com.ctrip.framework.apollo.ConfigChangeListener;
 import com.ctrip.framework.apollo.ConfigService;
-import com.ctrip.framework.apollo.core.utils.StringUtils;
+import com.ctrip.framework.apollo.enums.PropertyChangeType;
 import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 
 /**
  * @author yanghe
@@ -56,23 +67,23 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
         DefaultConfigChangeListener.add(ConfigMapper.create(value, instance, field));
 
         var config = ConfigService.getConfig(value.namespace());
-        var ns = value.namespace();
-        if (!listeners.containsKey(ns)) {
-            var listener = new DefaultConfigChangeListener();
-            listeners.put(ns, listener);
-            config.addChangeListener(listener);
-        }
-
         var key = value.value();
-        var v = config.getProperty(key, System.getProperty(key, value.defaultValue()));
-        if (value.required() && StringUtils.isEmpty(v)) {
+        var initValue = config.getProperty(key, System.getProperty(key, value.defaultValue()));
+        if (value.required() && StringUtils.isEmpty(initValue)) {
             throw new ConfigException(String.format("未设置配置: %s", key));
         }
 
         try {
-            field.set(instance, ClassCast.cast(v, field.getType().getName()));
+            field.set(instance, ClassCast.cast(initValue, field.getType().getName()));
         } catch (Throwable e) {
             throw new ConfigException(String.format("设置置配异常: %s, message: %s", key, e.getMessage()), e);
+        }
+
+        var ns = value.namespace();
+        if (!listeners.containsKey(ns)) {
+            var listener = new DefaultConfigChangeListener(value, initValue);
+            listeners.put(ns, listener);
+            config.addChangeListener(listener);
         }
     }
 
@@ -86,6 +97,29 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
     private static class DefaultConfigChangeListener implements ConfigChangeListener {
         private static final Map<String, Map<String, List<ConfigMapper>>> MAPPER = Maps.newConcurrentMap();
 
+        private static final Executor EXECUTOR = Executors.newFixedThreadPool(RuntimeUtils.AVAILABLE_PROCESSORS,
+                runnable -> {
+                    var thread = new Thread(runnable);
+                    thread.setName("NotifyListener-Thread-" + thread.getId());
+                    return thread;
+                });
+
+        private Map<String, NotifyListener> listeners = Maps.newHashMap();
+
+        public DefaultConfigChangeListener(Value value, String initValue) {
+            var injector = Globals.get(Injector.class);
+            var listeners = value.listeners();
+            if (ArrayUtils.isNotEmpty(listeners)) {
+                Arrays.stream(listeners).forEach(listenerName -> {
+                    if (StringUtils.isNotBlank(listenerName)) {
+                        var listener = injector.getInstance(Key.get(NotifyListener.class, Names.named(listenerName)));
+                        EXECUTOR.execute(() -> listener.notify(value.value(), initValue));
+                        this.listeners.putIfAbsent(listenerName, listener);
+                    }
+                });
+            }
+        }
+
         @Override
         public void onChange(ConfigChangeEvent event) {
             var keys = event.changedKeys();
@@ -95,7 +129,15 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
                     var change = event.getChange(key);
                     var cms = ns.get(change.getNamespace());
                     if (CollectionUtils.isNotEmpty(cms)) {
-                        change(cms, change.getNewValue());
+                        var changeType = change.getChangeType();
+                        if (changeType == PropertyChangeType.DELETED) {
+                            LOGGER.warn("属性配置已删除，本地配置不变更: key = {}", key);
+                        } else {
+                            var newValue = change.getNewValue();
+                            change(cms, newValue);
+                            listeners.values()
+                                    .forEach(listener -> EXECUTOR.execute(() -> listener.notify(key, newValue)));
+                        }
                     }
                 });
             }
