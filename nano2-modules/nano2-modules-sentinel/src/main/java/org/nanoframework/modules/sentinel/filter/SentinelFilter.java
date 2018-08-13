@@ -27,12 +27,14 @@ import org.nanoframework.modules.sentinel.exception.SentinelException;
 import com.alibaba.csp.sentinel.SphO;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
+@Singleton
 public class SentinelFilter extends Filter {
 
     @Override

@@ -19,6 +19,7 @@ import org.nanoframework.core.rest.annotation.Mock;
 import org.nanoframework.core.rest.annotation.Restful;
 import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.enums.HttpType;
+import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.sentinel.annotation.Sentinel;
 
 /**
@@ -29,10 +30,13 @@ import org.nanoframework.modules.sentinel.annotation.Sentinel;
 @Route("/v1/hello")
 public class HelloComponent {
 
+    @Value("nano2-demo.hello.value")
+    private String value;
+
     @Route(type = HttpType.GET)
     @Sentinel
     @Mock
     public Object hello() {
-        return "Hello World";
+        return "Hello World, " + value;
     }
 }

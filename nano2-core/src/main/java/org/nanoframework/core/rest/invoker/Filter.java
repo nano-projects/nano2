@@ -36,15 +36,16 @@ public abstract class Filter {
     final Object doFilter(MethodInvocation invocation) throws Throwable {
         this.invocation = invocation;
         this.invoker = new Invoker() {
-            @Override
-            public Class<?> getType() {
+            private final Class<?> type;
+            {
                 var clsName = invocation.getThis().getClass().getName();
                 var index = clsName.indexOf("$$EnhancerByGuice$$");
-                if (index > -1) {
-                    return ReflectUtils.loadClass(clsName.substring(0, index));
-                } else {
-                    return ReflectUtils.loadClass(clsName);
-                }
+                type = ReflectUtils.loadClass(index > -1 ? clsName.substring(0, index) : clsName);
+            }
+
+            @Override
+            public Class<?> getType() {
+                return type;
             }
 
             @Override

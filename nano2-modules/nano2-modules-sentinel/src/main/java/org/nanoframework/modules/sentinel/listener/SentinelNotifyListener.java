@@ -36,6 +36,7 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 import com.alibaba.fastjson.JSON;
+import com.ctrip.framework.apollo.core.utils.StringUtils;
 import com.google.common.collect.Maps;
 import com.google.inject.Singleton;
 
@@ -44,19 +45,24 @@ import com.google.inject.Singleton;
  * @since 2.0.0
  */
 @Singleton
-public class RuleManagerListener implements NotifyListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RuleManagerListener.class);
+public class SentinelNotifyListener implements NotifyListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SentinelNotifyListener.class);
 
     private final Map<String, SentinelRule> rules = Maps.newConcurrentMap();
 
     private final AtomicBoolean changed = new AtomicBoolean(false);
 
-    private final long delay = 5000;
-
     private final ReentrantLock lock = new ReentrantLock();
 
-    public RuleManagerListener() {
-        var timer = new Timer("RuleManagerListener-Timer", true);
+    private long delay = 5000;
+
+    private final Timer timer = new Timer("RuleManagerListener-Timer", true);
+
+    public SentinelNotifyListener() {
+        createScheduler();
+    }
+
+    private void createScheduler() {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -67,6 +73,10 @@ public class RuleManagerListener implements NotifyListener {
                 }
             }
         }, new Date(), delay);
+    }
+
+    private void clearTimer() {
+        timer.cancel();
     }
 
     @Override
@@ -110,14 +120,23 @@ public class RuleManagerListener implements NotifyListener {
                     var flows = new ArrayList<FlowRule>();
                     var degrades = new ArrayList<DegradeRule>();
                     var systems = new ArrayList<SystemRule>();
-                    rules.values().forEach(rule -> {
+                    rules.forEach((key, rule) -> {
+                        var url = key.substring(RouteTypeListener.KEY_PREFIX.length(), key.length());
                         var flow = rule.getFlow();
                         if (flow != null) {
+                            if (StringUtils.isBlank(flow.getResource())) {
+                                flow.setResource(url);
+                            }
+
                             flows.add(flow);
                         }
 
                         var degrade = rule.getDegrade();
                         if (degrade != null) {
+                            if (StringUtils.isBlank(degrade.getResource())) {
+                                degrade.setResource(url);
+                            }
+
                             degrades.add(degrade);
                         }
 
@@ -146,6 +165,16 @@ public class RuleManagerListener implements NotifyListener {
                 lock.unlock();
             }
         }
+    }
+
+    public void setDelay(long delay) {
+        if (delay <= 1000) {
+            throw new IllegalArgumentException("定时任务执行时间不能小于1000ms");
+        }
+
+        this.delay = delay;
+        clearTimer();
+        createScheduler();
     }
 
 }

@@ -269,9 +269,14 @@ public final class Routes {
 
         var route = (url + mapping.value());
         var newRoute = execRoutePath(route);
-        LOGGER.debug("Route define: {}.{}:{} {}", instance.getClass().getName(), method.getName(), newRoute,
+        LOGGER.debug("Route define: {}.{}:{} {}", routeInstanceClassName(instance.getClass().getName()), method.getName(), newRoute,
                 List.of(types));
         return new RouteEntity(newRoute, mappers);
+    }
+    
+    private String routeInstanceClassName(String name) {
+        var index = name.indexOf("$$EnhancerByGuice$$");
+        return index > -1 ? name.substring(0, index) : name;
     }
 
     private String execRoutePath(String route) {

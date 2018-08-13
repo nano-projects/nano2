@@ -42,14 +42,17 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
+@Singleton
 public class RouteTypeListener extends AbstractTypeListener<Route> {
-    private static final String PREFIX =  "Sentinel:";
+    public static final String KEY_PREFIX = "Sentinel:";
+
     private Map<String, DefaultConfigChangeListener> listeners = Maps.newConcurrentMap();
 
     @Override
@@ -61,16 +64,10 @@ public class RouteTypeListener extends AbstractTypeListener<Route> {
     protected void init(Route route, Class<?> type, Object instance, Method method) {
         if (method.isAnnotationPresent(Sentinel.class)) {
             var sentinel = method.getAnnotation(Sentinel.class);
-            var config = ConfigService.getConfig(sentinel.namespace());
-            var key = PREFIX;
-            if (type.isAnnotationPresent(Route.class)) {
-                var clsRoute = type.getAnnotation(Route.class);
-                key += clsRoute.value() + route.value();
-            } else {
-                key += route.value();
-            }
-
+            var key = key(route, type);
             DefaultConfigChangeListener.add(key);
+
+            var config = ConfigService.getConfig(sentinel.namespace());
             var initValue = config.getProperty(key, System.getProperty(key, sentinel.defaultValue()));
             if (sentinel.required() && StringUtils.isEmpty(initValue)) {
                 throw new ConfigException(String.format("未设置配置: %s", key));
@@ -78,11 +75,20 @@ public class RouteTypeListener extends AbstractTypeListener<Route> {
 
             var ns = sentinel.namespace();
             if (!listeners.containsKey(ns)) {
-                var listener = new DefaultConfigChangeListener(sentinel, key, initValue);
+                var listener = new DefaultConfigChangeListener(ns);
+                listener.init(sentinel, key, initValue);
                 listeners.put(ns, listener);
                 config.addChangeListener(listener);
+            } else {
+                listeners.get(ns).init(sentinel, key, initValue);
             }
         }
+    }
+
+    private String key(Route route, Class<?> type) {
+        return type.isAnnotationPresent(Route.class)
+                ? KEY_PREFIX + type.getAnnotation(Route.class).value() + route.value()
+                : KEY_PREFIX + route.value();
     }
 
     @Override
@@ -102,7 +108,14 @@ public class RouteTypeListener extends AbstractTypeListener<Route> {
 
         private Map<String, NotifyListener> listeners = Maps.newHashMap();
 
-        public DefaultConfigChangeListener(Sentinel sentinel, String key, String initValue) {
+        private String namespace;
+
+        public DefaultConfigChangeListener(String namespace) {
+            this.namespace = namespace;
+
+        }
+
+        public void init(Sentinel sentinel, String key, String initValue) {
             var injector = Globals.get(Injector.class);
             var listeners = sentinel.listeners();
             if (ArrayUtils.isNotEmpty(listeners)) {
@@ -118,6 +131,10 @@ public class RouteTypeListener extends AbstractTypeListener<Route> {
 
         @Override
         public void onChange(ConfigChangeEvent event) {
+            if (!StringUtils.equals(namespace, event.getNamespace())) {
+                return;
+            }
+
             var keys = event.changedKeys();
             if (CollectionUtils.isNotEmpty(keys)) {
                 keys.stream().filter(KEYS::contains).forEach(key -> {

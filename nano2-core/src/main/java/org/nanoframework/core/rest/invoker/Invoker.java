@@ -18,8 +18,6 @@ package org.nanoframework.core.rest.invoker;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
-import org.aopalliance.intercept.Joinpoint;
-
 /**
  * @author yanghe
  * @since 2.0.0
@@ -31,7 +29,7 @@ public interface Invoker {
     /**
      * Gets the method being called.
      * <p>
-     * This method is a frienly implementation of the {@link Joinpoint#getStaticPart()} method (same result).
+     * This method is a frienly implementation of the {@link #getStaticPart()} method (same result).
      * @return the method being called.
      */
     Method getMethod();

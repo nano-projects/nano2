@@ -15,9 +15,9 @@
  */
 package org.nanoframework.core.rest.invoker;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletConfig;
 
@@ -63,11 +63,9 @@ public class RouteInvokeModule implements Module {
                 var injector = Globals.get(Injector.class);
                 var names = SPILoader.spiNames(Filter.class);
                 if (CollectionUtils.isNotEmpty(names)) {
-                    var filters = new ArrayList<Filter>();
-                    for (var name : names) {
-                        filters.add(injector.getInstance(Key.get(Filter.class, Names.named(name))));
-                    }
-
+                    var filters = names.stream()
+                            .map(name -> injector.getInstance(Key.get(Filter.class, Names.named(name))))
+                            .collect(Collectors.toList());
                     sort(filters);
                     chain(filters);
                 }

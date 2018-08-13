@@ -81,9 +81,11 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
 
         var ns = value.namespace();
         if (!listeners.containsKey(ns)) {
-            var listener = new DefaultConfigChangeListener(value, initValue);
+            var listener = new DefaultConfigChangeListener(ns);
             listeners.put(ns, listener);
             config.addChangeListener(listener);
+        } else {
+            listeners.get(ns).init(value, initValue);
         }
     }
 
@@ -106,7 +108,13 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
 
         private Map<String, NotifyListener> listeners = Maps.newHashMap();
 
-        public DefaultConfigChangeListener(Value value, String initValue) {
+        private String namespace;
+
+        public DefaultConfigChangeListener(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public void init(Value value, String initValue) {
             var injector = Globals.get(Injector.class);
             var listeners = value.listeners();
             if (ArrayUtils.isNotEmpty(listeners)) {
@@ -122,6 +130,10 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
 
         @Override
         public void onChange(ConfigChangeEvent event) {
+            if (!StringUtils.equals(namespace, event.getNamespace())) {
+                return;
+            }
+
             var keys = event.changedKeys();
             if (CollectionUtils.isNotEmpty(keys)) {
                 keys.stream().filter(MAPPER::containsKey).forEach(key -> {
@@ -132,8 +144,7 @@ public class ConfigTypeListener extends AbstractTypeListener<Value> {
                         var changeType = change.getChangeType();
                         if (changeType == PropertyChangeType.DELETED) {
                             LOGGER.warn("属性配置已删除，本地配置不变更: key = {}", key);
-                            listeners.values()
-                                    .forEach(listener -> EXECUTOR.execute(() -> listener.remove(key)));
+                            listeners.values().forEach(listener -> EXECUTOR.execute(() -> listener.remove(key)));
                         } else {
                             var newValue = change.getNewValue();
                             change(cms, newValue);
