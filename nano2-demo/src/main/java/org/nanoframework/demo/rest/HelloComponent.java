@@ -33,10 +33,23 @@ public class HelloComponent {
     @Value("nano2-demo.hello.value")
     private String value;
 
+    private String value1;
+
+    @Value("nano2-demo.hello.value")
+    private void setValueOfMethod(String value) {
+        this.value1 = value;
+    }
+
     @Route(type = HttpType.GET)
     @Sentinel
     @Mock
     public Object hello() {
-        return "Hello World, " + value;
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            // ignore
+        }
+
+        return "Hello World, " + value + ", " + value1;
     }
 }

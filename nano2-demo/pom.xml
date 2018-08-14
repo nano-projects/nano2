@@ -80,6 +80,10 @@
         </dependency>
         <dependency>
             <groupId>org.nanoframework</groupId>
+            <artifactId>nano2-modules-resource</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nanoframework</groupId>
             <artifactId>nano2-server-tomcat</artifactId>
         </dependency>
     </dependencies>

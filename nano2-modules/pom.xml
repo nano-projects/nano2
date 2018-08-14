@@ -42,7 +42,7 @@
         <module>nano2-modules-base</module>
         <module>nano2-modules-logging</module>
         <module>nano2-modules-aop</module>
-        <module>nano2-modules-api</module>
+        <module>nano2-modules-resource</module>
         <module>nano2-modules-config</module>
         <module>nano2-modules-httpclient</module>
         <module>nano2-modules-sentinel</module>

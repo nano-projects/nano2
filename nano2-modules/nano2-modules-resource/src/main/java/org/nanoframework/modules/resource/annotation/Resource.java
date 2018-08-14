@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.config.annotation;
+package org.nanoframework.modules.resource.annotation;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.ctrip.framework.apollo.core.ConfigConsts;
+import org.nanoframework.modules.resource.Scope;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-@Target({ElementType.FIELD, ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Target(TYPE)
 @Documented
-public @interface Value {
-    String value();
+public @interface Resource {
+    String value() default "";
 
-    String namespace() default ConfigConsts.NAMESPACE_APPLICATION;
+    Scope scope() default Scope.SINGLETON;
 
-    boolean required() default false;
-
-    String defaultValue() default "";
-
-    String[] listeners() default {};
+    boolean lazy() default true;
 }

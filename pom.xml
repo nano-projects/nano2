@@ -49,7 +49,7 @@
 
         <junit.version>5.2.0</junit.version>
         <junit-platform.version>1.2.0</junit-platform.version>
-        <log4j2.version>2.10.0</log4j2.version>
+        <log4j2.version>2.11.1</log4j2.version>
         <slf4j.version>1.8.0-beta2</slf4j.version>
         <slf4j-jcl.version>1.7.25</slf4j-jcl.version>
         <servlet-api.version>4.0.1</servlet-api.version>
@@ -265,7 +265,7 @@
             </dependency>
             <dependency>
                 <groupId>org.nanoframework</groupId>
-                <artifactId>nano2-modules-api</artifactId>
+                <artifactId>nano2-modules-resource</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

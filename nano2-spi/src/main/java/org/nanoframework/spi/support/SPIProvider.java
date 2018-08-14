@@ -15,6 +15,9 @@
  */
 package org.nanoframework.spi.support;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.nanoframework.beans.Globals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +32,11 @@ import com.google.inject.Provider;
 public class SPIProvider implements Provider<Object> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SPIProvider.class);
 
-    private final SPIMapper spi;
+    private final ReentrantLock lock = new ReentrantLock();
 
-    private boolean echo;
+    private final AtomicBoolean echo = new AtomicBoolean();
+
+    private final SPIMapper spi;
 
     /**
      * @param spi SPI配置
@@ -46,11 +51,20 @@ public class SPIProvider implements Provider<Object> {
         try {
             return Globals.get(Injector.class).getInstance(spi.getInstance());
         } finally {
-            if (!echo) {
+            echo();
+        }
+    }
+
+    private void echo() {
+        try {
+            lock.lock();
+            if (!echo.get()) {
                 LOGGER.debug("创建SPI实现, 接口定义: {}, 绑定名称: {}, 实现类: {}", spi.getSpiClsName(), spi.getName(),
                         spi.getInstanceClsName());
-                echo = true;
+                echo.set(true);
             }
+        } finally {
+            lock.unlock();
         }
     }
 

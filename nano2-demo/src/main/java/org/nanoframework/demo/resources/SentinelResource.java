@@ -13,31 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nanoframework.modules.config.annotation;
+package org.nanoframework.demo.resources;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.nanoframework.modules.config.annotation.Value;
+import org.nanoframework.modules.resource.annotation.Resource;
 
-import com.ctrip.framework.apollo.core.ConfigConsts;
+import com.alibaba.csp.sentinel.slots.system.SystemRule;
+import com.google.inject.Singleton;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-@Target({ElementType.FIELD, ElementType.METHOD })
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Value {
-    String value();
+@Resource(lazy = false)
+@Singleton
+public class SentinelResource {
 
-    String namespace() default ConfigConsts.NAMESPACE_APPLICATION;
+    @Value(value = "nano2-demo.sentinel.system.rule", listeners = "sentinel")
+    private SystemRule sys;
 
-    boolean required() default false;
-
-    String defaultValue() default "";
-
-    String[] listeners() default {};
 }

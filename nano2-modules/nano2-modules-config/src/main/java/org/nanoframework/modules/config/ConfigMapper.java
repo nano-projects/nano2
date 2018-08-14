@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import org.nanoframework.modules.config.annotation.Value;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -42,11 +43,16 @@ public class ConfigMapper {
 
     private final Field field;
 
-    public static ConfigMapper create(Value value, Object instance, Method method) {
+    public static ConfigMapper create(@NonNull Value value, @NonNull Object instance, @NonNull Method method) {
+        var count = method.getParameterCount();
+        if (count != 1) {
+            throw new IllegalArgumentException(String.format("无效的参数列表长度: %s", method.getName()));
+        }
+
         return new ConfigMapper(value.value(), value.namespace(), value.required(), instance, method, null);
     }
 
-    public static ConfigMapper create(Value value, Object instance, Field field) {
+    public static ConfigMapper create(@NonNull Value value, @NonNull Object instance, @NonNull Field field) {
         return new ConfigMapper(value.value(), value.namespace(), value.required(), instance, null, field);
     }
 }

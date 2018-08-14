@@ -27,7 +27,7 @@
     <artifactId>nano2-plugins</artifactId>
     <packaging>pom</packaging>
     <inceptionYear>2018</inceptionYear>
-    <name>Nano2 Modules</name>
+    <name>Nano2 Plugins</name>
     <url>http://maven.apache.org</url>
 
     <properties>
