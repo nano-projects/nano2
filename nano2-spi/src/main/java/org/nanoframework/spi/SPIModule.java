@@ -17,8 +17,6 @@ package org.nanoframework.spi;
 
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
@@ -56,11 +54,6 @@ public class SPIModule implements Module {
     @Override
     public List<Module> load() {
         return null;
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

@@ -17,8 +17,6 @@ package org.nanoframework.spi.def;
 
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 /**
  * @author yanghe
  * @since 1.1
@@ -28,11 +26,6 @@ public interface Module extends com.google.inject.Module {
      * @return 待加载的模块列表
      */
     List<Module> load();
-
-    /**
-     * @param config Servlet配置
-     */
-    void config(ServletConfig config);
 
     void destroy();
 }

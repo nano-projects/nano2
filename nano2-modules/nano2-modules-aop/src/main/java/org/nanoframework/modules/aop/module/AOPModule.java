@@ -17,8 +17,6 @@ package org.nanoframework.modules.aop.module;
 
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.modules.aop.annotation.After;
 import org.nanoframework.modules.aop.annotation.AfterMore;
 import org.nanoframework.modules.aop.annotation.Before;
@@ -59,11 +57,6 @@ public class AOPModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(final ServletConfig config) {
-
     }
 
     @Override

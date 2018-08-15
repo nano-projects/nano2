@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.modules.logging.Logger;
 import org.nanoframework.modules.logging.LoggerFactory;
 import org.nanoframework.modules.resource.Scope;
@@ -126,11 +124,6 @@ public class ResourceModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

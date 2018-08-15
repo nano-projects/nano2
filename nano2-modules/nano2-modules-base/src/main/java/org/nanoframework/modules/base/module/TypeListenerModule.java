@@ -18,8 +18,6 @@ package org.nanoframework.modules.base.module;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.modules.base.listener.CloseableTypeListener;
 import org.nanoframework.spi.annotation.Order;
@@ -57,11 +55,6 @@ public class TypeListenerModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

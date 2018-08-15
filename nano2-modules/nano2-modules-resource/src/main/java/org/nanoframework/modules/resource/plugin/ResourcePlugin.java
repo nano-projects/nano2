@@ -15,8 +15,6 @@
  */
 package org.nanoframework.modules.resource.plugin;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.modules.resource.annotation.Resource;
 import org.nanoframework.spi.def.Plugin;
@@ -49,11 +47,6 @@ public class ResourcePlugin implements Plugin {
         });
 
         return true;
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

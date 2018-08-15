@@ -21,10 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.config.InitParameter;
 import org.nanoframework.modules.logging.Logger;
@@ -36,7 +32,6 @@ import org.nanoframework.spi.def.Plugin;
 import org.nanoframework.spi.def.exception.PluginLoaderException;
 import org.nanoframework.spi.support.SPILoader;
 import org.nanoframework.toolkit.lang.CollectionUtils;
-import org.nanoframework.toolkit.lang.StringUtils;
 import org.nanoframework.toolkit.properties.PropertiesLoader;
 
 import com.google.common.collect.Lists;
@@ -53,38 +48,19 @@ import com.google.inject.name.Names;
 public class BootLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(BootLoader.class);
 
-    /** */
-    protected ServletConfig config;
-
-    /** */
-    protected ServletContext context;
-
     private Map<Integer, List<Module>> modules = Maps.newHashMap();
 
     private List<Plugin> plugins = Lists.newArrayList();
 
-    /**
-     * @param servlet HttpServlet
-     */
-    public void init(HttpServlet servlet) {
-        init(servlet.getServletConfig(), servlet.getServletContext());
-    }
-
-    /**
-     * @param config ServletConfig
-     */
-    public void init(ServletConfig config) {
-        init(config, null);
+    public BootLoader() {
+        init();
     }
 
     /**
      * @param config ServletConfig
      * @param context ServletContext
      */
-    public void init(ServletConfig config, ServletContext context) {
-        this.config = config;
-        this.context = context;
-
+    private void init() {
         try {
             initProperties();
             initRootInjector();
@@ -102,12 +78,7 @@ public class BootLoader {
     protected void initProperties() {
         var time = System.currentTimeMillis();
         try {
-            var context = config.getInitParameter(InitParameter.CONTEXT);
-            if (StringUtils.isNotBlank(context)) {
-                PropertiesLoader.loadContext(context);
-            } else {
-                PropertiesLoader.loadContext(InitParameter.DEFAULT_CONTEXT);
-            }
+            PropertiesLoader.loadContext(InitParameter.DEFAULT_CONTEXT);
         } catch (Throwable e) {
             LOGGER.warn(e.getMessage());
         }
@@ -162,7 +133,6 @@ public class BootLoader {
             if (!CollectionUtils.isEmpty(modules)) {
                 var mdus = new ArrayList<Module>();
                 for (var module : modules) {
-                    module.config(config);
                     mdus.addAll(module.load());
                 }
 
@@ -188,7 +158,6 @@ public class BootLoader {
             var injector = Globals.get(Injector.class);
             for (var pluginName : pluginNames) {
                 var plugin = injector.getInstance(Key.get(Plugin.class, Names.named(pluginName)));
-                plugin.config(config);
                 if (plugin.load()) {
                     LOGGER.info("Loading Plugin: {}", plugin.getClass().getName());
                 }

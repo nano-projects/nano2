@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.exception.RouteException;
@@ -111,11 +109,6 @@ public class RouteInvokeModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

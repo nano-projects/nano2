@@ -18,8 +18,6 @@ package org.nanoframework.modules.logging.module;
 import java.net.URI;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.spi.def.Module;
 import org.nanoframework.spi.def.exception.PluginLoaderException;
 import org.nanoframework.toolkit.lang.ResourceUtils;
@@ -81,11 +79,6 @@ public class Log4j2Module implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

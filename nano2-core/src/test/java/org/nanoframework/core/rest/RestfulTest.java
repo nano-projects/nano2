@@ -19,11 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.Enumeration;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.nanoframework.core.boot.BootLoader;
@@ -40,28 +35,7 @@ class RestfulTest {
     @BeforeAll
     static void setup() {
         ClassScanner.scan(RestfulTest.class);
-        new BootLoader().init(new ServletConfig() {
-
-            @Override
-            public String getServletName() {
-                return null;
-            }
-
-            @Override
-            public ServletContext getServletContext() {
-                return null;
-            }
-
-            @Override
-            public String getInitParameter(String name) {
-                return null;
-            }
-
-            @Override
-            public Enumeration<String> getInitParameterNames() {
-                return null;
-            }
-        });
+        new BootLoader();
     }
 
     @Test

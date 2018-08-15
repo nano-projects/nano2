@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.spi.annotation.Order;
 import org.nanoframework.spi.def.Module;
@@ -63,11 +61,6 @@ public class DataSourceModule implements Module {
         }
 
         return Collections.emptyList();
-    }
-
-    @Override
-    public void config(final ServletConfig config) {
-
     }
 
     @Override

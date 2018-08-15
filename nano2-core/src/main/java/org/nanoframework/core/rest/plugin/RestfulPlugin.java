@@ -15,8 +15,6 @@
  */
 package org.nanoframework.core.rest.plugin;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.rest.Routes;
 import org.nanoframework.core.rest.annotation.Restful;
@@ -57,11 +55,6 @@ public class RestfulPlugin implements Plugin {
         }
 
         return false;
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

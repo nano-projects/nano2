@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-
 import org.nanoframework.orm.PoolType;
 import org.nanoframework.orm.jdbc.binding.JdbcTransactional;
 import org.nanoframework.orm.jdbc.binding.JdbcTransactionalMethodInterceptor;
@@ -64,11 +62,6 @@ public class JdbcModule extends AbstractModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(final ServletConfig config) {
-
     }
 
     @Override

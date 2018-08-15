@@ -29,7 +29,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.inject.Provider;
-import javax.servlet.ServletConfig;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.io.ResolverUtil;
@@ -201,11 +200,6 @@ public class MultiDataSourceModule extends AbstractModule implements Module {
     @Override
     public List<Module> load() {
         return List.of(this);
-    }
-
-    @Override
-    public void config(ServletConfig config) {
-
     }
 
     @Override

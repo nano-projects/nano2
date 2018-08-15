@@ -15,8 +15,6 @@
  */
 package org.nanoframework.spi.def;
 
-import javax.servlet.ServletConfig;
-
 /**
  * @author yanghe
  * @since 1.1
@@ -26,11 +24,6 @@ public interface Plugin {
      * @return 加载插件，如果加载成功则返回true
      */
     boolean load();
-
-    /**
-     * @param config Servlet配置
-     */
-    void config(ServletConfig config);
 
     void destroy();
 }

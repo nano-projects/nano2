@@ -36,7 +36,7 @@ public class DispatcherServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         try {
-            new BootLoader().init(this);
+            new BootLoader();
         } catch (Throwable e) {
             LOGGER.error(e.getMessage(), e);
             System.exit(1);
