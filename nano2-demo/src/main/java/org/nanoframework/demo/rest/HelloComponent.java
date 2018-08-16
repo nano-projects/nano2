@@ -16,11 +16,14 @@
 package org.nanoframework.demo.rest;
 
 import org.nanoframework.core.rest.annotation.Mock;
+import org.nanoframework.core.rest.annotation.Param;
 import org.nanoframework.core.rest.annotation.Restful;
 import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.sentinel.annotation.Sentinel;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author yanghe
@@ -28,6 +31,7 @@ import org.nanoframework.modules.sentinel.annotation.Sentinel;
  */
 @Restful
 @Route("/v1/hello")
+@Slf4j
 public class HelloComponent {
 
     @Value("nano2-demo.hello.value")
@@ -51,5 +55,18 @@ public class HelloComponent {
         }
 
         return "Hello World, " + value + ", " + value1;
+    }
+
+    @Route(value = "/timeout", type = HttpType.GET, timeout = 1000)
+    @Sentinel
+    @Mock
+    public Object timeout(@Param("time") Long time) throws InterruptedException {
+        try {
+            Thread.sleep(time);
+            return "timeout test";
+        } catch (Throwable e) {
+            log.error(e.getMessage());
+            throw e;
+        }
     }
 }

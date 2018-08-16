@@ -24,13 +24,11 @@ import org.nanoframework.core.rest.invoker.Invoker;
 import org.nanoframework.modules.sentinel.exception.SentinelBlockException;
 
 import com.alibaba.csp.sentinel.SphO;
-import com.google.inject.Singleton;
 
 /**
  * @author yanghe
  * @since 2.0.0
  */
-@Singleton
 public class SentinelFilter extends Filter {
 
     @Override
@@ -56,8 +54,7 @@ public class SentinelFilter extends Filter {
         }
     }
 
-    @Override
-    protected Object mock(Method method) {
+    private Object mock(Method method) {
         try {
             return mock0(method);
         } catch (Throwable e) {

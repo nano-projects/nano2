@@ -26,7 +26,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class DefaultMocker implements Mocker {
 
-    private static final String MESSAGE = "{\"error\": {\"code\": 502, \"message\": \"服务已降级\"}}";
+    private static final String MESSAGE = "{\"error\": {\"code\": 502, \"message\": \"服务调用异常\"}}";
 
     @Override
     public Object mock(Invoker invoker) {

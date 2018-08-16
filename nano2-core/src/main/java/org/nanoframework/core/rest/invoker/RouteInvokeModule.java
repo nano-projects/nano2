@@ -16,9 +16,9 @@
 package org.nanoframework.core.rest.invoker;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import org.aopalliance.intercept.MethodInvocation;
 import org.nanoframework.beans.Globals;
 import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.exception.RouteException;
@@ -41,37 +41,30 @@ public class RouteInvokeModule implements Module {
 
     private Filter chain;
 
-    private AtomicBoolean initialized = new AtomicBoolean(false);
-
     @Override
     public void configure(Binder binder) {
         binder.bindInterceptor(Matchers.any(), Matchers.annotatedWith(Route.class), invocation -> {
-            init();
+            init(invocation);
             if (chain != null) {
-                return chain.doFilter(invocation);
+                return chain.doFilter();
             } else {
                 return invocation.proceed();
             }
         });
     }
 
-    private void init() {
-        if (!initialized.get()) {
-            try {
-                var injector = Globals.get(Injector.class);
-                var names = SPILoader.spiNames(Filter.class);
-                if (CollectionUtils.isNotEmpty(names)) {
-                    var filters = names.stream()
-                            .map(name -> injector.getInstance(Key.get(Filter.class, Names.named(name))))
-                            .collect(Collectors.toList());
-                    sort(filters);
-                    chain(filters);
-                }
-            } catch (Throwable e) {
-                throw new RouteException(e.getMessage(), e);
-            } finally {
-                initialized.set(true);
+    private void init(MethodInvocation invocation) {
+        try {
+            var injector = Globals.get(Injector.class);
+            var names = SPILoader.spiNames(Filter.class);
+            if (CollectionUtils.isNotEmpty(names)) {
+                var filters = names.stream().map(name -> injector.getInstance(Key.get(Filter.class, Names.named(name))))
+                        .map(filter -> filter.invocation(invocation)).collect(Collectors.toList());
+                sort(filters);
+                chain(filters);
             }
+        } catch (Throwable e) {
+            throw new RouteException(e.getMessage(), e);
         }
     }
 

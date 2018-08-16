@@ -41,8 +41,7 @@ public abstract class Filter {
 
     private Invoker invoker;
 
-    final Object doFilter(MethodInvocation invocation) throws Throwable {
-        this.invocation = invocation;
+    final Object doFilter() throws Throwable {
         this.invoker = new Invoker() {
             private final Class<?> type;
             {
@@ -89,7 +88,7 @@ public abstract class Filter {
         }
     }
 
-    protected abstract Object mock(Method method);
+    protected abstract Object proceed(Invoker invoker) throws Throwable;
 
     protected final Object mock0(Method method) {
         if (method.isAnnotationPresent(Mock.class)) {
@@ -102,9 +101,12 @@ public abstract class Filter {
         throw new NotFoundMockException();
     }
 
-    protected abstract Object proceed(Invoker invoker) throws Throwable;
-
     final void next(Filter next) {
         this.next = next;
+    }
+
+    final Filter invocation(MethodInvocation invocation) {
+        this.invocation = invocation;
+        return this;
     }
 }

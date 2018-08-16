@@ -43,4 +43,8 @@ public @interface Route {
      */
     HttpType[] type() default {};
 
+    /**
+     * @return 服务调用超时时间，单位毫秒
+     */
+    long timeout() default 30_000;
 }
