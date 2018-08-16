@@ -19,7 +19,15 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.nanoframework.beans.Globals;
+import org.nanoframework.core.rest.annotation.Mock;
+import org.nanoframework.core.rest.exception.NotFoundMockException;
+import org.nanoframework.core.rest.mock.Mocker;
 import org.nanoframework.toolkit.lang.ReflectUtils;
+
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 
 /**
  * @author yanghe
@@ -79,6 +87,19 @@ public abstract class Filter {
         } else {
             return invocation.proceed();
         }
+    }
+
+    protected abstract Object mock(Method method);
+
+    protected final Object mock0(Method method) {
+        if (method.isAnnotationPresent(Mock.class)) {
+            var mock = method.getAnnotation(Mock.class);
+            var injector = Globals.get(Injector.class);
+            var mocker = injector.getInstance(Key.get(Mocker.class, Names.named(mock.value())));
+            return mocker.mock(invoker);
+        }
+
+        throw new NotFoundMockException();
     }
 
     protected abstract Object proceed(Invoker invoker) throws Throwable;

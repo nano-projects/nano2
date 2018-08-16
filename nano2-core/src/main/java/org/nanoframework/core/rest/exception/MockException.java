@@ -16,22 +16,21 @@
 package org.nanoframework.core.rest.exception;
 
 /**
- * 重复组件服务异常.
  * @author yanghe
  * @since 2.0.0
  */
-public class RouteException extends RuntimeException {
-    private static final long serialVersionUID = -4050783744076776903L;
+public class MockException extends RouteException {
+    private static final long serialVersionUID = 4764247104527682852L;
 
     /** */
-    public RouteException() {
+    public MockException() {
 
     }
 
     /**
      * @param message the message
      */
-    public RouteException(String message) {
+    public MockException(String message) {
         super(message);
     }
 
@@ -39,11 +38,7 @@ public class RouteException extends RuntimeException {
      * @param message the message
      * @param cause the cause
      */
-    public RouteException(String message, Throwable cause) {
+    public MockException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    protected RouteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

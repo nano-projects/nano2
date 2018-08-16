@@ -15,20 +15,16 @@
  */
 package org.nanoframework.modules.sentinel.filter;
 
-import org.nanoframework.beans.Globals;
-import org.nanoframework.core.rest.annotation.Mock;
+import java.lang.reflect.Method;
+
 import org.nanoframework.core.rest.annotation.Route;
+import org.nanoframework.core.rest.exception.NotFoundMockException;
 import org.nanoframework.core.rest.invoker.Filter;
 import org.nanoframework.core.rest.invoker.Invoker;
-import org.nanoframework.core.rest.mock.Mocker;
 import org.nanoframework.modules.sentinel.exception.SentinelBlockException;
-import org.nanoframework.modules.sentinel.exception.SentinelException;
 
 import com.alibaba.csp.sentinel.SphO;
-import com.google.inject.Injector;
-import com.google.inject.Key;
 import com.google.inject.Singleton;
-import com.google.inject.name.Names;
 
 /**
  * @author yanghe
@@ -39,36 +35,38 @@ public class SentinelFilter extends Filter {
 
     @Override
     protected Object proceed(Invoker invoker) throws Throwable {
-        var type = invoker.getType();
-        var method = invoker.getMethod();
-        String route;
-        if (type.isAnnotationPresent(Route.class)) {
-            route = type.getAnnotation(Route.class).value() + method.getAnnotation(Route.class).value();
-        } else {
-            route = method.getAnnotation(Route.class).value();
-        }
-
-        if (SphO.entry(route)) {
+        if (SphO.entry(route(invoker))) {
             try {
                 return doNext();
             } finally {
                 SphO.exit();
             }
         } else {
-            if (method.isAnnotationPresent(Mock.class)) {
-                var mock = method.getAnnotation(Mock.class);
-                var injector = Globals.get(Injector.class);
-                try {
-                    var mocker = injector.getInstance(Key.get(Mocker.class, Names.named(mock.value())));
-                    return mocker.mock(invoker);
-                } catch (Throwable e) {
-                    throw new SentinelException(e.getMessage(), e);
-                }
+            return mock(invoker.getMethod());
+        }
+    }
+
+    private String route(Invoker invoker) {
+        var type = invoker.getType();
+        var method = invoker.getMethod();
+        if (type.isAnnotationPresent(Route.class)) {
+            return type.getAnnotation(Route.class).value() + method.getAnnotation(Route.class).value();
+        } else {
+            return method.getAnnotation(Route.class).value();
+        }
+    }
+
+    @Override
+    protected Object mock(Method method) {
+        try {
+            return mock0(method);
+        } catch (Throwable e) {
+            if (e instanceof NotFoundMockException) {
+                throw new SentinelBlockException("当前服务已被降级");
             }
 
-            throw new SentinelBlockException("当前服务已被降级");
+            throw e;
         }
-
     }
 
 }
