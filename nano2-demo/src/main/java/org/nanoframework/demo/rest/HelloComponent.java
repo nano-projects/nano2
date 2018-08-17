@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.nanoframework.core.rest.annotation.Param;
 import org.nanoframework.core.rest.annotation.Restful;
 import org.nanoframework.core.rest.annotation.Route;
-import org.nanoframework.core.rest.enums.HttpType;
 import org.nanoframework.core.web.filter.RouteFilter.HttpContext;
 import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.sentinel.annotation.Sentinel;
@@ -48,7 +47,7 @@ public class HelloComponent {
         this.value1 = value;
     }
 
-    @Route(type = HttpType.GET)
+    @Route
     @Sentinel
     public Object hello() {
         try {
@@ -60,7 +59,7 @@ public class HelloComponent {
         return "Hello World, " + value + ", " + value1;
     }
 
-    @Route(value = "/timeout", type = HttpType.GET, timeout = 1000)
+    @Route(value = "/timeout", timeout = 1000)
     @Sentinel
     public Object timeout(@Param("time") Long time) throws InterruptedException {
         try {
@@ -71,5 +70,10 @@ public class HelloComponent {
             log.error(e.getMessage());
             throw e;
         }
+    }
+
+    @Route(value = "/void")
+    public void voidInvoke(@Param("value") String value) {
+        log.debug("void invoke: {}", value);
     }
 }

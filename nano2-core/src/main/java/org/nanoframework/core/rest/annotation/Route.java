@@ -39,9 +39,9 @@ public @interface Route {
     String value() default "";
 
     /**
-     * @return 请求类型列表
+     * @return 请求类型列表，默认请求级别为GET
      */
-    HttpType[] type() default {};
+    HttpType[] type() default {HttpType.GET };
 
     /**
      * @return 服务调用超时时间，单位毫秒
