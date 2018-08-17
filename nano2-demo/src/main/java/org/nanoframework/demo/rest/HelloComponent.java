@@ -15,11 +15,15 @@
  */
 package org.nanoframework.demo.rest;
 
-import org.nanoframework.core.rest.annotation.Mock;
+import java.text.MessageFormat;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.nanoframework.core.rest.annotation.Param;
 import org.nanoframework.core.rest.annotation.Restful;
 import org.nanoframework.core.rest.annotation.Route;
 import org.nanoframework.core.rest.enums.HttpType;
+import org.nanoframework.core.web.filter.RouteFilter.HttpContext;
 import org.nanoframework.modules.config.annotation.Value;
 import org.nanoframework.modules.sentinel.annotation.Sentinel;
 
@@ -46,7 +50,6 @@ public class HelloComponent {
 
     @Route(type = HttpType.GET)
     @Sentinel
-    @Mock
     public Object hello() {
         try {
             Thread.sleep(10);
@@ -59,11 +62,11 @@ public class HelloComponent {
 
     @Route(value = "/timeout", type = HttpType.GET, timeout = 1000)
     @Sentinel
-    @Mock
     public Object timeout(@Param("time") Long time) throws InterruptedException {
         try {
+            var request = HttpContext.get(HttpServletRequest.class);
             Thread.sleep(time);
-            return "timeout test";
+            return MessageFormat.format("timeout test: {0}, {1}", request.getParameter("time"), request.toString());
         } catch (Throwable e) {
             log.error(e.getMessage());
             throw e;

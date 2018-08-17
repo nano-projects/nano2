@@ -46,5 +46,10 @@ public @interface Route {
     /**
      * @return 服务调用超时时间，单位毫秒
      */
-    long timeout() default 30_000;
+    long timeout() default 5000;
+
+    /**
+     * @return 请求异常Mock处理
+     */
+    Mock mock() default @Mock;
 }

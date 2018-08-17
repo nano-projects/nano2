@@ -96,7 +96,7 @@ public class RouteFilter extends AbstractFilter {
      * @since 1.3.5
      */
     public static class HttpContext {
-        private static ThreadLocal<Map<Class<?>, Object>> CONTEXT = new ThreadLocal<>();
+        private static InheritableThreadLocal<Map<Class<?>, Object>> CONTEXT = new InheritableThreadLocal<>();
 
         protected static void set(Map<Class<?>, Object> context) {
             clear();
