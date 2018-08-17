@@ -35,9 +35,9 @@ public class DefaultExecutor implements Executor {
     });
 
     public DefaultExecutor() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            executor.shutdown();
-        }));
+        var thread = new Thread(() -> executor.shutdown());
+        thread.setName("DefaultExecutor-ShutdownHook-Thread");
+        Runtime.getRuntime().addShutdownHook(thread);
     }
 
     @Override
