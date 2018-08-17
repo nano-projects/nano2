@@ -72,8 +72,15 @@ public class HelloComponent {
         }
     }
 
-    @Route(value = "/void")
-    public void voidInvoke(@Param("value") String value) {
+    @Route(value = "/void", timeout = 1000)
+    public void voidInvoke(@Param("time") Long time, @Param("value") String value) throws InterruptedException {
+        Thread.sleep(time);
         log.debug("void invoke: {}", value);
+    }
+
+    @Route(value = "/filter", excludeFilter = {"timeout" }, timeout = 500)
+    public Object excludeTimeout() throws InterruptedException {
+        Thread.sleep(1000);
+        return "过滤TimeoutFilter啦";
     }
 }

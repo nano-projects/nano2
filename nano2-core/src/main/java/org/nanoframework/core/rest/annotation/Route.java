@@ -54,8 +54,13 @@ public @interface Route {
     Mock mock() default @Mock;
 
     /**
-     * @return 线程池隔离，默认使用default线程池(CachedThreadPool). <br>
-     *         可以通过{@code org.nanoframework.core.concurrent.Executor}扩展点进行扩展.
+     * @return 线程池隔离，默认使用default线程池(CachedThreadPool) <br>
+     *         可以通过{@code org.nanoframework.core.concurrent.Executor}扩展点进行扩展
      */
     String executor() default "default";
+
+    /**
+     * @return 移除指定的Filter
+     */
+    String[] excludeFilter() default {};
 }

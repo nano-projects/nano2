@@ -57,8 +57,11 @@ public class RouteInvokeModule implements Module {
         try {
             var injector = Globals.get(Injector.class);
             var names = SPILoader.spiNames(Filter.class);
+            var route = invocation.getMethod().getAnnotation(Route.class);
+            var excludeFilter = List.of(route.excludeFilter());
             if (CollectionUtils.isNotEmpty(names)) {
-                var filters = names.stream().map(name -> injector.getInstance(Key.get(Filter.class, Names.named(name))))
+                var filters = names.stream().filter(name -> !excludeFilter.contains(name))
+                        .map(name -> injector.getInstance(Key.get(Filter.class, Names.named(name))))
                         .map(filter -> filter.invocation(invocation)).collect(Collectors.toList());
                 sort(filters);
                 chain(filters);
