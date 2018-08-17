@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.nanoframework.core.rest.Routes;
 import org.nanoframework.core.rest.enums.HttpType;
+import org.nanoframework.core.rest.exception.RouteException;
 import org.nanoframework.core.web.http.URLContext;
 import org.nanoframework.core.web.mvc.Model;
 import org.nanoframework.core.web.mvc.support.RedirectModel;
@@ -96,7 +97,7 @@ public class RouteFilter extends AbstractFilter {
      * @since 1.3.5
      */
     public static class HttpContext {
-        private static InheritableThreadLocal<Map<Class<?>, Object>> CONTEXT = new InheritableThreadLocal<>();
+        private static ThreadLocal<Map<Class<?>, Object>> CONTEXT = new ThreadLocal<>();
 
         protected static void set(Map<Class<?>, Object> context) {
             clear();
@@ -119,6 +120,29 @@ public class RouteFilter extends AbstractFilter {
             }
 
             throw new NullPointerException("未设置Class: " + type.getName());
+        }
+
+        public static class HttpContextCopies {
+            private final Map<Class<?>, Object> context;
+
+            private final Thread parent;
+
+            public HttpContextCopies() {
+                context = CONTEXT.get();
+                parent = Thread.currentThread();
+            }
+
+            public void copy() {
+                if (Thread.currentThread() == parent) {
+                    throw new RouteException("Context复制不能在同一线程进行");
+                }
+
+                HttpContext.set(context);
+            }
+
+            public void clear() {
+                HttpContext.clear();
+            }
         }
     }
 

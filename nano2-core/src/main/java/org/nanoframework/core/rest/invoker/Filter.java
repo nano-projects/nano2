@@ -30,6 +30,7 @@ import com.google.inject.Key;
 import com.google.inject.name.Names;
 
 /**
+ * Restful调用过滤链扩展组件.
  * @author yanghe
  * @since 2.0.0
  */

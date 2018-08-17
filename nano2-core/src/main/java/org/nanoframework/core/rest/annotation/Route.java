@@ -49,7 +49,13 @@ public @interface Route {
     long timeout() default 5000;
 
     /**
-     * @return 请求异常Mock处理
+     * @return 请求异常Mock处理，可以通过{@code org.nanoframework.core.rest.mock.Mocker}扩展点进行扩展
      */
     Mock mock() default @Mock;
+
+    /**
+     * @return 线程池隔离，默认使用default线程池(CachedThreadPool). <br>
+     *         可以通过{@code org.nanoframework.core.concurrent.Executor}扩展点进行扩展.
+     */
+    String executor() default "default";
 }
